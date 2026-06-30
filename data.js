@@ -945,7 +945,6 @@ const outlineHTML = `
 
 // ─── 5. downloadFiles ────────────────────────────────────────
 const downloadFiles = [
-  { icon: '📕', name: '教材PDF', desc: '数据挖掘原理与应用（葛东旭）', path: 'files/textbook.pdf' },
   { icon: '📋', name: '复习大纲PDF', desc: '期末复习大纲', path: 'files/outline.pdf' },
   { icon: '📄', name: '复习大纲Word', desc: '复习大纲docx版', path: 'files/outline.docx' }
 ];
