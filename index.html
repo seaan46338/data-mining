@@ -437,7 +437,7 @@ function renderQuestion(q, idx) {
     body = `<div class="answer-area"><textarea placeholder="&#20889;&#19979;&#20320;&#30340;&#31572;&#26696;..." onchange="setAnswer(${idx},this.value)" ${quizState.submitted?'disabled':''}>${quizState.answers[idx]||''}</textarea></div>`;
   }
 
-  return `<div class="question-card ${stateClass}">
+  return `<div class="question-card ${stateClass}" data-qidx="${idx}">
     <span class="q-type ${typeClass}">${typeLabels[q.type]}</span>
     ${q.focus ? `<span style="float:right;font-size:11px;color:var(--text-secondary)">&#32771;&#28857;: ${q.focus}</span>` : ''}
     <div class="q-num">&#31532; ${idx + 1} &#39064;</div>
@@ -461,10 +461,38 @@ function toggleAllAnswers() {
 function selectOption(idx, val) {
   if (quizState.submitted) return;
   quizState.answers[idx] = val;
-  refreshQuiz();
+  // Update only the current question card's options
+  const card = document.querySelector(`[data-qidx="${idx}"]`);
+  if (card) {
+    card.querySelectorAll('.options li').forEach(li => li.classList.remove('selected'));
+    const items = card.querySelectorAll('.options li');
+    items.forEach(li => {
+      const onclickAttr = li.getAttribute('onclick') || '';
+      if (onclickAttr.includes("'" + val + "'")) li.classList.add('selected');
+    });
+  }
+  // Update progress
+  const src = quizState.type === 'chapter' ? chapterQuizzes : examQuizzes;
+  const total = src[quizState.num - 1].questions.length;
+  const answered = Object.keys(quizState.answers).length;
+  const progressText = document.querySelector('.quiz-progress span');
+  if (progressText) progressText.textContent = '\u5DF2\u7B54 ' + answered + '/' + total;
+  const progressFill = document.querySelector('.progress-bar-fill');
+  if (progressFill) progressFill.style.width = (answered / total * 100) + '%';
 }
 function setAnswer(idx, val) {
+  const had = quizState.answers[idx] !== undefined && quizState.answers[idx] !== '';
   quizState.answers[idx] = val;
+  const has = val !== undefined && val !== '';
+  if (had !== has) {
+    const src = quizState.type === 'chapter' ? chapterQuizzes : examQuizzes;
+    const total = src[quizState.num - 1].questions.length;
+    const answered = Object.keys(quizState.answers).filter(k => quizState.answers[k] !== '').length;
+    const progressText = document.querySelector('.quiz-progress span');
+    if (progressText) progressText.textContent = '\u5DF2\u7B54 ' + answered + '/' + total;
+    const progressFill = document.querySelector('.progress-bar-fill');
+    if (progressFill) progressFill.style.width = (answered / total * 100) + '%';
+  }
 }
 function setFilter(f) {
   quizState.filter = f;
