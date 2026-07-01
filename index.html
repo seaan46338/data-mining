@@ -94,6 +94,9 @@ a{color:var(--primary);text-decoration:none}
 .btn-success{background:var(--success);color:#fff}
 .btn-sm{padding:6px 14px;font-size:12px}
 .quiz-actions{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap}
+.save-indicator{display:inline-flex;align-items:center;gap:4px;font-size:12px;color:var(--success);opacity:0;transition:opacity .3s}
+.save-indicator.show{opacity:1}
+.save-indicator::before{content:'';display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--success)}
 
 /* Tabs */
 .tabs{display:flex;gap:4px;margin-bottom:20px;background:#f1f5f9;border-radius:8px;padding:4px}
@@ -244,13 +247,47 @@ function showChapter(num) {
 }
 
 function showQuiz(type, num) {
-  quizState = { answers: {}, submitted: false, type: type, num: num, filter: 'all' };
+  const saved = loadQuizState(type, num);
+  quizState = saved || { answers: {}, submitted: false, type: type, num: num, filter: 'all' };
   currentPage = 'quiz';
+  showAllAnswers = false;
   document.getElementById('sidebar').classList.remove('open');
   const label = type === 'chapter' ? '第' + num + '章测试' : '模拟真题' + (num === 1 ? '一' : '二');
   setActiveNav(label);
   document.getElementById('content').innerHTML = renderQuiz();
   window.scrollTo(0, 0);
+}
+
+// ========== Auto Save/Load ==========
+let _saveTimer = null;
+function quizKey(type, num) {
+  return 'dm_quiz_' + type + '_' + num;
+}
+function saveQuizState() {
+  clearTimeout(_saveTimer);
+  _saveTimer = setTimeout(function() {
+    try {
+      const key = quizKey(quizState.type, quizState.num);
+      const data = { answers: quizState.answers, submitted: quizState.submitted, ts: Date.now() };
+      localStorage.setItem(key, JSON.stringify(data));
+      const indicator = document.getElementById('save-indicator');
+      if (indicator) {
+        indicator.classList.add('show');
+        setTimeout(() => indicator.classList.remove('show'), 2000);
+      }
+    } catch(e) {}
+  }, 500);
+}
+function loadQuizState(type, num) {
+  try {
+    const raw = localStorage.getItem(quizKey(type, num));
+    if (!raw) return null;
+    const data = JSON.parse(raw);
+    return { answers: data.answers || {}, submitted: !!data.submitted, type: type, num: num, filter: 'all' };
+  } catch(e) { return null; }
+}
+function clearQuizState(type, num) {
+  try { localStorage.removeItem(quizKey(type, num)); } catch(e) {}
 }
 
 // ========== Renderers ==========
@@ -362,9 +399,10 @@ function renderQuiz() {
       <div class="quiz-progress">
         <span>&#24050;&#31572; ${answered}/${total}</span>
         <div class="progress-bar"><div class="progress-bar-fill" style="width:${answered/total*100}%"></div></div>
+        <span class="save-indicator" id="save-indicator">&#24050;&#20445;&#23384;</span>
       </div>
       <div class="quiz-actions">
-        ${!quizState.submitted ? `<button class="btn btn-primary" onclick="submitQuiz()">&#25552;&#20132;&#31572;&#26696;</button>` : `<button class="btn btn-success" onclick="showQuiz('${quizState.type}',${quizState.num})">&#37325;&#26032;&#20570;</button>`}
+        ${!quizState.submitted ? `<button class="btn btn-primary" onclick="submitQuiz()">&#25552;&#20132;&#31572;&#26696;</button>` : `<button class="btn btn-success" onclick="resetQuiz()">&#37325;&#26032;&#20570;</button>`}
         <button class="btn btn-outline" onclick="toggleAllAnswers()">&#26597;&#30475;&#20840;&#37096;&#31572;&#26696;</button>
       </div>
     </div>
@@ -427,12 +465,14 @@ function renderQuestion(q, idx) {
     }).join('')}</ul>`;
   } else if (q.type === 'judge') {
     const sel = quizState.answers[idx];
+    const D = '\u5BF9'; // 对
+    const C = '\u9519'; // 错
     body = `<ul class="options">
-      <li class="${sel==='#23545;'?'selected':''} ${quizState.submitted&&q.answer==='#23545;'?'correct-answer':''} ${quizState.submitted&&sel==='#23545;'&&q.answer!=='#23545;'?'wrong-answer':''}" onclick="selectOption(${idx},'#23545;')"><span class="opt-label">&#10003;</span>&#23545;</li>
-      <li class="${sel==='#38169;'?'selected':''} ${quizState.submitted&&q.answer==='#38169;'?'correct-answer':''} ${quizState.submitted&&sel==='#38169;'&&q.answer!=='#38169;'?'wrong-answer':''}" onclick="selectOption(${idx},'#38169;')"><span class="opt-label">&#10007;</span>&#38169;</li>
+      <li class="${sel===D?'selected':''} ${quizState.submitted&&q.answer===D?'correct-answer':''} ${quizState.submitted&&sel===D&&q.answer!==D?'wrong-answer':''}" onclick="selectOption(${idx},'${D}')"><span class="opt-label">&#10003;</span>${D}</li>
+      <li class="${sel===C?'selected':''} ${quizState.submitted&&q.answer===C?'correct-answer':''} ${quizState.submitted&&sel===C&&q.answer!==C?'wrong-answer':''}" onclick="selectOption(${idx},'${C}')"><span class="opt-label">&#10007;</span>${C}</li>
     </ul>`;
   } else if (q.type === 'fill') {
-    body = `<div class="answer-area"><input type="text" style="width:100%;border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:14px" placeholder="&#36755;&#20837;&#31572;&#26696;..." value="${quizState.answers[idx]||''}" onchange="setAnswer(${idx},this.value)" ${quizState.submitted?'disabled':''}></div>`;
+    body = `<div class="answer-area"><input type="text" style="width:100%;border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:14px" placeholder="&#36755;&#20837;&#31572;&#26696;..." value="${quizState.answers[idx]||''}" oninput="setAnswer(${idx},this.value)" ${quizState.submitted?'disabled':''}></div>`;
   } else if (q.type === 'essay') {
     body = `<div class="answer-area"><textarea placeholder="&#20889;&#19979;&#20320;&#30340;&#31572;&#26696;..." onchange="setAnswer(${idx},this.value)" ${quizState.submitted?'disabled':''}>${quizState.answers[idx]||''}</textarea></div>`;
   }
@@ -444,7 +484,7 @@ function renderQuestion(q, idx) {
     <div class="q-text">${q.question}</div>
     ${body}
     <div class="show-answer ${quizState.submitted || showAllAnswers ? 'visible' : ''}" id="ans-${idx}">
-      <strong>&#21442;&#32771;&#31572;&#26696;&#65306;</strong>${q.type === 'judge' ? (q.answer === '#23545;' ? '&#23545;' : '&#38169;') : q.answer}
+      <strong>&#21442;&#32771;&#31572;&#26696;&#65306;</strong>${q.type === 'judge' ? q.answer : q.answer}
       ${q.explanation ? '<br><em>' + q.explanation + '</em>' : ''}
     </div>
   </div>`;
@@ -479,6 +519,7 @@ function selectOption(idx, val) {
   if (progressText) progressText.textContent = '\u5DF2\u7B54 ' + answered + '/' + total;
   const progressFill = document.querySelector('.progress-bar-fill');
   if (progressFill) progressFill.style.width = (answered / total * 100) + '%';
+  saveQuizState();
 }
 function setAnswer(idx, val) {
   const had = quizState.answers[idx] !== undefined && quizState.answers[idx] !== '';
@@ -493,6 +534,7 @@ function setAnswer(idx, val) {
     const progressFill = document.querySelector('.progress-bar-fill');
     if (progressFill) progressFill.style.width = (answered / total * 100) + '%';
   }
+  saveQuizState();
 }
 function setFilter(f) {
   quizState.filter = f;
@@ -503,8 +545,13 @@ function refreshQuiz() {
 }
 function submitQuiz() {
   quizState.submitted = true;
+  saveQuizState();
   refreshQuiz();
   window.scrollTo(0, 0);
+}
+function resetQuiz() {
+  clearQuizState(quizState.type, quizState.num);
+  showQuiz(quizState.type, quizState.num);
 }
 
 // ========== Init ==========
