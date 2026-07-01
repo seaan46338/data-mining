@@ -71,6 +71,7 @@ a{color:var(--primary);text-decoration:none}
 .q-type.judge{background:#d1fae5;color:#059669}
 .q-type.fill{background:#fef3c7;color:#d97706}
 .q-type.essay{background:#ede9fe;color:#7c3aed}
+.q-type.multichoice{background:#ccfbf1;color:#0d9488}
 .q-num{font-size:13px;color:var(--text-secondary);margin-bottom:6px}
 .q-text{font-size:15px;font-weight:600;margin-bottom:14px;color:var(--text);line-height:1.7}
 .options{list-style:none;padding:0}
@@ -409,6 +410,7 @@ function renderQuiz() {
     <div class="filter-bar">
       <span class="filter-chip ${quizState.filter==='all'?'active':''}" onclick="setFilter('all')">&#20840;&#37096; (${questions.length})</span>
       <span class="filter-chip ${quizState.filter==='choice'?'active':''}" onclick="setFilter('choice')">&#21333;&#36873; (${questions.filter(q=>q.type==='choice').length})</span>
+      <span class="filter-chip ${quizState.filter==='multichoice'?'active':''}" onclick="setFilter('multichoice')">&#22810;&#36873; (${questions.filter(q=>q.type==='multichoice').length})</span>
       <span class="filter-chip ${quizState.filter==='judge'?'active':''}" onclick="setFilter('judge')">&#21028;&#26029; (${questions.filter(q=>q.type==='judge').length})</span>
       <span class="filter-chip ${quizState.filter==='fill'?'active':''}" onclick="setFilter('fill')">&#22635;&#31354; (${questions.filter(q=>q.type==='fill').length})</span>
       <span class="filter-chip ${quizState.filter==='essay'?'active':''}" onclick="setFilter('essay')">&#31616;&#31572; (${questions.filter(q=>q.type==='essay').length})</span>
@@ -433,6 +435,12 @@ function renderScore(quiz) {
 function checkAnswer(q, answer) {
   if (q.type === 'choice') return answer === q.answer;
   if (q.type === 'judge') return answer === q.answer;
+  if (q.type === 'multichoice') {
+    if (!Array.isArray(answer) || !Array.isArray(q.answer)) return false;
+    const a = [...answer].sort().join(',');
+    const b = [...q.answer].sort().join(',');
+    return a === b;
+  }
   if (q.type === 'fill') {
     const a = String(answer).trim().toLowerCase();
     const correct = String(q.answer).trim().toLowerCase();
@@ -443,7 +451,7 @@ function checkAnswer(q, answer) {
 }
 
 function renderQuestion(q, idx) {
-  const typeLabels = { choice: '&#21333;&#36873;', judge: '&#21028;&#26029;', fill: '&#22635;&#31354;', essay: '&#31616;&#31572;' };
+  const typeLabels = { choice: '&#21333;&#36873;', multichoice: '&#22810;&#36873;', judge: '&#21028;&#26029;', fill: '&#22635;&#31354;', essay: '&#31616;&#31572;' };
   const typeClass = q.type;
   const answered = quizState.answers[idx] !== undefined;
   let stateClass = '';
@@ -462,6 +470,20 @@ function renderQuestion(q, idx) {
         else if (quizState.answers[idx] === label && label !== q.answer) cls += ' wrong-answer';
       }
       return `<li class="${cls}" onclick="selectOption(${idx},'${label}')"><span class="opt-label">${label}</span>${opt}</li>`;
+    }).join('')}</ul>`;
+  } else if (q.type === 'multichoice') {
+    const sel = Array.isArray(quizState.answers[idx]) ? quizState.answers[idx] : [];
+    body = `<ul class="options">${q.options.map((opt, oi) => {
+      const label = String.fromCharCode(65 + oi);
+      let cls = '';
+      if (sel.includes(label)) cls += ' selected';
+      if (quizState.submitted) {
+        const isCorrect = (q.answer || []).includes(label);
+        const isChosen = sel.includes(label);
+        if (isCorrect) cls += ' correct-answer';
+        else if (isChosen && !isCorrect) cls += ' wrong-answer';
+      }
+      return `<li class="${cls}" onclick="toggleMultiOption(${idx},'${label}')"><span class="opt-label" style="border-radius:4px">${label}</span>${opt}</li>`;
     }).join('')}</ul>`;
   } else if (q.type === 'judge') {
     const sel = quizState.answers[idx];
@@ -484,7 +506,7 @@ function renderQuestion(q, idx) {
     <div class="q-text">${q.question}</div>
     ${body}
     <div class="show-answer ${quizState.submitted || showAllAnswers ? 'visible' : ''}" id="ans-${idx}">
-      <strong>&#21442;&#32771;&#31572;&#26696;&#65306;</strong>${q.type === 'judge' ? q.answer : q.answer}
+      <strong>&#21442;&#32771;&#31572;&#26696;&#65306;</strong>${q.type === 'multichoice' && Array.isArray(q.answer) ? q.answer.join(', ') : q.answer}
       ${q.explanation ? '<br><em>' + q.explanation + '</em>' : ''}
     </div>
   </div>`;
@@ -515,6 +537,34 @@ function selectOption(idx, val) {
   const src = quizState.type === 'chapter' ? chapterQuizzes : examQuizzes;
   const total = src[quizState.num - 1].questions.length;
   const answered = Object.keys(quizState.answers).length;
+  const progressText = document.querySelector('.quiz-progress span');
+  if (progressText) progressText.textContent = '\u5DF2\u7B54 ' + answered + '/' + total;
+  const progressFill = document.querySelector('.progress-bar-fill');
+  if (progressFill) progressFill.style.width = (answered / total * 100) + '%';
+  saveQuizState();
+}
+function toggleMultiOption(idx, val) {
+  if (quizState.submitted) return;
+  let sel = Array.isArray(quizState.answers[idx]) ? [...quizState.answers[idx]] : [];
+  const i = sel.indexOf(val);
+  if (i >= 0) sel.splice(i, 1); else sel.push(val);
+  sel.sort();
+  quizState.answers[idx] = sel.length > 0 ? sel : undefined;
+  if (sel.length === 0) delete quizState.answers[idx];
+  // Targeted DOM update
+  const card = document.querySelector('[data-qidx="' + idx + '"]');
+  if (card) {
+    card.querySelectorAll('.options li').forEach(li => {
+      const onclickAttr = li.getAttribute('onclick') || '';
+      const lbl = (onclickAttr.match(/'([A-E])'/) || [])[1];
+      if (lbl && sel.includes(lbl)) li.classList.add('selected');
+      else li.classList.remove('selected');
+    });
+  }
+  // Update progress
+  const src = quizState.type === 'chapter' ? chapterQuizzes : examQuizzes;
+  const total = src[quizState.num - 1].questions.length;
+  const answered = Object.keys(quizState.answers).filter(k => quizState.answers[k] !== undefined).length;
   const progressText = document.querySelector('.quiz-progress span');
   if (progressText) progressText.textContent = '\u5DF2\u7B54 ' + answered + '/' + total;
   const progressFill = document.querySelector('.progress-bar-fill');

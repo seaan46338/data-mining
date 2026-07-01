@@ -4,637 +4,1079 @@
 
 // ─── 1. chapterData ──────────────────────────────────────────
 const chapterData = [
-  // Chapter 1
   {
-    title: '第一章 绪论：数据分析与数据挖掘',
-    subtitle: '数据分析与数据挖掘的定义、区别、联系与任务分类',
+    title: '第一章 数据挖掘基础概论',
+    subtitle: 'KDD流程、数据挖掘与OLAP/统计学区分、两大任务类型、数据分析8等级',
     content: `
-      <h3>一、数据分析 vs 数据挖掘</h3>
+      <h4>一、KDD与数据挖掘的关系</h4>
+      <div class="highlight">
+        <strong>核心考点：</strong>KDD是完整流程，数据挖掘是KDD中的核心步骤。
+      </div>
       <ul>
-        <li><strong>数据分析</strong>：用统计方法对数据进行处理、汇总和可视化，回答<strong>"发生了什么、为什么发生"</strong>。</li>
-        <li><strong>数据挖掘</strong>：从大量、不完全、有噪声、模糊、随机的数据中，发现潜在的、有用的<strong>知识（模式/规律）</strong>，更强调回答<strong>"还会发生什么"</strong>。</li>
+        <li><strong>KDD（Knowledge Discovery in Databases，知识发现）：</strong>完整的流程，包括数据清洗、预处理、变换、挖掘、评价等全部环节。</li>
+        <li><strong>数据挖掘（Data Mining）：</strong>KDD过程中的核心步骤，指使用算法从数据中发现模式的过程。</li>
       </ul>
-      <h3>二、二者关系</h3>
-      <ul>
-        <li>数据分析是<strong>基础</strong>（描述性、回顾性）</li>
-        <li>数据挖掘是<strong>进阶</strong>（预测性、发现性）</li>
-        <li>数据分析为数据挖掘提供数据基础和理解；数据挖掘在数据分析之上进行更深层次的模式发现</li>
-      </ul>
-      <h3>三、任务分类</h3>
-      <table border="1" style="border-collapse:collapse;width:100%">
-        <tr><th>类别</th><th>任务</th><th>说明</th></tr>
-        <tr><td rowspan="2"><strong>预测类</strong></td><td>分类</td><td>预测离散类别标签（如：是否垃圾邮件）</td></tr>
-        <tr><td>回归</td><td>预测连续数值（如：预测房价）</td></tr>
-        <tr><td rowspan="2"><strong>描述类</strong></td><td>聚类</td><td>自动将数据分成若干组，无预先标签</td></tr>
-        <tr><td>关联规则</td><td>发现数据项之间的共现关系（如：购物篮分析）</td></tr>
+      <div class="info-box">
+        <strong>KDD全流程：</strong>数据清洗 → 数据预处理 → 数据变换 → 数据挖掘 → 模式评估 → 知识表示
+      </div>
+
+      <h4>二、数据挖掘与OLAP、统计学的概念区分</h4>
+      <table class="compare-table">
+        <tr><th>维度</th><th>数据挖掘</th><th>OLAP</th><th>统计学</th></tr>
+        <tr><td>推理方式</td><td><strong>归纳推理</strong>——无需预设，计算机自动寻找模型</td><td><strong>演绎推理</strong>——用户提出假设，通过工具验证</td><td>基于概率论的传统分析方法</td></tr>
+        <tr><td>数据规模</td><td>适合海量数据的自动分析</td><td>多维数据的聚合查询</td><td>传统上适合中小规模样本</td></tr>
+        <tr><td>关系</td><td colspan="2">数据挖掘是OLAP的深化和自动化</td><td>数据挖掘是统计学的延伸和扩展</td></tr>
       </table>
-      <h3>四、预测任务 vs 描述任务</h3>
-      <ul>
-        <li><strong>预测任务</strong>：有目标变量，利用已知属性预测未知值（有监督）</li>
-        <li><strong>描述任务</strong>：没有目标变量，发现数据内在结构（无监督）</li>
-      </ul>
-      <h3>五、超市销售例子</h3>
-      <ul>
-        <li>数据分析：统计本月各商品销售额、各门店销售排名</li>
-        <li>数据挖掘：发现"买面包的顾客也常买牛奶"（关联规则）、预测下月销售额（回归）、对客户自动分群（聚类）</li>
-      </ul>
-      <h3>六、易错点</h3>
-      <ul>
-        <li>不要把所有数据处理都叫数据挖掘——简单的查询、统计属于数据分析</li>
-        <li>聚类是<strong>描述类</strong>任务，不是预测任务</li>
-        <li>回归预测的是连续数值，分类预测的是离散类别</li>
-      </ul>
-      <h3>七、复习步骤</h3>
-      <ol>
-        <li>掌握数据分析与数据挖掘的定义和区别</li>
-        <li>理解四种任务类型（分类、回归、聚类、关联规则）</li>
-        <li>能举例说明预测类和描述类任务</li>
-        <li>注意易错点</li>
-      </ol>
+      <div class="info-box">
+        <strong>关键理解：</strong>数据挖掘不是为了替代统计学，而是其延伸和扩展，能更自动地分析不适合传统统计分析的海量数据。
+      </div>
+
+      <h4>三、数据分析 vs 数据挖掘的本质区别与联系</h4>
+      <table class="compare-table">
+        <tr><th>维度</th><th>数据分析（Data Analysis）</th><th>数据挖掘（Data Mining）</th></tr>
+        <tr><td>定义</td><td>用适当的统计分析方法处理数据，提取有用信息形成结论</td><td>从大量的、不完全的、有噪声的、模糊的、随机的数据中，自动提取隐含的、未知的、潜在有用的信息和知识</td></tr>
+        <tr><td>核心问题</td><td>回答"发生了什么？"和"为什么发生？"</td><td>回答"还会发生什么？"和"有哪些没发现的规律？"</td></tr>
+        <tr><td>方法特点</td><td>基于已知指标进行总结和逻辑推导</td><td>靠算法模型寻找深层规律</td></tr>
+        <tr><td>定位</td><td>基础（了解业务现状）</td><td>进阶（数据量极大时靠算法寻找规律）</td></tr>
+      </table>
+
+      <h4>四、数据挖掘的两大核心任务</h4>
+      <div class="highlight">
+        <strong>必考重点：</strong>区分预测任务和描述任务是数据挖掘的基本功。
+      </div>
+      <table class="compare-table">
+        <tr><th>任务类型</th><th>核心目标</th><th>典型方法</th></tr>
+        <tr><td><strong>预测任务（Predictive）</strong></td><td>根据某些属性（输入变量）的值，预测另一个特定属性（目标变量/因变量）在未来的值</td><td>分类（Classification）、回归（Regression）</td></tr>
+        <tr><td><strong>描述任务（Descriptive）</strong></td><td>不需要预测特定目标变量，而是总结、概括或发现数据中潜在的模式、联系和规律（处理已有全局数据）</td><td>聚类（Clustering）、关联规则发现（Association Rule Discovery）、异常检测</td></tr>
+      </table>
+
+      <h4>五、数据分析能力的8个等级与两阶段</h4>
+      <div class="info-box">
+        <strong>两大阶段：</strong>描述阶段（传统分析，等级1-4）和 挖掘阶段（高级分析，等级5-8）。
+      </div>
+      <table class="compare-table">
+        <tr><th>阶段</th><th>等级</th><th>能力名称</th><th>核心问题</th></tr>
+        <tr><td rowspan="4"><strong>描述阶段</strong><br>（传统分析）</td><td>1</td><td>常规报表</td><td>发生什么事？</td></tr>
+        <tr><td>2</td><td>即席查询</td><td>有多少数量、在哪里？</td></tr>
+        <tr><td>3</td><td>多维分析/OLAP</td><td>问题到底出在哪里？（通过钻取层层剥笋）</td></tr>
+        <tr><td>4</td><td>警报</td><td>什么时候该有所反应？</td></tr>
+        <tr><td rowspan="4"><strong>挖掘阶段</strong><br>（高级分析）</td><td>5</td><td>统计分析</td><td>为什么出现这种情况？（寻找历史规律）</td></tr>
+        <tr><td>6</td><td>预报</td><td>持续这种趋势，未来会怎么样？</td></tr>
+        <tr><td>7</td><td>预测型建模</td><td>接下来会发生什么？（哪些客户会流失/响应）</td></tr>
+        <tr><td>8</td><td>优化</td><td>如何把事情做得更好？（决策最优解）</td></tr>
+      </table>
     `
   },
-  // Chapter 2
   {
-    title: '第二章 数据挖掘的过程',
-    subtitle: '8个能力等级、两阶段、OLAP、过程模型',
+    title: '第二章 数据挖掘过程模型',
+    subtitle: 'CRISP-DM、SEMMA、5A三大过程模型、狭义与广义数据挖掘阶段',
     content: `
-      <h3>一、数据分析能力8个等级</h3>
-      <table border="1" style="border-collapse:collapse;width:100%">
-        <tr><th colspan="2">描述阶段</th><th colspan="2">挖掘阶段</th></tr>
-        <tr><td>1. 常规报表</td><td>固定格式报表</td><td>5. 统计分析</td><td>用统计方法深入分析</td></tr>
-        <tr><td>2. 即席查询</td><td>灵活查询</td><td>6. 预报</td><td>"下月各门店需求量？"</td></tr>
-        <tr><td>3. OLAP/多维分析</td><td>多角度分析</td><td>7. 预测型建模</td><td>用模型预测未来</td></tr>
-        <tr><td>4. 警报</td><td>自动提醒</td><td>8. 优化</td><td>在约束下选最优方案</td></tr>
+      <h4>一、三大主流数据挖掘过程模型对比</h4>
+      <div class="highlight">
+        <strong>核心考点：</strong>三大模型的提出者、步骤、核心特点是高频考点。
+      </div>
+
+      <h4>1. CRISP-DM模型（跨行业数据挖掘标准流程）</h4>
+      <ul>
+        <li><strong>提出者：</strong>跨行业组织（IBM等主流推动）</li>
+        <li><strong>六大步骤：</strong>商业理解 → 数据理解 → 数据准备 → 建模 → 模型评估 → 结果发布</li>
+        <li><strong>核心特点：</strong>业务驱动，循环往复。强调将"模糊的业务问题"转化为"标准的技术流程"，是最常用的企业大型项目模型。</li>
+      </ul>
+      <div class="info-box">
+        <strong>关键词：</strong>业务驱动、循环迭代、最常用、企业级项目
+      </div>
+
+      <h4>2. SEMMA模型</h4>
+      <ul>
+        <li><strong>提出者：</strong>SAS Institute</li>
+        <li><strong>五大步骤：</strong>数据抽样（Sample）→ 数据探索（Explore）→ 预处理/数据调整（Modify）→ 模型研发（Model）→ 知识解释评价（Assess）</li>
+        <li><strong>核心特点：</strong>适用于需求明确、数据成熟的科研或算法开发场景。</li>
+      </ul>
+      <div class="info-box">
+        <strong>关键词：</strong>SAS、技术导向、科研/算法开发
+      </div>
+
+      <h4>3. 5A模型</h4>
+      <ul>
+        <li><strong>提出者：</strong>SPSS公司</li>
+        <li><strong>五大步骤：</strong>评价需求（Assess）→ 存取数据（Access）→ 完备分析（Analyze）→ 模型演示（Act）→ 结果展现（Automate）</li>
+        <li><strong>核心特点：</strong>技术驱动，步骤严谨；结果驱动，强调落地，用于商业快速决策。</li>
+      </ul>
+      <div class="info-box">
+        <strong>关键词：</strong>SPSS、技术驱动、结果导向、商业决策
+      </div>
+
+      <h4>二、三大过程模型对比总览</h4>
+      <table class="compare-table">
+        <tr><th>维度</th><th>CRISP-DM</th><th>SEMMA</th><th>5A</th></tr>
+        <tr><td>提出者</td><td>跨行业组织（IBM等）</td><td>SAS Institute</td><td>SPSS公司</td></tr>
+        <tr><td>步骤数</td><td>6步</td><td>5步</td><td>5步</td></tr>
+        <tr><td>核心驱动</td><td>业务驱动</td><td>技术/数据导向</td><td>技术+结果驱动</td></tr>
+        <tr><td>核心特点</td><td>循环往复，业务问题→技术流程</td><td>需求明确，数据成熟</td><td>步骤严谨，强调落地</td></tr>
+        <tr><td>适用场景</td><td>企业大型项目（最常用）</td><td>科研或算法开发</td><td>商业快速决策</td></tr>
       </table>
-      <h3>二、描述阶段 vs 挖掘阶段</h3>
-      <ul>
-        <li><strong>描述阶段</strong>：回答"发生了什么、在哪里、何时需要反应"</li>
-        <li><strong>挖掘阶段</strong>：回答"为什么、未来如何、接下来会发生什么、如何优化"</li>
-      </ul>
-      <h3>三、OLAP操作</h3>
-      <ul>
-        <li><strong>切片（Slice）</strong>：固定某些维度，查看子集</li>
-        <li><strong>切块（Dice）</strong>：选择多维区间</li>
-        <li><strong>钻取（Drill-down）</strong>：从粗粒度到细粒度（年→季度→月→日）</li>
-        <li><strong>上卷（Roll-up）</strong>：从细粒度到粗粒度（城市→省份）</li>
-        <li><strong>旋转（Pivot）</strong>：改变维度显示方向</li>
-      </ul>
-      <h3>四、三阶段过程模型</h3>
-      <ol>
-        <li><strong>数据准备</strong>：数据集成、选择、预处理、转换</li>
-        <li><strong>数据挖掘</strong>：选用算法，形成模型</li>
-        <li><strong>解释评估</strong>：对模型和模式进行解释、评价</li>
-      </ol>
-      <h3>五、SEMMA模型</h3>
-      <ol>
-        <li><strong>Sample</strong>（抽样）</li>
-        <li><strong>Explore</strong>（探索）</li>
-        <li><strong>Modify</strong>（修改/预处理）</li>
-        <li><strong>Model</strong>（建模）</li>
-        <li><strong>Assess</strong>（评估）</li>
-      </ol>
-      <p>反馈式流程：评估不理想可返回前面步骤。</p>
-      <h3>六、CRISP-DM模型</h3>
-      <ol>
-        <li><strong>商业理解</strong>（首先强调）</li>
-        <li>数据理解</li>
-        <li>数据准备</li>
-        <li>建模</li>
-        <li>评估</li>
-        <li><strong>发布</strong>（最后环节）</li>
-      </ol>
-      <h3>七、5A模型</h3>
-      <ol>
-        <li><strong>Assess</strong>（评估需求）</li>
-        <li><strong>Access</strong>（获取数据）</li>
-        <li><strong>Analyze</strong>（分析）</li>
-        <li><strong>Act</strong>（行动）</li>
-        <li><strong>Automate</strong>（自动化）</li>
-      </ol>
-      <p>5A更强调结果落地和工具功能。</p>
-      <h3>八、反馈机制</h3>
-      <ul>
-        <li>所有模型都强调迭代和反馈</li>
-        <li>结果不理想时应返回前面步骤重新处理</li>
-      </ul>
+
+      <h4>三、狭义与广义的数据挖掘三阶段</h4>
+      <div class="highlight">
+        <strong>重要区别：</strong>狭义聚焦技术过程，广义扩展到业务全生命周期。
+      </div>
+      <table class="compare-table">
+        <tr><th>维度</th><th>狭义数据挖掘</th><th>广义数据挖掘</th></tr>
+        <tr><td>三阶段</td><td>数据准备 → 数据挖掘 → 解释评估</td><td>问题理解 → 数据挖掘 → 辅助决策</td></tr>
+        <tr><td>核心特点</td><td>数据准备往往占据大部分时间（含数据清洗、特征工程、变量选择）</td><td>涵盖面向问题解决的全生命周期</td></tr>
+        <tr><td>面向对象</td><td>技术过程导向</td><td>组织管理、经营和商业优化</td></tr>
+      </table>
+      <div class="error-box">
+        <strong>易错提醒：</strong>狭义数据挖掘三阶段中，数据准备是耗时最长的环节，而非挖掘本身。
+      </div>
     `
   },
-  // Chapter 3
   {
-    title: '第三章 数据准备',
-    subtitle: '收集、抽样、集成、清理、规约与变换',
+    title: '第三章 数据准备与预处理',
+    subtitle: '数据抽样、数据集成、异常值检测、数据变换、离散化与编码方法',
     content: `
-      <h3>一、数据准备的地位</h3>
+      <h4>一、数据准备的地位与要求</h4>
+      <div class="highlight">
+        <strong>核心地位：</strong>数据的质量、表现形式和代表性对数据挖掘算法选择、参数选取和最终结果都起着<strong>决定性</strong>的作用。
+      </div>
       <ul>
-        <li>数据准备是数据挖掘的<strong>基础环节</strong>，通常占据项目<strong>大量工作量</strong></li>
-        <li>高质量数据要求：准确、完整、一致、及时、可信</li>
+        <li><strong>高质量数据的四大要求：</strong>
+          <ol>
+            <li>完整的、一致的</li>
+            <li>易于处理的、宜于运用数据挖掘算法的</li>
+            <li>具有代表性的</li>
+            <li>包含能够反映问题实质的特征数据</li>
+          </ol>
+        </li>
+        <li><strong>主要环节：</strong>数据收集 → 数据抽样 → 数据集成 → 数据清理 → 数据规约 → 数据变换</li>
       </ul>
-      <h3>二、四种抽样方法</h3>
-      <table border="1" style="border-collapse:collapse;width:100%">
-        <tr><th>方法</th><th>思想</th><th>适用场景</th></tr>
-        <tr><td>简单随机抽样</td><td>每个个体等概率被抽中</td><td>总体均匀</td></tr>
-        <tr><td>系统抽样</td><td>等间隔抽取</td><td>无周期性，否则有偏差</td></tr>
-        <tr><td>分层抽样</td><td>先分层，每层都抽</td><td>层内同质、层间异质（提高精度）</td></tr>
-        <tr><td>整群抽样</td><td>先分群，抽若干群调查全部</td><td>群内异质、群间同质（降低成本）</td></tr>
+
+      <h4>二、数据收集的多样性</h4>
+      <ul>
+        <li><strong>定义：</strong>对项目所需数据进行甄别、认定并汇聚（存入数据仓库或建立分布式数据集）的过程。</li>
+        <li><strong>数据源多样化：</strong>政务数据（人口、地理、户籍）、企事业数据（生产运营销售）、咨询公司数据、网络信息（非结构化数据）</li>
+        <li><strong>获取手段：</strong>第三方共享、购买/受让、自行调查、网络爬取等，需综合平衡经济性、时效性、有效性</li>
+      </ul>
+
+      <h4>三、数据抽样</h4>
+      <h4>1. 统计学与数据挖掘中"数据抽样"的本质差异</h4>
+      <table class="compare-table">
+        <tr><th>维度</th><th>统计学抽样</th><th>数据挖掘抽样</th></tr>
+        <tr><td>抽样目的</td><td>因为<strong>获取</strong>全样本的资金和时间成本太高（如无法普查全国所有人）</td><td>因为<strong>处理</strong>全样本的计算成本（资金和时间）太高（数据体量、维度过大，算法跑不动）</td></tr>
       </table>
-      <h3>三、数据集成</h3>
-      <ul>
-        <li><strong>数据仓库</strong>：物理复制，查询快但实时性差，支持历史趋势</li>
-        <li><strong>数据联邦</strong>：虚拟化集成视图，不实际复制，实时性好</li>
-        <li><strong>中间件</strong>：介于两者之间</li>
-        <li>难点：同名异义、别名、表达不一致（实体识别冲突）；各源可独立变更（自治性）</li>
-      </ul>
-      <h3>四、异常值检测</h3>
-      <ul>
-        <li><strong>3σ原则</strong>：正态分布下，正常数据落在 [μ-3σ, μ+3σ] 区间</li>
-        <li><strong>IQR法</strong>：IQR = Q3 - Q1；异常值 &lt; Q1 - 1.5×IQR 或 &gt; Q3 + 1.5×IQR</li>
-      </ul>
-      <h3>五、数据变换</h3>
-      <ul>
-        <li><strong>Min-Max归一化</strong>：映射到 [0,1] 区间</li>
-        <li><strong>Z-score标准化</strong>：变为均值0、标准差1</li>
-        <li><strong>离散化</strong>：把连续数值变成有限区间或类别</li>
-        <li><strong>PCA降维</strong>：主成分含义通常比原始变量<strong>更模糊</strong>（不是更清楚）</li>
-        <li><strong>哈希编码</strong>：适合高基数属性，但可能出现哈希冲突</li>
-      </ul>
-      <h3>六、易错点</h3>
-      <ul>
-        <li>分层抽样 vs 整群抽样容易反——分层要求"层内同质层间异质"，整群要求"群内异质群间同质"</li>
-        <li>归一化（Min-Max→[0,1]）vs 标准化（Z-score→均值0标准差1）不要混</li>
-        <li>PCA降维后主成分含义更模糊，不是更直观清楚</li>
-      </ul>
-    `
-  },
-  // Chapter 4
-  {
-    title: '第四章 数据探索与描述性统计',
-    subtitle: '属性类型、集中量数、差异量数、相关性量数',
-    content: `
-      <h3>一、数据探索的作用</h3>
-      <ul>
-        <li>初步了解数据内容、性质与质量</li>
-        <li>评估完整性和一致性</li>
-        <li>识别模式和分布</li>
-        <li>为选择预处理工具和分析技术提供依据</li>
-      </ul>
-      <h3>二、数据属性类型</h3>
-      <table border="1" style="border-collapse:collapse;width:100%">
-        <tr><th>类型</th><th>特点</th><th>例子</th></tr>
-        <tr><td>连续型</td><td>可取任意实数值</td><td>销售额、温度</td></tr>
-        <tr><td>离散型</td><td>可数有限或无限值</td><td>职工人数、商品数量</td></tr>
-        <tr><td>标称型</td><td>无序类别</td><td>血型、性别</td></tr>
-        <tr><td>有序型</td><td>有顺序但不能常规加减</td><td>满意度等级</td></tr>
+
+      <h4>2. 四种经典抽样方法对比</h4>
+      <table class="compare-table">
+        <tr><th>方法</th><th>核心原理</th><th>优缺点/注意事项</th></tr>
+        <tr><td><strong>简单随机抽样</strong></td><td>完全随机。分为有放回（可能重复，多用于理论模拟）与无放回（不会重复，极常用于民调、质检等实际应用）</td><td>最基本方法，操作简单</td></tr>
+        <tr><td><strong>系统抽样</strong></td><td>按一定顺序排列并等距离抽样</td><td>缺点：如果数据存在周期性模式，可能会导致样本偏差（消除了周期性特性）</td></tr>
+        <tr><td><strong>分层抽样</strong></td><td>总体分为同质、互不交叉的层，在各层内独立抽样（分为等比例与不等比例抽样）</td><td>适用于层内同质、层间异质的总体</td></tr>
+        <tr><td><strong>整群抽样</strong></td><td>总体分为群，随机抽取若干群，对抽中群内个体进行全调查</td><td>适用于群内异质、群间同质的总体</td></tr>
       </table>
-      <h3>三、集中量数</h3>
+
+      <h4>3. 分层抽样 vs 整群抽样（高频对比考点）</h4>
+      <table class="compare-table">
+        <tr><th>维度</th><th>分层抽样</th><th>整群抽样</th></tr>
+        <tr><td>先做什么</td><td>先分层</td><td>先分群</td></tr>
+        <tr><td>抽谁</td><td>每层都抽人</td><td>抽若干个群</td></tr>
+        <tr><td>群内是否全调查</td><td>否</td><td>是</td></tr>
+        <tr><td>目的</td><td>提高精度</td><td>降低成本</td></tr>
+        <tr><td>层/群结构要求</td><td>层内同质、层间异质</td><td>群内异质、群间同质</td></tr>
+        <tr><td>适用条件</td><td>层间异质性大、层内同质性强</td><td>群间差异小、群内各个体差异大</td></tr>
+      </table>
+
+      <h4>4. 数据抽样策略与原则</h4>
       <ul>
-        <li><strong>均值</strong>：所有值求和平均，<strong>最易受极端值影响</strong></li>
-        <li><strong>截断均值</strong>：去掉极端值后的均值，更稳健</li>
-        <li><strong>中位数</strong>：排序后中间位置，较稳健</li>
-        <li><strong>众数</strong>：出现次数最多的值，可能不唯一或不存在</li>
-        <li><strong>百分位数</strong>：将数据分为100等份</li>
+        <li><strong>渐进抽样/自适应抽样：</strong>当无法预先确定最优样本量时，从小抽样率样本开始，逐步增加样本容量，直到模型效果不再显著提升为止。需配合评估方法确定停止时机。</li>
+        <li><strong>抽样原则：</strong>
+          <ol>
+            <li>抽取的数据应有代表性，有效抽样</li>
+            <li>抽取感兴趣的内容</li>
+            <li>保留原有特征</li>
+          </ol>
+        </li>
       </ul>
-      <h3>四、差异量数</h3>
-      <ul>
-        <li><strong>极差</strong>：最大值-最小值，受极端值影响大</li>
-        <li><strong>方差/标准差</strong>：衡量数据偏离均值的程度</li>
-        <li><strong>MAD（中位数绝对偏差）</strong>：稳健统计量，不受极端值影响</li>
-        <li><strong>IQR（四分位极差）</strong>：Q3-Q1，代表中间50%数据的波动范围</li>
-      </ul>
-      <h3>五、相关性量数</h3>
-      <ul>
-        <li><strong>协方差</strong>：衡量两变量共同变化趋势；同向为正，反向为负；同一变量的协方差=方差</li>
-        <li><strong>Pearson相关系数</strong>：衡量线性相关程度，范围[-1,1]</li>
-        <li><strong>协方差矩阵</strong>：对角线=方差，非对角线=协方差</li>
-      </ul>
-      <h3>六、稳健统计量</h3>
-      <ul>
-        <li>不受极端值显著影响的统计量：中位数、MAD、IQR</li>
-      </ul>
-    `
-  },
-  // Chapter 5
-  {
-    title: '第五章 关联分析',
-    subtitle: '支持度、置信度、Apriori、FP-Growth、提升度',
-    content: `
-      <h3>一、关联分析定义与应用</h3>
-      <ul>
-        <li>发现数据项之间的共现关系</li>
-        <li>典型应用：购物篮分析、交叉销售、商品推荐</li>
-      </ul>
-      <h3>二、核心概念</h3>
-      <ul>
-        <li><strong>项集</strong>：一组物品的集合，如 {牛奶,面包}</li>
-        <li><strong>支持度计数</strong>：包含该项集的事务数</li>
-        <li><strong>候选项集</strong>：未经支持度检验的项集</li>
-        <li><strong>频繁项集</strong>：满足最小支持度的项集</li>
-      </ul>
-      <h3>三、核心指标</h3>
-      <ul>
-        <li><strong>支持度</strong> = 同时包含X和Y的事务数 / 总事务数（看全局）</li>
-        <li><strong>置信度</strong> = 同时包含X和Y的事务数 / 包含X的事务数（看局部/条件概率）</li>
-        <li><strong>强关联规则</strong>：同时满足最小支持度和最小置信度的规则</li>
-      </ul>
-      <h3>四、两阶段框架</h3>
+
+      <h4>四、数据集成</h4>
+      <div class="info-box">
+        <strong>定义：</strong>将不同来源、格式、特点性质的数据在逻辑上或物理上有机地集中，提供全面的数据共享。
+      </div>
+      <h4>1. 四大难点（核心考点）</h4>
       <ol>
-        <li>产生频繁项集（满足最小支持度）</li>
-        <li>生成关联规则（满足最小置信度）</li>
+        <li><strong>系统与数据异构：</strong>不同数据源在系统、模式（关系型、文本等）、定义、语义上存在差异</li>
+        <li><strong>分布性与传输性：</strong>数据源异地分布，对网络传输的准确性、实时性、安全性要求高</li>
+        <li><strong>自治性与松耦合：</strong>各数据源独立，可能自行调整数据结构而不通知集成系统，要求高鲁棒性</li>
+        <li><strong>数据结构的不完整性与不关联性：</strong>存在数据缺失、主外键不统一等问题</li>
       </ol>
-      <h3>五、Apriori vs FP-Growth</h3>
-      <table border="1" style="border-collapse:collapse;width:100%">
-        <tr><th>比较项</th><th>Apriori</th><th>FP-Growth</th></tr>
-        <tr><td>核心思想</td><td>候选项集产生+剪枝</td><td>FP树压缩数据</td></tr>
-        <tr><td>候选集</td><td>产生大量候选集</td><td>不产生候选集</td></tr>
-        <tr><td>数据库扫描</td><td>多次扫描</td><td>2次扫描</td></tr>
-        <tr><td>效率</td><td>候选集多时效率低</td><td>通常更高效</td></tr>
+
+      <h4>2. 三种集成方式对比</h4>
+      <table class="compare-table">
+        <tr><th>维度</th><th>中间件（混合方式）</th><th>数据联邦（逻辑虚拟）</th><th>数据仓库（物理汇聚）</th></tr>
+        <tr><td>数据存储</td><td>集成服务器上整合，对外提供接口</td><td>不实际保存数据，虚拟化视图</td><td>物理存储，复制/聚集数据</td></tr>
+        <tr><td>实时性</td><td>较好</td><td>极好（直接查询实时源）</td><td>较差（受ETL周期限制）</td></tr>
+        <tr><td>查询性能</td><td>中等</td><td>较低（现场计算，受限于源库）</td><td>查询极快（提前加工好）</td></tr>
+        <tr><td>数据内容</td><td>原始数据+中间生成结果</td><td>仅源数据内容</td><td>可包含转换结果</td></tr>
+        <tr><td>适用场景</td><td>系统多但不想动原有库，兼顾效率与实时性</td><td>数据源多且杂、实时性要求高、不能跨域传输</td><td>大规模历史趋势分析（OLAP）</td></tr>
       </table>
-      <p>Apriori剪枝依据：<strong>非频繁项集的超集一定非频繁</strong></p>
-      <h3>六、提升度/兴趣因子</h3>
+
+      <h4>3. 数据联邦详解</h4>
       <ul>
-        <li>lift = P(X,Y) / [P(X)×P(Y)]</li>
-        <li>lift = 1：前件和后件<strong>相互独立</strong></li>
-        <li>lift &gt; 1：<strong>正相关</strong></li>
-        <li>lift &lt; 1：<strong>负相关</strong></li>
-        <li>置信度会忽略后件本身支持度，后件热门时可能有伪高置信度；提升度解决此问题</li>
+        <li><strong>定义：</strong>基于数据查询操作，从不同数据源完成数据汇集，构成虚拟化数据库的方法</li>
+        <li><strong>核心特点：</strong>不实际保存/复制/迁移数据；只保存数据来源及连接信息；提供虚拟化集成视图</li>
+        <li><strong>元数据：</strong>描述数据的数据——涉及技术属性、业务定义和操作特征</li>
+        <li><strong>优点：</strong>应用方便、数据实时性好、开发快捷灵活</li>
+        <li><strong>缺点：</strong>性能较低、系统可用性低（依赖源数据在线）、服务器负担大</li>
+        <li><strong>联邦数据库系统（FDBS）：</strong>半自治多数据源联合体；紧密耦合（统一访问，扩展困难）vs 松耦合（统一语言访问，需解决语义异构）</li>
       </ul>
-      <h3>七、计算题方法</h3>
+
+      <h4>4. 中间件详解</h4>
       <ul>
-        <li>支持度 = 同时出现次数 / 总事务数</li>
-        <li>置信度 = 同时出现次数 / 前件出现次数</li>
-        <li>例：10笔交易中4笔同时买油条和豆浆，5笔买油条 → 支持度=40%，置信度=80%</li>
+        <li><strong>定义：</strong>位于异构数据源系统（数据层）和应用程序（应用层）之间，提供统一数据模式和数据访问通用接口</li>
+        <li><strong>核心功能：</strong>向下协调各数据源系统，向上为应用提供统一数据逻辑视图；隐藏底层数据细节</li>
+        <li><strong>优势：</strong>灵活性极高、实时性好、适合处理逻辑复杂的连接</li>
+        <li><strong>局限：</strong>开发难度大（每个源需开发适配器）、查询性能受限</li>
       </ul>
+
+      <h4>五、异常值检测</h4>
+      <div class="highlight">
+        <strong>核心方法：拉依达准则（3&sigma;原则/&mu;&plusmn;3&sigma;）</strong>
+      </div>
+      <ul>
+        <li><strong>适用条件：</strong>正态分布或近似正态分布的数据</li>
+        <li><strong>计算逻辑：</strong>计算均值&mu;和标准差&sigma;，只要数据落在 [&mu;-3&sigma;, &mu;+3&sigma;] 区间之外，即判定为异常值</li>
+        <li><strong>原理：</strong>在该区间外的概率仅为0.27%</li>
+      </ul>
+
+      <h4>六、数据变换</h4>
+      <ul>
+        <li><strong>定义：</strong>将数据变换成适合于数据挖掘的形式</li>
+        <li><strong>核心目的：</strong>
+          <ol>
+            <li>从另一个角度、另一个域发现数据的更为显著的特征（如将语音数据变换为频率谱）</li>
+            <li>提升数据处理算法的效率和效果</li>
+          </ol>
+        </li>
+        <li><strong>常见方法：</strong>属性变换（变量变换）、离散化、主成分分析（PCA）、因子分析</li>
+      </ul>
+
+      <h4>1. 属性变换（变量变换）</h4>
+      <table class="compare-table">
+        <tr><th>方法</th><th>适用场景</th><th>核心特征</th><th>公式</th></tr>
+        <tr><td><strong>归一化（Min-Max）</strong></td><td>图像处理、神经网络（需加快收敛）</td><td>将数据映射到[0,1]区间</td><td>x' = (x - min) / (max - min)</td></tr>
+        <tr><td><strong>标准化（Z-Score）</strong></td><td>聚类、SVM、逻辑回归（大多数算法首选）</td><td>均值为0，标准差为1</td><td>z = (x - &mu;) / &sigma;</td></tr>
+        <tr><td><strong>非线性变换</strong></td><td>处理偏态数据、非线性特征增强</td><td>改变数据分布形状</td><td>—</td></tr>
+        <tr><td><strong>小数定标规范化</strong></td><td>简单规范化需求</td><td>移动小数点位置</td><td>x' = x / 10<sup>k</sup></td></tr>
+      </table>
+
+      <h4>2. 离散化（Discretization）</h4>
+      <ul>
+        <li><strong>定义：</strong>把连续的数字变成类别的过程（也叫分箱）。在取值区间中指定n-1个分割点，将数据划分为n个区间</li>
+        <li><strong>为什么要离散化：</strong>
+          <ol>
+            <li>数据规约、维规约</li>
+            <li>一些算法要求离散属性数据</li>
+            <li>产生概念分层结构，可在不同抽象层进行挖掘</li>
+            <li>消除奇异值带来的影响</li>
+            <li>减少属性值个数，使结果知识表达更简洁、更易理解</li>
+          </ol>
+        </li>
+        <li><strong>关键问题：</strong>选择多少个分割点？分割点位置如何确定？（数目由用户根据业务经验确定，位置可用非监督/监督方法确定）</li>
+      </ul>
+
+      <h4>3. 编码方法全面对比</h4>
+      <table class="compare-table">
+        <tr><th>编码方法</th><th>核心原理</th><th>通俗案例</th><th>核心优点</th><th>缺点/致命问题</th></tr>
+        <tr><td><strong>标签编码（Label Encoding）</strong></td><td>每个类别随机映射为唯一整数（0,1,2...）</td><td>北京→0，上海→1，深圳→2</td><td>简单，不增加数据维度</td><td>引入虚假顺序关系！算法会误认为2>1>0</td></tr>
+        <tr><td><strong>有序编码（Ordinal Encoding）</strong></td><td>专门用于有自然顺序的特征，按等级高低映射为递增数值</td><td>专科/S码→0，本科/M码→1，硕士/L码→2</td><td>数值大小有真实物理意义，完美反映等级关系</td><td>仅适用于有序特征，无法处理无顺序特征</td></tr>
+        <tr><td><strong>独热编码（One-Hot Encoding）</strong></td><td>每个类别单独拆成一列，对应二元变量（0或1）</td><td>红:[1,0,0]，绿:[0,1,0]，蓝:[0,0,1]</td><td>各类别间保持完全相等的距离</td><td>维度爆炸！1万个类别→1万列</td></tr>
+        <tr><td><strong>二进制编码（Binary Encoding）</strong></td><td>先分配整数序号，再转为二进制码存入不同列</td><td>序号3→二进制011，占3列</td><td>大幅压缩特征维度（1万类别只需14列）</td><td>编码的高低位失去业务可解释性</td></tr>
+        <tr><td><strong>哈希编码（Hash Encoding）</strong></td><td>利用哈希函数将类别映射为固定长度的哈希值</td><td>Hash(ID) % 10，全部塞进10个固定列</td><td>空间复杂度极低，适合超大基数类别</td><td>存在哈希冲突（不同类别映射到同一槽位）</td></tr>
+        <tr><td><strong>目标编码（Target Encoding）</strong></td><td>用该类别对应的目标变量（标签Y）的平均值进行编码</td><td>学区房平均房价8万→所有学区房替换为8.0</td><td>直接捕捉类别与目标之间的关联性</td><td>容易过拟合，样本少时均值严重失真</td></tr>
+      </table>
     `
   },
-  // Chapter 6
+  {
+    title: '第四章 数据探索与统计分析',
+    subtitle: '数据探索方法、可视化、集中量数、差异量数、相关性分析',
+    content: `
+      <h4>一、数据探索的作用与核心逻辑</h4>
+      <div class="info-box">
+        <strong>背景与定位：</strong>当面对一个全新领域、行业，或缺乏业务背景的数据时，需要首先通过数据探索，建立起必要的业务知识。
+      </div>
+      <ul>
+        <li><strong>核心作用：</strong>初步了解数据的内容、性质、质量（评估完整性和一致性等），利用人的认知能力来识别数据的性质、模式和分布</li>
+        <li><strong>关键价值：</strong>为后续选择合适的数据预处理工具和数据分析技术提供关键依据</li>
+      </ul>
+
+      <h4>二、数据探索的两大主要方法</h4>
+      <table class="compare-table">
+        <tr><th>方法</th><th>定义</th><th>优势</th></tr>
+        <tr><td><strong>可视化（Visualization）</strong></td><td>将数据转化为可视的图或表格展现</td><td>人的大脑对图形化的数据模式认知能力，是任何纯数字化分析工具都无法比拟的</td></tr>
+        <tr><td><strong>数据统计分析</strong></td><td>利用统计指标对数据流的分布特性进行定量描述</td><td>精确、可量化、可复现</td></tr>
+      </table>
+
+      <h4>三、可视化 vs 纯数据表现对比</h4>
+      <table class="compare-table">
+        <tr><th>作用</th><th>可视化表现</th><th>纯数据表现</th></tr>
+        <tr><td>模式认知</td><td>形状、颜色和聚类立刻揭示数据结构（如相关性）</td><td>需复杂统计计算才能发现规律</td></tr>
+        <tr><td>趋势评估</td><td>坡度陡峭程度直接反映增长或下降速度</td><td>必须对比前后数值，难以直观感受变化速率</td></tr>
+        <tr><td>异常检测</td><td>远离群体的点非常"刺眼"，一眼可见</td><td>异常值淹没在大量数据中，极易被忽略</td></tr>
+      </table>
+      <div class="highlight">
+        <strong>人类视觉优势：</strong>以视觉角度分析海量信息的能力，尤其在模式认知、变化趋势评估、异常值检测和异常模式识别上。
+      </div>
+
+      <h4>四、数据统计分析——集中量数</h4>
+      <table class="compare-table">
+        <tr><th>量数</th><th>定义</th><th>特点</th></tr>
+        <tr><td><strong>频率</strong></td><td>某数值出现的次数/比例</td><td>基础描述统计</td></tr>
+        <tr><td><strong>均值</strong></td><td>数据总和/数据个数</td><td>受极端值影响大；可用<strong>截断均值</strong>改善</td></tr>
+        <tr><td><strong>中位数</strong></td><td>排序后中间位置的值</td><td>不受极端值影响</td></tr>
+        <tr><td><strong>众数</strong></td><td>出现次数最多的值</td><td>不受极端值影响；可能不唯一或不存在；缺乏敏感性</td></tr>
+        <tr><td><strong>百分位数</strong></td><td>有的数据小于该值；分组数据需用组下限计算</td><td>地位量数</td></tr>
+      </table>
+      <div class="info-box">
+        <strong>截断均值：</strong>先把所有数据从小到大排序，然后去掉两头最高和最低的一定比例（如去掉最高5%和最低5%）的数据，只用中间剩下的"温和数据"来计算平均值。
+      </div>
+
+      <h4>五、数据统计分析——相关性量数</h4>
+      <ul>
+        <li><strong>协方差：</strong>衡量两个变量变化趋势的一致性（同向为正，反向为负）。方差是协方差的特例（同一变量）。</li>
+        <li><strong>相关系数（Pearson）：</strong>衡量两个随机变量X、Y之间线性相关程度的指标，取值[-1, 1]；r=0.994表示高度线性正相关。</li>
+        <li><strong>协方差矩阵：</strong>对称矩阵，对角线为方差，非对角线为协方差。</li>
+        <li><strong>相关矩阵：</strong>第ij个元素是第i个和第j个属性之间的相关性，对角线为1。</li>
+      </ul>
+      <div class="highlight">
+        <strong>协方差的物理意义：</strong>
+        <ul>
+          <li>若两个变量变化趋势一致（一个大于期望，另一个也大于期望），则协方差为正值</li>
+          <li>若两个变量变化趋势相反，则协方差为负值</li>
+          <li>当两个变量是同一个变量时，其协方差就是该变量的方差</li>
+        </ul>
+      </div>
+
+      <h4>六、数据统计分析——差异量数</h4>
+      <table class="compare-table">
+        <tr><th>指标</th><th>定义</th><th>特点</th></tr>
+        <tr><td><strong>极差/全距（Range）</strong></td><td>max - min</td><td>简单，但受极端值影响大，不能衡量每个数据变化</td></tr>
+        <tr><td><strong>标准差</strong></td><td>方差的平方根</td><td>反映离散程度；受极端值影响</td></tr>
+        <tr><td><strong>方差</strong></td><td>标准差的平方</td><td>最常用统计量；易被离群值扭曲</td></tr>
+        <tr><td><strong>中位数绝对偏差（MAD）</strong></td><td>各数据与中位数绝对差的中位数</td><td>稳健，对异常值极度不敏感；可替代标准差</td></tr>
+        <tr><td><strong>四分位差（IQR）</strong></td><td>Q3 - Q1 = P75 - P25</td><td>代表中间50%数据波动范围；抗异常值能力极强</td></tr>
+      </table>
+      <div class="error-box">
+        <strong>MAD的异常值检测：</strong>若数据点与中位数距离超过 K&times;MAD（通常K=3），视为异常值。
+      </div>
+    `
+  },
+  {
+    title: '第五章 关联规则挖掘',
+    subtitle: '支持度、置信度、提升度、Apriori算法、FP-Growth算法、关联规则评估',
+    content: `
+      <h4>一、关联分析的定义与应用</h4>
+      <ul>
+        <li><strong>定义：</strong>在交易数据、关系数据或其他信息载体中，查找存在于项目集合或对象集合之间的频繁模式、关联、相关性或因果结构。</li>
+        <li><strong>两种关联关系：</strong>
+          <ul>
+            <li><strong>简单关联关系：</strong>没有共同属性的事物组合，元素会较大概率同时出现（如面包和牛奶）</li>
+            <li><strong>序列关联关系：</strong>事物在时间上以一定先后顺序发生（如买iPhone后买保护壳）</li>
+          </ul>
+        </li>
+        <li><strong>典型应用：</strong>购物篮分析、国会投票记录分析、毒蘑菇特征发现、网站点击流挖掘、搜索引擎推荐</li>
+      </ul>
+
+      <h4>二、核心概念体系</h4>
+      <table class="compare-table">
+        <tr><th>概念</th><th>定义</th><th>公式/说明</th></tr>
+        <tr><td><strong>项集（Itemset）</strong></td><td>包含0个或多个项的集合</td><td>I = {i&#8321;, i&#8322;, ..., i<sub>k</sub>}</td></tr>
+        <tr><td><strong>k-项集</strong></td><td>包含k个项的项集</td><td>如{牛奶, 面包, 尿布}为3-项集</td></tr>
+        <tr><td><strong>支持度计数 &sigma;(X)</strong></td><td>包含特定项集的事务个数</td><td>&sigma;(X) = |{t<sub>i</sub> | X &sube; t<sub>i</sub>, t<sub>i</sub> &isin; T}|</td></tr>
+        <tr><td><strong>支持度 s(X)</strong></td><td>包含某项集的事务数与总事务数的比值</td><td>s(X) = &sigma;(X) / N</td></tr>
+        <tr><td><strong>频繁项集</strong></td><td>满足支持度阈值（minSup）的所有项集</td><td>s(X) &ge; minSup</td></tr>
+        <tr><td><strong>候选项集</strong></td><td>未经支持度检验的项集</td><td>—</td></tr>
+        <tr><td><strong>置信度 c(X→Y)</strong></td><td>X出现时Y出现的条件概率</td><td>c(X→Y) = s(X&cup;Y) / s(X) = &sigma;(X&cup;Y) / &sigma;(X)</td></tr>
+        <tr><td><strong>关联规则</strong></td><td>形如X→Y的蕴含表达式，X&cap;Y=&empty;</td><td>强度用支持度s和置信度c度量</td></tr>
+      </table>
+
+      <h4>三、两大核心评价指标</h4>
+      <div class="highlight">
+        <strong>必考计算题：</strong>支持度和置信度的计算是高频考点。
+      </div>
+      <ul>
+        <li><strong>支持度（Support, s）：</strong>确定规则在多大程度上适用于整个数据集
+          <br>公式：s(X→Y) = &sigma;(X&cup;Y) / N = P(X&cup;Y)</li>
+        <li><strong>置信度（Confidence, c）：</strong>确定Y在包含X的事务中出现的频繁程度
+          <br>公式：c(X→Y) = &sigma;(X&cup;Y) / &sigma;(X) = P(X&cup;Y) / P(X)</li>
+        <li><strong>挖掘目标：</strong>发现满足最小支持度（minSup）和最小置信度（minConf）的<strong>强关联规则</strong></li>
+      </ul>
+
+      <h4>四、计算实例</h4>
+      <div class="info-box">
+        <strong>例题：</strong>某早点摊今天一共接待了10位顾客（N=10）。买了油条的有5人；买了豆浆的有7人；同时买了油条和豆浆的有4人。针对关联规则：{油条}→{豆浆}：
+        <ul>
+          <li><strong>支持度</strong> = 同时买油条和豆浆的人数 / 总人数 = 4/10 = <strong>40%（0.4）</strong></li>
+          <li><strong>置信度</strong> = 同时买油条和豆浆的人数 / 买油条的总人数 = 4/5 = <strong>80%（0.8）</strong></li>
+        </ul>
+        <strong>理解要点：</strong>支持度看全局（全场10人中同时买两样的比例），置信度看局部/条件概率（已买油条的5人中顺便也买豆浆的比例）。
+      </div>
+
+      <h4>五、关联规则挖掘的两阶段框架</h4>
+      <ol>
+        <li><strong>产生频繁项集（Frequent Itemset Generation）：</strong>发现满足支持度阈值的所有项集
+          <ul>
+            <li>产生候选项集后确认：<strong>Apriori算法</strong></li>
+            <li>不产生候选项集直接生成：<strong>FP-Growth算法</strong></li>
+          </ul>
+        </li>
+        <li><strong>生成规则（Rule Generation）：</strong>从频繁项集中提取所有高置信度的规则（强规则）</li>
+      </ol>
+
+      <h4>六、Apriori算法</h4>
+      <div class="highlight">
+        <strong>核心原理：利用支持度单调性（先验原理）进行剪枝。</strong>
+      </div>
+      <ul>
+        <li><strong>定理：</strong>如果一个项集是频繁的，则它的所有子集也一定是频繁的；反之，如果一个项集是非频繁的，则它的所有超集也一定是非频繁的</li>
+        <li><strong>剪枝策略：</strong>借此剪掉无效的分支，大幅缩减搜索空间</li>
+        <li><strong>局限：</strong>需要多次扫描数据库、产生海量候选集</li>
+      </ul>
+
+      <h4>七、FP-Growth算法</h4>
+      <ul>
+        <li><strong>核心思想：</strong>使用FP树（紧凑数据结构）组织数据，直接从该结构中提取频繁项集，不产生候选项集</li>
+        <li><strong>FP树：</strong>输入数据的压缩表示，逐个读入事务并映射到FP树中的一条路径</li>
+        <li><strong>构建步骤：</strong>
+          <ol>
+            <li>扫描数据集一次，确定每个项的支持度计数，丢弃非频繁项，频繁项按支持度递减排序</li>
+            <li>扫描数据集二次，构建FP树（共享前缀路径，计数累加）</li>
+          </ol>
+        </li>
+        <li><strong>提取频繁项集：</strong>以自底向上方式探索树，通过条件树递归挖掘</li>
+      </ul>
+
+      <h4>八、支持度-置信度框架的局限性</h4>
+      <div class="error-box">
+        <strong>虚假高置信度问题：</strong>假设超市里90%的人都会买大米。规则{避雷针}→{大米}的置信度可能高达90%，但避雷针和大米显然毫无关联。这个高置信度纯粹是因为大米本身是"超级热门商品"导致的。<br>
+        <strong>解决方案：</strong>使用提升度和兴趣因子，剔除"由于后件本身超级热门而导致的虚假高置信度伪规则"。
+      </div>
+
+      <h4>九、关联规则评估——客观兴趣度度量</h4>
+      <table class="compare-table">
+        <tr><th>度量指标</th><th>判断标准</th></tr>
+        <tr><td><strong>提升度（Lift）</strong></td><td>=1独立；&lt;1互斥（负相关）；&gt;1有效强关联；&gt;3认为有价值</td></tr>
+        <tr><td><strong>杠杆率（Leverage）</strong></td><td>=0独立；越大关系越紧密；不受零事务影响</td></tr>
+        <tr><td><strong>确信度（Conviction）</strong></td><td>=1独立；越大越关联；衡量规则预测错误的概率</td></tr>
+        <tr><td><strong>兴趣因子（Interest Factor）</strong></td><td>=1独立；&lt;1负相关；&gt;1正相关；二元变量与Lift等价</td></tr>
+      </table>
+      <div class="info-box">
+        <strong>核心理解：</strong>这些指标回答的是："买了X之后，究竟是促进了买Y（正相关），还是抑制了买Y（负相关），亦或是两者其实毫无瓜葛（相互独立）？"
+      </div>
+    `
+  },
   {
     title: '第六章 分类预测',
-    subtitle: '决策树、朴素贝叶斯、KNN、SVM、神经网络',
+    subtitle: '决策树、信息增益、Gini系数、贝叶斯分类、数据属性分类',
     content: `
-      <h3>一、分类定义与过程</h3>
+      <h4>一、分类的定义与过程</h4>
       <ul>
-        <li>分类：根据已知特征预测离散类别标签（有监督学习）</li>
-        <li>过程：选择训练集→建立分类模型→用测试集评估→应用模型</li>
-        <li>训练样本必须包含属性值和类别标记</li>
+        <li><strong>定义：</strong>分类就是"贴标签"，将数据对象映射到预定义的类别中</li>
+        <li><strong>两大类型：</strong>
+          <ul>
+            <li><strong>描述性（Descriptive）：</strong>建立分类模型，理解数据内在结构</li>
+            <li><strong>预测性（Predictive）：</strong>应用模型对未知数据进行预测</li>
+          </ul>
+        </li>
       </ul>
-      <h3>二、决策树</h3>
+      <h4>分类过程的五大步骤</h4>
+      <ol>
+        <li><strong>选择训练数据集：</strong>训练样本需包含属性值和类别标记，形式为(V&#8321;, V&#8322;, ..., V<sub>n</sub>; C)，用于构建分类模型</li>
+        <li><strong>选择测试数据集：</strong>用于评估模型准确率。可通过交叉验证（互换/轮换）选择最优模型</li>
+        <li><strong>建立模型（训练）：</strong>由训练数据集生成分类模型</li>
+        <li><strong>测试评估：</strong>使用测试数据集评估模型，根据误差进行修正（如剪枝）</li>
+        <li><strong>应用模型：</strong>对未知分类的样本数据进行分类判别</li>
+      </ol>
+
+      <h4>二、决策树分类原理</h4>
       <ul>
-        <li><strong>内部节点</strong> = 属性测试</li>
-        <li><strong>叶节点</strong> = 类标号</li>
-        <li>对未知样本分类时，沿根节点到叶节点的路径得到预测类别</li>
+        <li><strong>定义：</strong>利用决策树的原理和结构，构造分类模型，发现数据中蕴涵的分类规则</li>
+        <li><strong>树结构：</strong>
+          <ul>
+            <li><strong>内部结点（非叶结点）：</strong>表示在一个属性上的测试</li>
+            <li><strong>分枝：</strong>代表一个测试输出</li>
+            <li><strong>叶结点：</strong>存放一个类标号</li>
+          </ul>
+        </li>
+        <li><strong>分类方式：</strong>对未给定类标号的元组，跟踪从根结点到叶结点的路径，叶结点存放该元组的预测类别</li>
       </ul>
-      <h3>三、不纯度度量</h3>
+
+      <h4>三、数据属性的分类</h4>
+      <table class="compare-table">
+        <tr><th>大类</th><th>细分</th><th>特点</th><th>示例</th></tr>
+        <tr><td rowspan="2"><strong>定量数据（Quantitative）</strong></td><td>连续型</td><td>可取区间内任意值，通过测量得到</td><td>身高、体重、温度、销售额</td></tr>
+        <tr><td>离散型</td><td>只能取整数值，通过计数得到</td><td>企业个数、职工人数、设备台数</td></tr>
+        <tr><td rowspan="2"><strong>定性数据（Qualitative）</strong></td><td>标称型/分类数据（Nominal）</td><td>类别间无顺序、无程度差异</td><td>性别、血型、药物反应</td></tr>
+        <tr><td>有序型（Ordinal）</td><td>类别间有顺序/程度差异，但无固定间隔</td><td>成绩等级、满意度等级</td></tr>
+      </table>
+
+      <h4>四、不纯度度量与属性选择标准</h4>
+      <div class="highlight">
+        <strong>核心思想：</strong>划分后应使不纯度减小，即某一类占绝对优势。
+      </div>
+
+      <h4>预备概念：熵（Entropy）</h4>
       <ul>
-        <li><strong>信息增益</strong>：偏向选择<strong>取值较多</strong>的属性</li>
-        <li><strong>增益率</strong>：通过惩罚分支多的属性来改进信息增益偏向</li>
-        <li><strong>Gini指数</strong>：选择Gini split最小的划分</li>
-        <li>CART分类树常用基尼指数</li>
+        <li>熵用来度量"混乱程度"</li>
+        <li>如果全是同一类 → 非常确定 → 熵 = 0</li>
+        <li>如果两类各占一半 → 最不确定 → 熵 = 1</li>
+        <li><strong>公式：</strong>熵 = -(p&#8321; &times; log&#8322;p&#8321; + p&#8322; &times; log&#8322;p&#8322; + ...)</li>
+        <li><strong>举例：</strong>10个样本，5个买、5个不买 → 熵 = -(0.5&times;log&#8322;0.5 + 0.5&times;log&#8322;0.5) = 1</li>
       </ul>
-      <h3>四、剪枝</h3>
+
+      <h4>四种度量标准详解</h4>
+
+      <h4>&emsp;1. 信息增益（InfoGain）</h4>
       <ul>
-        <li><strong>预剪枝</strong>：在树生长过程中提前停止，速度快但可能过早</li>
-        <li><strong>后剪枝</strong>：先让树完整生长再修剪不必要分支，效果较好但计算量大</li>
-        <li>目的：防止过拟合</li>
+        <li><strong>思路：</strong>用某个属性划分后，熵降低了多少。降得越多越好</li>
+        <li><strong>公式：</strong>信息增益 = 划分前的熵 - 划分后各分支的熵（加权平均）</li>
+        <li><strong>举例：</strong>按"年龄"划分买电脑数据（14个样本，9买5不买，划分前熵=1）
+          <br>青年分支（5人，2买3不买）：熵 &asymp; 0.97
+          <br>中年分支（4人，全买）：熵 = 0
+          <br>老年分支（5人，3买2不买）：熵 &asymp; 0.97
+          <br>划分后加权熵 = (5/14)&times;0.97 + (4/14)&times;0 + (5/14)&times;0.97 &asymp; 0.69
+          <br>信息增益 = 1 - 0.69 = <strong>0.31</strong></li>
+        <li><strong>特点：</strong>好用，但偏向选择取值多的属性（如"身份证号"每人一个值，信息增益极大但无意义）</li>
       </ul>
-      <h3>五、过拟合</h3>
+
+      <h4>&emsp;2. 信息增益率（GainRatio）</h4>
       <ul>
-        <li>训练误差很低而测试误差很高</li>
-        <li>模型记住了训练数据的噪声和细节，泛化能力差</li>
+        <li><strong>思路：</strong>在信息增益基础上，惩罚分支太多的属性</li>
+        <li><strong>公式：</strong>增益率 = 信息增益 &divide; 分裂信息</li>
+        <li><strong>分裂信息</strong> = 对"属性分了多少支"的惩罚项，分支越多数值越大</li>
+        <li><strong>举例：</strong>上面"年龄"分了3支，分裂信息 &asymp; 1.58，增益率 = 0.31 &divide; 1.58 &asymp; <strong>0.20</strong></li>
+        <li><strong>特点：</strong>修正了信息增益偏向多值属性的缺陷</li>
       </ul>
-      <h3>六、朴素贝叶斯</h3>
+
+      <h4>&emsp;3. Gini系数</h4>
       <ul>
-        <li>核心简化假设：各特征<strong>条件独立</strong></li>
-        <li>先验概率：不看特征时某类出现概率</li>
-        <li>似然：某类中出现这些特征的概率</li>
-        <li>后验概率：看到特征后某类出现的概率</li>
-        <li>理论上最小错误率，但实践中因条件独立假设不一定最优</li>
+        <li><strong>思路：</strong>随机抽两个样本，它们属于不同类别的概率。这个概率越小越好</li>
+        <li><strong>公式：</strong>Gini = 1 - (p<sub>A</sub>)&sup2; - (p<sub>B</sub>)&sup2; - ...</li>
+        <li><strong>举例：</strong>10个样本，5买5不买 → Gini = 1 - 0.25 - 0.25 = <strong>0.5</strong>
+          <br>9买1不买 → Gini = 1 - 0.81 - 0.01 = <strong>0.18</strong></li>
+        <li><strong>特点：</strong>计算比熵快（不用算log），CART决策树在用</li>
       </ul>
-      <h3>七、其他分类算法</h3>
+
+      <h4>&emsp;4. 分类误差</h4>
       <ul>
-        <li><strong>KNN</strong>：惰性学习（训练阶段主要保存样本），依赖距离计算，量纲敏感需标准化</li>
-        <li><strong>逻辑回归</strong>：虽然名字带回归，但主要用于分类</li>
-        <li><strong>SVM</strong>：寻找最大间隔超平面；核函数处理非线性问题；支持向量是距离超平面最近并决定间隔的样本</li>
-        <li><strong>神经网络</strong>：前向传播计算预测→损失函数度量误差→反向传播计算梯度→优化器更新参数</li>
+        <li><strong>思路：</strong>看哪类占比最大，错误率就是1减去这个占比</li>
+        <li><strong>公式：</strong>分类误差 = 1 - 占比最大的类别的概率</li>
+        <li><strong>举例：</strong>5买5不买 → 误差 = 1 - 0.5 = <strong>0.5</strong>；9买1不买 → 误差 = 1 - 0.9 = <strong>0.1</strong></li>
+        <li><strong>特点：</strong>简单直观，但对不纯度的变化不够敏感</li>
       </ul>
-      <h3>八、正则化</h3>
+
+      <h4>四种度量标准总结对比</h4>
+      <table class="compare-table">
+        <tr><th>度量标准</th><th>一句话概括</th><th>选择标准</th></tr>
+        <tr><td>信息增益</td><td>划分后混乱度降了多少</td><td>越大越好</td></tr>
+        <tr><td>信息增益率</td><td>降混乱度的同时扣掉分支太多的罚分</td><td>越大越好</td></tr>
+        <tr><td>Gini系数</td><td>随机抽两个是不同类别的概率</td><td>越小越好</td></tr>
+        <tr><td>分类误差</td><td>猜错的比例</td><td>越小越好</td></tr>
+      </table>
+
+      <h4>五、贝叶斯分类</h4>
+      <table class="compare-table">
+        <tr><th>概念</th><th>解释</th></tr>
+        <tr><td><strong>先验概率 P(C)</strong></td><td>不看任何特征时，某类出现的概率</td></tr>
+        <tr><td><strong>似然 P(X|C)</strong></td><td>某类中，出现这些特征的概率</td></tr>
+        <tr><td><strong>后验概率 P(C|X)</strong></td><td>看到特征后，某类出现的概率</td></tr>
+        <tr><td><strong>朴素贝叶斯</strong></td><td>假设所有特征互相独立（简化计算）</td></tr>
+      </table>
+
+      <h4>核心公式</h4>
       <ul>
-        <li><strong>L1正则化</strong>：促使参数稀疏</li>
-        <li><strong>L2正则化</strong>（岭回归）：限制参数过大，缓解过拟合</li>
+        <li><strong>贝叶斯定理：</strong>P(C|X) = P(X|C) &times; P(C) / P(X)</li>
+        <li><strong>分类决策：</strong>只比较分子，分母相同可忽略 → P(C|X) &prop; P(X|C) &times; P(C)</li>
+        <li><strong>朴素贝叶斯独立性假设：</strong>P(X|C) = P(X&#8321;|C) &times; P(X&#8322;|C) &times; ... &times; P(X<sub>n</sub>|C)</li>
+        <li><strong>分类器选择后验概率最大的类别：</strong>&Ccirc; = argmax<sub>C</sub> P(C) &times; &prod; P(X<sub>i</sub>|C)</li>
       </ul>
+
+      <h4>贝叶斯分类器优缺点</h4>
+      <table class="compare-table">
+        <tr><th>优点</th><th>缺点</th></tr>
+        <tr><td>计算快，规则简单</td><td>要求特征独立性假设</td></tr>
+        <tr><td>对噪声鲁棒</td><td>属性相关时会降低效果</td></tr>
+        <tr><td>容易处理缺失值</td><td>需要概率数据</td></tr>
+        <tr><td>理论上错误率最小</td><td>实践中不一定最优（独立性假设往往不成立）</td></tr>
+      </table>
     `
   },
-  // Chapter 7
   {
     title: '第七章 聚类分析',
-    subtitle: 'K-means、K-medoids、层次聚类、DBSCAN',
+    subtitle: 'K-Means、K-Medoids、距离度量、SSE、聚类分类体系',
     content: `
-      <h3>一、聚类 = 无监督学习</h3>
+      <h4>一、聚类分析的定义与核心思想</h4>
       <ul>
-        <li>不依赖预先给定的类别标签</li>
-        <li>根据样本相似性自动划分</li>
-        <li>每个数据元素属于且仅属于一个簇</li>
+        <li><strong>定义：</strong>将物理或抽象对象的集合划分成为由类似的对象组成的多个属类的过程</li>
+        <li><strong>核心思想：</strong>"物以类聚，人以群分"——将判定为较为相近和相似的对象聚集为自相似的组群，构成不同的簇</li>
+        <li><strong>优化目标：</strong>簇间最大化（簇与簇之间差异大）、簇内最小化（簇内对象相似度高）</li>
       </ul>
-      <h3>二、距离度量</h3>
+
+      <h4>二、聚类与分类的核心区别</h4>
+      <table class="compare-table">
+        <tr><th>维度</th><th>分类（Classification）</th><th>聚类（Clustering）</th></tr>
+        <tr><td>是否有标签</td><td>有，训练数据带正确答案</td><td>没有，数据"裸奔"</td></tr>
+        <tr><td>学习方式</td><td>有监督学习（Supervised）</td><td>无监督学习（Unsupervised）</td></tr>
+        <tr><td>过程比喻</td><td>有老师教，学完考试</td><td>自学成才，自己摸索规律</td></tr>
+        <tr><td>输入</td><td>带标签的数据</td><td>原始数据</td></tr>
+        <tr><td>输出</td><td>预测新数据的类别</td><td>发现数据中自然的分组</td></tr>
+        <tr><td>典型算法</td><td>决策树、SVM、神经网络</td><td>K-Means、层次聚类、DBSCAN</td></tr>
+        <tr><td>应用场景</td><td>垃圾邮件识别、疾病诊断</td><td>客户分群、基因分类、文档聚类</td></tr>
+      </table>
+
+      <h4>三、聚类算法分类体系</h4>
+      <table class="compare-table">
+        <tr><th>分类维度</th><th>类型</th><th>代表算法/说明</th></tr>
+        <tr><td rowspan="4"><strong>按分类方法</strong></td><td>划分聚类</td><td>K-Means、K-medoids</td></tr>
+        <tr><td>层次聚类</td><td>CURE、ROCK、BIRCH</td></tr>
+        <tr><td>基于密度的聚类</td><td>DBSCAN</td></tr>
+        <tr><td>基于网络的聚类</td><td>WaveCluster</td></tr>
+        <tr><td rowspan="3"><strong>按划分方法</strong></td><td>互斥聚类</td><td>每个对象只属于一个簇</td></tr>
+        <tr><td>非互斥聚类</td><td>对象可属于多个簇</td></tr>
+        <tr><td>模糊聚类</td><td>对象以一定概率属于各簇</td></tr>
+        <tr><td rowspan="2"><strong>按划分范围</strong></td><td>完全聚类</td><td>所有对象都被分配</td></tr>
+        <tr><td>部分聚类</td><td>部分对象可能不被分配</td></tr>
+      </table>
+
+      <h4>四、距离度量与相似性度量</h4>
+      <table class="compare-table">
+        <tr><th>度量方法</th><th>公式/定义</th><th>适用场景</th></tr>
+        <tr><td><strong>欧几里得距离</strong></td><td>d = &radic;(&sum;(x<sub>i</sub> - y<sub>i</sub>)&sup2;)</td><td>连续数值数据，二维/三维空间中的实际距离</td></tr>
+        <tr><td><strong>曼哈顿距离</strong></td><td>d = &sum;|x<sub>i</sub> - y<sub>i</sub>|</td><td>网格状路径、城市街区距离</td></tr>
+        <tr><td><strong>余弦相似度</strong></td><td>cos(x,y) = (x&middot;y) / (||x|| &times; ||y||)</td><td>文本相似度、高维稀疏数据（如TF-IDF向量）</td></tr>
+        <tr><td><strong>相关系数</strong></td><td>&rho;<sub>xy</sub> = &sum;(x<sub>i</sub>-x&#772;)(y<sub>i</sub>-y&#772;) / &radic;(&sum;(x<sub>i</sub>-x&#772;)&sup2; &sum;(y<sub>i</sub>-y&#772;)&sup2;)</td><td>衡量变量间相关关系密切程度</td></tr>
+      </table>
+
+      <h4>三种距离的核心理解</h4>
+      <div class="info-box">
+        <ul>
+          <li><strong>欧几里得距离（几何视角）：</strong>空间中两点之间实打实的最短"直线距离"。在数据挖掘中，是连续数值型数据（如身高、收入、温度）最天然、最常用的距离定义。</li>
+          <li><strong>曼哈顿距离（规则拓扑视角）：</strong>不能走直线，只能沿着"横平竖直"的轴向线段相加得到的总长度。如出租车在网格状城市街道中行驶，无法穿墙，必须绕格子走。</li>
+          <li><strong>余弦相似度（方向与偏好视角）：</strong>完全忽略向量的绝对长度，只盯着两个向量在空间中的"夹角大小"。衡量"步调与结构是否一致"。哪怕文章A有1万字，文章B只有100字，只要高频词出现比例方向一致，余弦值就接近1。是文本查重、文章分类、推荐系统的核心指标。</li>
+        </ul>
+      </div>
+
+      <h4>五、误差平方和（SSE）</h4>
       <ul>
-        <li><strong>欧氏距离</strong>：空间中两点直线距离</li>
-        <li><strong>曼哈顿距离</strong>：各维绝对差之和（网格路径）</li>
-        <li><strong>余弦相似度</strong>：关注方向，常用于文本和高维稀疏数据</li>
+        <li><strong>定义：</strong>衡量聚类质量的指标，SSE = &sum;&sum;(x - c<sub>i</sub>)&sup2;（对每个簇中每个点到质心的距离平方求和）</li>
+        <li><strong>性质：</strong>SSE越小，质心是簇中点的更好代表</li>
+        <li><strong>最优条件：</strong>使用欧氏距离时，唯一选择均值作为质心，才能使SSE达到理论最小值</li>
       </ul>
-      <h3>三、SSE（误差平方和）</h3>
+
+      <h4>六、K-Means算法（核心算法）</h4>
+      <div class="highlight">
+        <strong>基本思想：</strong>给定n个数据元素的数据集，构造k个分组（k&lt;n），每个分组为一个簇。
+      </div>
       <ul>
-        <li>衡量簇的紧凑度</li>
-        <li>使用均值作为质心可使SSE达到理论最小</li>
+        <li><strong>满足条件：</strong>
+          <ol>
+            <li>每个分组至少包含一个数据元素</li>
+            <li>每个数据元素属于且仅属于一个分组</li>
+          </ol>
+        </li>
       </ul>
-      <h3>四、K-means</h3>
+      <h4>算法步骤</h4>
+      <ol>
+        <li>选择k个点作为初始质心</li>
+        <li>将每个点指派到最近的质心，形成k个簇</li>
+        <li>重新计算每个簇的质心（均值）</li>
+        <li>重复步骤2-3，直到终止条件满足</li>
+      </ol>
+      <h4>迭代终止条件</h4>
       <ul>
-        <li><strong>思想</strong>：选k个初始质心，按最近质心分配样本，重新计算质心，迭代直到收敛</li>
-        <li><strong>步骤</strong>：①选k个初始质心 ②按最近质心分配 ③重新计算质心 ④迭代直到质心不变或SSE不再优化</li>
-        <li><strong>初始质心方法</strong>：随机选择、多次运行选最小SSE、层次聚类提取、离散质心法</li>
-        <li><strong>局限</strong>：需预设K，对初始质心和异常值敏感，不适合非球形簇</li>
+        <li>质心不再变化</li>
+        <li>SSE不再变优</li>
+        <li>质心变化距离 &lt; &epsilon;</li>
+        <li>达到最大迭代次数</li>
       </ul>
-      <h3>五、K-medoids</h3>
-      <ul>
-        <li>中心点必须从<strong>实际样本点</strong>中选取</li>
-        <li>对噪声和极端值<strong>更鲁棒</strong></li>
-        <li>但计算速度<strong>更慢</strong></li>
-      </ul>
-      <h3>六、层次聚类</h3>
-      <ul>
-        <li>用<strong>树状图</strong>表示聚类过程</li>
-        <li>可自底向上（凝聚）或自顶向下（分裂）</li>
-      </ul>
-      <h3>七、DBSCAN</h3>
-      <ul>
-        <li>两个重要参数：<strong>eps</strong>（邻域半径）和<strong>MinPts</strong>（最小点数）</li>
-        <li>可发现<strong>任意形状</strong>簇</li>
-        <li>能识别<strong>噪声点</strong></li>
-        <li>不需要预先指定簇数</li>
-      </ul>
+
+      <h4>七、K-Means三大经典挑战</h4>
+      <table class="compare-table">
+        <tr><th>挑战</th><th>问题描述</th><th>解决方案</th></tr>
+        <tr><td><strong>挑战一：K值难以预设</strong></td><td>必须在运行前人工指定K值，在无标签数据中无法预知最优分类数</td><td>结合业务实际需求决定，避免纯数学计算与业务脱节</td></tr>
+        <tr><td><strong>挑战二：初始质心随机性</strong></td><td>随机选择初始中心，易陷入局部最优，同一批数据运行两次结果可能完全不同</td><td>K-Means++思想：后续初始质心倾向于选择离已有质心距离较远的点；多次运行取最优（选总体SSE最小的）</td></tr>
+        <tr><td><strong>挑战三：对异常值极度敏感</strong></td><td>使用算术平均值更新中心，均值对极端值非常脆弱，质心会被"拉跑""带偏"</td><td>严格的前置数据清洗：利用3&sigma;原则提前识别并过滤异常值</td></tr>
+      </table>
+
+      <h4>八、初始质心选择方法</h4>
+      <table class="compare-table">
+        <tr><th>方法</th><th>说明</th><th>特点</th></tr>
+        <tr><td>随机选择</td><td>随机指定k个点</td><td>简单，但簇质量常常不高</td></tr>
+        <tr><td>最小SSE法</td><td>多次运行，选最小SSE的簇集</td><td>计算量大</td></tr>
+        <tr><td>层次聚类法</td><td>先用层次聚类提取k个簇的质心</td><td>有效但开销大，仅适合小样本</td></tr>
+        <tr><td>离散质心法</td><td>选离已选质心最远的点</td><td>质心散开，但可能选中离群点，开销大</td></tr>
+      </table>
+
+      <h4>九、K-Means的特点与局限</h4>
+      <table class="compare-table">
+        <tr><th>特点/局限</th><th>说明</th></tr>
+        <tr><td>对k值敏感</td><td>事先判断簇的划分个数非常困难，往往带有很大随意性</td></tr>
+        <tr><td>对离群点、噪声敏感</td><td>离群点会导致SSE高，质心代表性变差，簇质心偏移</td></tr>
+        <tr><td>不能处理非球形簇</td><td>假设簇是凸形的，对复杂形状簇效果差</td></tr>
+        <tr><td>不能处理不同尺寸的簇</td><td>大簇可能吞并小簇</td></tr>
+        <tr><td>不能处理不同密度的簇</td><td>密度差异大时聚类效果差</td></tr>
+        <tr><td>计算开销大</td><td>需迭代进行邻近度计算，数据量大时时间开销大</td></tr>
+        <tr><td>算法简单，易于理解</td><td>二分K-Means等变种不受初始化问题影响</td></tr>
+      </table>
+
+      <h4>十、K-Medoids算法（K-Means的改进）</h4>
+      <table class="compare-table">
+        <tr><th>维度</th><th>K-Means</th><th>K-Medoids</th></tr>
+        <tr><td>质心计算</td><td>均值（mean）</td><td>从样本点中选取（中心点/medoid）</td></tr>
+        <tr><td>对噪声敏感性</td><td>敏感</td><td>不敏感（改善了对噪声的问题）</td></tr>
+        <tr><td>紧凑度度量</td><td>SSE（误差平方和）</td><td>绝对误差和</td></tr>
+        <tr><td>时间复杂度</td><td>较低</td><td>较高（需遍历样本点找最优中心点）</td></tr>
+        <tr><td>核心思想</td><td>每次迭代重新计算均值质心</td><td>每次迭代从样本中选使绝对误差和最小的点作为新质心</td></tr>
+      </table>
+      <div class="info-box">
+        <strong>K-Medoids优势：</strong>改善了K-Means对噪声点敏感的问题，因为中心点必须是实际样本点，不受极端值影响。
+      </div>
     `
   },
-  // Chapter 8
   {
-    title: '第八章 回归分析与模型评价',
-    subtitle: '分类评价、回归评价、过拟合与欠拟合',
+    title: '第八章 模型评价与综合应用',
+    subtitle: '模型评价方法、过拟合处理、综合简答与论述',
     content: `
-      <h3>一、分类 vs 回归</h3>
-      <ul>
-        <li><strong>分类</strong>：预测离散类别标签（如：是否垃圾邮件）</li>
-        <li><strong>回归</strong>：预测连续数值（如：房价、温度）</li>
-        <li>两者都需要已知标签数据进行训练，都属于有监督学习</li>
-      </ul>
-      <h3>二、混淆矩阵</h3>
-      <table border="1" style="border-collapse:collapse;width:100%">
-        <tr><th></th><th>预测为正</th><th>预测为负</th></tr>
-        <tr><td><strong>实际为正</strong></td><td>TP（真正例）</td><td>FN（假负例）</td></tr>
-        <tr><td><strong>实际为负</strong></td><td>FP（假正例）</td><td>TN（真负例）</td></tr>
+      <h4>一、分类模型评价指标</h4>
+      <div class="highlight">
+        <strong>核心考点：</strong>混淆矩阵是所有分类评价指标的基础。
+      </div>
+
+      <h4>1. 混淆矩阵（Confusion Matrix）</h4>
+      <table class="compare-table">
+        <tr><th></th><th>预测为正类</th><th>预测为负类</th></tr>
+        <tr><td><strong>实际为正类</strong></td><td>TP（真正例）</td><td>FN（假反例）</td></tr>
+        <tr><td><strong>实际为负类</strong></td><td>FP（假正例）</td><td>TN（真反例）</td></tr>
       </table>
-      <h3>三、分类评价指标</h3>
-      <ul>
-        <li><strong>准确率</strong> = (TP+TN) / (TP+TN+FP+FN)</li>
-        <li><strong>精确率</strong> = TP / (TP+FP)（预测为正的样本中有多少是真的）</li>
-        <li><strong>召回率</strong> = TP / (TP+FN)（实际为正的样本中找回了多少）</li>
-        <li><strong>F1值</strong> = 2×精确率×召回率 / (精确率+召回率)（调和平均）</li>
-        <li>ROC/AUC也属于分类评价指标</li>
-      </ul>
-      <h3>四、场景判断</h3>
-      <ul>
-        <li><strong>疾病筛查</strong>→更重视召回率（不能漏掉患者）</li>
-        <li><strong>垃圾短信拦截</strong>→需兼顾精确率和召回率</li>
-      </ul>
-      <h3>五、回归评价指标</h3>
-      <ul>
-        <li><strong>MSE</strong>（均方误差）：预测值与真实值差的平方平均</li>
-        <li><strong>RMSE</strong>（均方根误差）：MSE的平方根</li>
-        <li><strong>MAE</strong>（平均绝对误差）：预测值与真实值差的绝对值平均</li>
-        <li><strong>R²</strong>（决定系数）：模型解释的变异占总变异的比例</li>
-      </ul>
-      <h3>六、过拟合 vs 欠拟合</h3>
-      <table border="1" style="border-collapse:collapse;width:100%">
-        <tr><th></th><th>训练集</th><th>测试集</th></tr>
-        <tr><td><strong>过拟合</strong></td><td>表现好</td><td>表现差</td></tr>
-        <tr><td><strong>欠拟合</strong></td><td>表现差</td><td>表现差</td></tr>
+
+      <h4>2. 核心评价指标</h4>
+      <table class="compare-table">
+        <tr><th>指标</th><th>公式</th><th>含义</th></tr>
+        <tr><td><strong>准确率（Accuracy）</strong></td><td>(TP + TN) / (TP + TN + FP + FN)</td><td>所有预测中正确的比例</td></tr>
+        <tr><td><strong>精确率（Precision）</strong></td><td>TP / (TP + FP)</td><td>预测为正的样本中，实际为正的比例（查准率）</td></tr>
+        <tr><td><strong>召回率（Recall）</strong></td><td>TP / (TP + FN)</td><td>实际为正的样本中，被正确预测的比例（查全率）</td></tr>
+        <tr><td><strong>F1值</strong></td><td>2 &times; Precision &times; Recall / (Precision + Recall)</td><td>精确率和召回率的调和平均数</td></tr>
       </table>
-      <h3>七、处理过拟合的方法</h3>
+      <div class="info-box">
+        <strong>理解要点：</strong>
+        <ul>
+          <li>精确率高、召回率低 → 预测很谨慎，预测为正的确实大多是对的，但漏掉了很多真正例</li>
+          <li>精确率低、召回率高 → 预测很激进，大部分正例都找到了，但也混入了很多误判</li>
+          <li>F1值越高，说明模型在精确率和召回率之间取得了更好的平衡</li>
+        </ul>
+      </div>
+
+      <h4>3. ROC曲线与AUC值</h4>
       <ul>
-        <li>增加训练数据</li>
-        <li>正则化（L1/L2）</li>
-        <li>剪枝</li>
-        <li>交叉验证</li>
-        <li>早停</li>
-        <li>降低模型复杂度</li>
+        <li><strong>ROC曲线（Receiver Operating Characteristic）：</strong>以假正例率（FPR = FP/(FP+TN)）为横轴，真正例率（TPR = TP/(TP+FN)，即召回率）为纵轴绘制的曲线</li>
+        <li><strong>AUC（Area Under Curve）：</strong>ROC曲线下方的面积
+          <ul>
+            <li>AUC = 1：完美分类器</li>
+            <li>AUC = 0.5：随机猜测（对角线）</li>
+            <li>AUC越接近1，模型区分能力越强</li>
+          </ul>
+        </li>
       </ul>
+
+      <h4>二、回归模型评价指标</h4>
+      <table class="compare-table">
+        <tr><th>指标</th><th>公式</th><th>含义与特点</th></tr>
+        <tr><td><strong>MSE（均方误差）</strong></td><td>(1/n) &times; &sum;(y<sub>i</sub> - y&#770;<sub>i</sub>)&sup2;</td><td>预测值与真实值差值的平方平均；对大误差惩罚重</td></tr>
+        <tr><td><strong>RMSE（均方根误差）</strong></td><td>&radic;MSE</td><td>与MSE同义但量纲与原数据一致，更易解释</td></tr>
+        <tr><td><strong>MAE（平均绝对误差）</strong></td><td>(1/n) &times; &sum;|y<sub>i</sub> - y&#770;<sub>i</sub>|</td><td>预测值与真实值差值的绝对值平均；对异常值鲁棒</td></tr>
+        <tr><td><strong>R&sup2;（决定系数）</strong></td><td>1 - SS<sub>res</sub>/SS<sub>tot</sub></td><td>模型解释的方差占总方差的比例；越接近1越好</td></tr>
+      </table>
+
+      <h4>三、过拟合与欠拟合</h4>
+      <div class="highlight">
+        <strong>核心概念：</strong>过拟合和欠拟合是模型评价中最重要的辩证关系。
+      </div>
+      <table class="compare-table">
+        <tr><th>维度</th><th>过拟合（Overfitting）</th><th>欠拟合（Underfitting）</th></tr>
+        <tr><td><strong>定义</strong></td><td>模型在训练数据上表现极好，但在新数据上表现差</td><td>模型在训练数据上就表现不好，无法捕捉数据中的规律</td></tr>
+        <tr><td><strong>表现</strong></td><td>训练误差很低（甚至为0），但检验误差很高</td><td>训练误差和检验误差都很高</td></tr>
+        <tr><td><strong>原因</strong></td><td>模型过于复杂；噪声导致决策边界改变；缺乏代表性样本时根据少量记录做决策</td><td>模型过于简单；特征不足；训练时间不够</td></tr>
+        <tr><td><strong>处理方法</strong></td><td>剪枝（决策树）、正则化、交叉验证、增加训练数据、降低模型复杂度</td><td>增加模型复杂度、增加特征、减少正则化</td></tr>
+      </table>
+
+      <h4>四、决策树剪枝（防止过拟合）</h4>
+      <table class="compare-table">
+        <tr><th>类型</th><th>原理</th><th>特点</th></tr>
+        <tr><td><strong>先剪枝（预剪枝）</strong></td><td>在树生长过程中提前停止（如限制最大深度、最小样本数、最小信息增益）</td><td>速度快，但可能剪枝过早（underfitting风险）</td></tr>
+        <tr><td><strong>后剪枝</strong></td><td>先让树完整生长，再修剪不必要的分支（如用验证集评估每个子树是否应该被替换为叶节点）</td><td>效果好但计算量大</td></tr>
+      </table>
+      <div class="error-box">
+        <strong>过拟合原因深度分析：</strong>
+        <ul>
+          <li><strong>噪声：</strong>噪声导致决策边界改变，模型把噪声也当作规律来学习</li>
+          <li><strong>缺乏代表性样本：</strong>根据少量训练记录做出决策，无法反映整体分布</li>
+        </ul>
+      </div>
+
+      <h4>五、经典简答题一：数据挖掘中哪个环节最为重要？</h4>
+      <div class="info-box">
+        <strong>参考答案：数据准备（Data Preparation）/ 数据预处理最为重要。</strong>
+      </div>
+      <ol>
+        <li><strong>决定性地位：</strong>数据的质量、表现形式和代表性对数据挖掘算法选择、参数选取和最终结果起着决定性的作用——"垃圾进，垃圾出"（Garbage In, Garbage Out）。</li>
+        <li><strong>耗时最长：</strong>狭义数据挖掘三阶段（数据准备、数据挖掘、解释评估）中，数据准备往往占据大部分时间，包含数据清洗、特征工程、变量选择等。</li>
+        <li><strong>三大主流过程模型都离不开数据准备：</strong>
+          <ul>
+            <li>CRISP-DM：商业理解 → 数据理解 → <strong>数据准备</strong> → 建模 → 评估 → 发布</li>
+            <li>SEMMA：<strong>抽样(Sample)</strong> → 探索 → <strong>预处理(Modify)</strong> → 建模 → 评估</li>
+            <li>5A：评估 → <strong>存取数据(Access)</strong> → 分析 → 演示 → 展现</li>
+            <li>无论哪个模型，数据准备都是建模前不可或缺的必经环节。</li>
+          </ul>
+        </li>
+        <li><strong>KDD流程的第一道实质性工序：</strong>KDD = 数据清洗 → 预处理 → 变换 → 挖掘 → 评价。数据挖掘只是KDD中的一个核心步骤，而数据清洗和预处理是整个知识发现流程的起点和基础。</li>
+        <li><strong>所有挖掘任务都依赖数据准备：</strong>
+          <ul>
+            <li>分类/回归 → 需要干净、一致、无噪声的训练集</li>
+            <li>聚类 → 需要剔除异常值（否则质心会被极端值"拉偏"）</li>
+            <li>关联规则 → 交易数据中的重复、缺失、噪声都会产生虚假规则</li>
+          </ul>
+        </li>
+        <li><strong>数据准备贯穿数据质量管理全流程：</strong>从数据收集 → 抽样 → 集成（解决异构/分布问题）→ 清理（3&sigma;异常检测）→ 规约 → 变换（归一化/标准化），每一环都在将原始"脏数据"转化为算法能理解的"干净数据"。</li>
+      </ol>
+
+      <h4>六、经典简答题二：数据预处理的地位与作用</h4>
+      <div class="info-box">
+        <strong>题目：</strong>数据预处理是数据准备的主要工作，请思考和阐述数据预处理在数据挖掘中所处的地位和所发挥的作用。
+      </div>
+
+      <h4>（一）所处的地位：基础性与决定性地位</h4>
+      <ol>
+        <li><strong>流程基石地位：</strong>在KDD全流程中，数据预处理是最前端的环节，后续的数据挖掘、模式评估、知识表示都建立在预处理后的数据之上。没有高质量的数据预处理，数据挖掘无从谈起。</li>
+        <li><strong>耗时核心地位：</strong>在狭义数据挖掘三阶段中，数据准备（含数据预处理）往往占据整个项目的大部分时间，说明其在实践中是最消耗资源和精力的环节。</li>
+        <li><strong>决定性地位：</strong>数据的质量、表现形式和代表性对数据挖掘算法选择、参数选取和最终结果起着决定性的作用。如果数据预处理不到位，无论后续算法多先进，都会出现"垃圾进，垃圾出"的结果。</li>
+      </ol>
+
+      <h4>（二）所发挥的作用</h4>
+      <ol>
+        <li><strong>保证数据质量：</strong>通过数据清理（如异常值检测与剔除——3&sigma;原则）、数据集成（解决异构、分布式问题）、填补缺失值等手段，确保数据满足完整、一致、易于处理、具有代表性四大要求。</li>
+        <li><strong>适配算法需求：</strong>通过数据变换（归一化映射到[0,1]、标准化使均值为0标准差为1、非线性变换改变数据分布形状）将数据转换为适合特定算法的形式，满足不同算法的输入要求（如神经网络需[0,1]区间，聚类、SVM等需零均值标准化）。</li>
+        <li><strong>提升算法效率与效果：</strong>
+          <ul>
+            <li>离散化可消除奇异值影响，减少属性值个数，使结果更简洁易理解</li>
+            <li>属性变换可提升数据处理算法的效率和效果</li>
+            <li>数据抽样可降低计算成本，使算法能够处理大规模数据</li>
+          </ul>
+        </li>
+        <li><strong>发现数据深层特征：</strong>通过数据变换可以从另一个角度、另一个域发现数据更为显著的特征，如将语音数据变换为频率谱。</li>
+        <li><strong>为后续步骤提供关键依据：</strong>数据探索（数据预处理的前期工作）可初步了解数据的内容、性质、质量，为后续选择合适的数据预处理工具和数据分析技术提供关键依据。</li>
+      </ol>
     `
   }
 ];
 
 // ─── 2. chapterQuizzes ───────────────────────────────────────
 const chapterQuizzes = [
-  // Chapter 1 Quiz
   {
-    title: '第一章 绪论：数据分析与数据挖掘',
+    title: '第1章测试',
     questions: [
-      { type: 'choice', question: '数据挖掘相比传统数据分析，更强调什么？', options: ['人工汇总已知指标', '从大量复杂数据中自动发现潜在规律', '只制作固定报表', '只做数据库查询'], answer: 'B', focus: '数据挖掘定义', explanation: '数据挖掘的核心是从大量、复杂数据中自动发现潜在规律和知识，而非简单的统计汇总。' },
-      { type: 'choice', question: '下列哪项属于描述类数据挖掘任务？', options: ['分类', '回归', '关联规则发现', '预测房价'], answer: 'C', focus: '任务分类', explanation: '描述类任务包括聚类和关联规则发现，不需要目标变量；分类和回归属于预测类任务。' },
-      { type: 'judge', question: '数据分析主要回答"发生了什么、为什么发生"，数据挖掘更强调发现潜在规律和预测', answer: '对', focus: '数据分析与数据挖掘的区别', explanation: '数据分析侧重于描述性和回顾性分析，数据挖掘侧重于预测性和发现性分析。' },
-      { type: 'fill', question: '数据挖掘常被定义为从大量、不完全、有噪声、模糊、随机的数据中发现潜在有用的____', answer: '知识', focus: '数据挖掘定义', explanation: '数据挖掘的经典定义强调从数据中发现潜在有用的知识。' },
-      { type: 'essay', question: '结合一个业务例子说明数据分析与数据挖掘的区别和联系', answer: '要点：数据分析用统计方法处理数据并形成结论；数据挖掘自动发现隐藏规律；数据分析是基础、数据挖掘是进阶', focus: '区别与联系', explanation: '数据分析是对数据的统计处理和可视化，回答发生了什么；数据挖掘是自动发现隐藏模式，预测未来趋势。二者相辅相成。', alternatives: [] },
-      { type: 'choice', question: '"预测哪些客户下月可能流失"更接近哪类任务？', options: ['常规报表', '分类/预测建模', '数据清洗', '数据集成'], answer: 'B', focus: '任务分类', explanation: '预测客户是否流失是典型的分类/预测建模任务，需要预测离散类别标签。' },
-      { type: 'choice', question: '"把客户按购买行为自动分成几类"更接近哪类任务？', options: ['聚类', '回归', '固定报表', '数据联邦'], answer: 'A', focus: '任务分类', explanation: '自动将客户分组不需要预先给定的标签，属于聚类（描述类任务）。' },
-      { type: 'choice', question: '下列哪项最能体现数据挖掘的"潜在规律发现"？', options: ['查询本月销售额', '统计员工人数', '发现买面包者常同时买牛奶', '打印库存清单'], answer: 'C', focus: '数据挖掘特征', explanation: '发现共现规律（关联规则）是数据挖掘自动发现潜在模式的典型体现。' },
-      { type: 'judge', question: '传统查询和OLAP更偏向对已知问题进行演绎式分析', answer: '对', focus: '数据分析能力', explanation: '传统查询和OLAP主要用于对已知问题进行多角度分析，属于描述阶段。' },
-      { type: 'judge', question: '回归任务预测的是离散类别标签', answer: '错', focus: '任务分类', explanation: '回归任务预测的是连续数值，分类任务才预测离散类别标签。' },
-      { type: 'fill', question: '预测类任务主要包括分类和____', answer: '回归', focus: '任务分类', explanation: '预测类任务包括分类（预测离散标签）和回归（预测连续数值）。' },
-      { type: 'fill', question: '描述类任务主要包括聚类和____发现', answer: '关联规则', focus: '任务分类', explanation: '描述类任务包括聚类和关联规则发现，不需要目标变量。' },
-      { type: 'essay', question: '分别举一个分类、回归、聚类、关联规则的例子', answer: '分类：判断邮件是否垃圾；回归：预测房价；聚类：客户自动分群；关联规则：发现牛奶与面包共现', focus: '任务类型举例', explanation: '分类预测离散标签，回归预测连续值，聚类自动分组，关联规则发现共现关系。', alternatives: [] },
-      { type: 'choice', question: '"根据历史销售额预测下月销售额"属于哪类任务？', options: ['回归', '聚类', '关联规则', '数据清洗'], answer: 'A', focus: '任务分类', explanation: '预测连续数值（销售额）属于回归任务。' },
-      { type: 'choice', question: '"发现网站点击流中的共现访问路径"更接近哪类挖掘？', options: ['关联分析', '数据归一化', '异常值清洗', '固定报表'], answer: 'A', focus: '任务分类', explanation: '发现共现访问路径是关联分析的典型应用。' },
-      { type: 'judge', question: '数据挖掘一定只处理完全准确、无噪声的数据', answer: '错', focus: '数据挖掘特点', explanation: '数据挖掘的定义本身就包含处理不完全、有噪声、模糊的数据。' },
-      { type: 'judge', question: '分类和回归都属于预测类任务', answer: '对', focus: '任务分类', explanation: '分类（预测离散标签）和回归（预测连续数值）都属于预测类任务。' },
-      { type: 'fill', question: '数据分析是基础，数据挖掘是____', answer: '进阶', focus: '二者关系', explanation: '数据分析提供数据基础和理解，数据挖掘在此基础上进行更深层次的模式发现。' },
-      { type: 'fill', question: '聚类不依赖预先给定的类别____', answer: '标签', focus: '聚类特征', explanation: '聚类是无监督学习，不需要预先给定的类别标签。' },
-      { type: 'essay', question: '为什么说数据挖掘更适合处理"传统逻辑不清晰"的复杂数据问题？', answer: '因为当数据量很大、关系复杂、人眼和传统逻辑难以直接总结规律时，数据挖掘可通过算法模型自动发现隐藏模式', focus: '数据挖掘优势', explanation: '数据挖掘的优势在于能自动从大量复杂数据中发现人难以直接观察到的模式和规律。', alternatives: [] }
+      { type: 'choice', question: 'KDD（知识发现）与数据挖掘的关系是？', options: ['KDD是数据挖掘的一个步骤', '数据挖掘是KDD过程中的核心步骤', 'KDD与数据挖掘是完全相同的概念', '数据挖掘包含KDD的全部流程'], answer: 'B', focus: 'KDD与数据挖掘的关系', explanation: 'KDD是完整的知识发现流程，包括数据清洗、预处理、变换、挖掘、评价等步骤；数据挖掘只是KDD过程中的核心步骤，指使用算法从数据中发现模式的过程。' },
+      { type: 'choice', question: '数据挖掘与OLAP的核心区别在于？', options: ['数据挖掘使用统计方法，OLAP不使用', 'OLAP处理大数据，数据挖掘处理小数据', 'OLAP是演绎推理，数据挖掘是归纳推理', '两者没有本质区别'], answer: 'C', focus: '数据挖掘与OLAP的区别', explanation: 'OLAP是演绎推理——用户提出假设，通过工具验证；数据挖掘是归纳推理——无需预设假设，计算机自动寻找模型和规律。' },
+      { type: 'choice', question: '以下哪项属于数据挖掘的预测任务？', options: ['聚类分析', '关联规则发现', '分类与回归', '异常检测'], answer: 'C', focus: '数据挖掘任务分类', explanation: '预测任务包括分类（Classification）和回归（Regression），目标是根据输入变量预测目标变量的值。聚类、关联规则和异常检测属于描述任务。' },
+      { type: 'choice', question: '数据分析能力的8个等级中，"多维分析/OLAP"属于第几级？', options: ['第1级', '第2级', '第3级', '第4级'], answer: 'C', focus: '数据分析能力8等级', explanation: '8个等级中，第3级是多维分析/OLAP，用于通过钻取层层剥笋来定位问题到底出在哪里。第1级是常规报表，第2级是即席查询，第4级是警报。' },
+      { type: 'choice', question: 'CRISP-DM模型的第一步是？', options: ['数据理解', '商业理解', '数据准备', '建模'], answer: 'B', focus: 'CRISP-DM流程', explanation: 'CRISP-DM（跨行业数据挖掘标准流程）的六大步骤依次为：商业理解→数据理解→数据准备→建模→模型评估→结果发布。第一步是商业理解。' },
+      { type: 'choice', question: '数据分析与数据挖掘的关系描述正确的是？', options: ['数据挖掘是数据分析的基础', '数据分析是基础，数据挖掘是进阶', '两者互不相关', '数据挖掘可以完全替代数据分析'], answer: 'B', focus: '数据分析与数据挖掘关系', explanation: '数据分析是基础（了解业务现状），数据挖掘是进阶（当数据量极大、人眼与传统逻辑想不清时，靠算法模型寻找深层规律）。' },
+      { type: 'multichoice', question: '以下哪些属于数据挖掘的描述任务（Descriptive Tasks）？（多选）', options: ['聚类（Clustering）', '分类（Classification）', '关联规则发现（Association Rule Discovery）', '回归（Regression）', '异常检测'], answer: ['A', 'C', 'E'], focus: '描述任务与预测任务', explanation: '描述任务包括聚类、关联规则发现和异常检测，目标是发现数据中潜在的模式和规律。分类和回归属于预测任务。' },
+      { type: 'multichoice', question: '以下关于数据挖掘与统计学关系的说法，正确的有哪些？（多选）', options: ['数据挖掘是为了替代统计学', '数据挖掘是统计学的延伸和扩展', '数据挖掘能更自动地分析海量数据', '数据挖掘完全不需要统计学知识'], answer: ['B', 'C'], focus: '数据挖掘与统计学关系', explanation: '数据挖掘不是为了替代统计学，而是其延伸和扩展，能更自动地分析不适合传统统计分析的海量数据。' },
+      { type: 'multichoice', question: '数据分析能力的8个等级中，属于"挖掘阶段（高级分析）"的有哪些？（多选）', options: ['统计分析', '多维分析/OLAP', '预报', '预测型建模', '优化'], answer: ['A', 'C', 'D', 'E'], focus: '8等级的两阶段划分', explanation: '挖掘阶段（高级分析）包括第5-8级：统计分析、预报、预测型建模、优化。多维分析/OLAP属于描述阶段（传统分析）的第3级。' },
+      { type: 'multichoice', question: '以下哪些是三大主流数据挖掘过程模型的名称？（多选）', options: ['CRISP-DM模型', 'KDD模型', 'SEMMA模型', '5A模型'], answer: ['A', 'C', 'D'], focus: '三大过程模型', explanation: '三大主流数据挖掘过程模型是CRISP-DM（跨行业组织推动）、SEMMA（SAS Institute提出）和5A（SPSS公司提出）。KDD是知识发现的总称，不是具体的过程模型。' },
+      { type: 'judge', question: '数据挖掘是KDD过程中的一个核心步骤，而非等同于KDD。', answer: '对', focus: 'KDD与数据挖掘关系', explanation: 'KDD是完整的知识发现流程，数据挖掘只是其中的核心步骤，负责使用算法从数据中发现模式。' },
+      { type: 'judge', question: 'OLAP和数据挖掘都是采用归纳推理的方式从数据中发现规律。', answer: '错', focus: 'OLAP与数据挖掘的推理方式', explanation: 'OLAP是演绎推理（用户提出假设，通过工具验证），数据挖掘才是归纳推理（计算机自动寻找模型）。' },
+      { type: 'judge', question: '预测任务的核心目标是根据输入变量的值去预测目标变量的值。', answer: '对', focus: '预测任务定义', explanation: '预测任务（Predictive Tasks）的核心目标是根据某些属性（输入变量）的值，去预测另一个特定属性（目标变量/因变量）的值。' },
+      { type: 'judge', question: '在数据分析能力的8个等级中，"警报"属于挖掘阶段。', answer: '错', focus: '8等级阶段划分', explanation: '"警报"是第4级，属于描述阶段（传统分析），而非挖掘阶段。挖掘阶段从第5级"统计分析"开始。' },
+      { type: 'judge', question: '狭义数据挖掘包含数据准备、数据挖掘和解释评估三个阶段。', answer: '对', focus: '狭义数据挖掘三阶段', explanation: '狭义数据挖掘确实包含数据准备、数据挖掘、解释评估三个阶段，其中数据准备往往占据大部分时间。' },
+      { type: 'fill', question: 'KDD的全称是____（Knowledge Discovery in Databases）。', answer: '知识发现', alternatives: ['数据库中的知识发现', 'Knowledge Discovery in Databases', 'KDD'], focus: 'KDD概念', explanation: 'KDD即Knowledge Discovery in Databases，中文译为"知识发现"或"数据库中的知识发现"，是指从数据中发现有用知识的完整过程。' },
+      { type: 'fill', question: '数据挖掘的两大核心任务分别是____任务和描述任务。', answer: '预测', alternatives: ['Predictive', '预测任务'], focus: '数据挖掘任务分类', explanation: '数据挖掘的两大核心任务是预测任务（Predictive）和描述任务（Descriptive）。预测任务包括分类和回归，描述任务包括聚类、关联规则发现等。' },
+      { type: 'fill', question: 'CRISP-DM模型的六大步骤依次是：商业理解→数据理解→____→建模→模型评估→结果发布。', answer: '数据准备', alternatives: ['数据预处理', 'Data Preparation'], focus: 'CRISP-DM步骤', explanation: 'CRISP-DM的六大步骤为：商业理解→数据理解→数据准备→建模→模型评估→结果发布。数据准备是第三步。' },
+      { type: 'essay', question: '请简述数据挖掘与OLAP、统计学的概念区分。', answer: '1. 数据挖掘 vs OLAP：OLAP是演绎推理，用户提出假设，通过工具验证；数据挖掘是归纳推理，无需预设假设，计算机自动寻找模型和规律。\n2. 数据挖掘 vs 统计学：数据挖掘不是为了替代统计学，而是其延伸和扩展。数据挖掘能更自动地分析不适合传统统计分析的海量数据，处理更大规模、更高维度的数据集。', focus: '数据挖掘概念区分' },
+      { type: 'essay', question: '请列举数据分析能力的8个等级，并说明描述阶段和挖掘阶段各包含哪些等级。', answer: '数据分析能力的8个等级：\n描述阶段（传统分析）：\n1. 常规报表（发生什么事）\n2. 即席查询（有多少数量、在哪里）\n3. 多维分析/OLAP（问题到底出在哪里，通过钻取层层剥笋）\n4. 警报（什么时候该有所反应）\n\n挖掘阶段（高级分析）：\n5. 统计分析（为什么出现这种情况，寻找历史规律）\n6. 预报（持续这种趋势，未来会怎么样）\n7. 预测型建模（接下来会发生什么，哪些客户会流失/响应）\n8. 优化（如何把事情做得更好，决策最优解）', focus: '8个等级与两阶段' }
     ]
   },
-  // Chapter 2 Quiz
   {
-    title: '第二章 数据挖掘的过程',
+    title: '第2章测试',
     questions: [
-      { type: 'choice', question: '下列哪一项属于数据分析能力的挖掘阶段？', options: ['常规报表', '即席查询', '警报', '预测型建模'], answer: 'D', focus: '能力等级', explanation: '预测型建模属于挖掘阶段（5-8级），前三个属于描述阶段（1-4级）。' },
-      { type: 'choice', question: 'OLAP中从城市汇总到省份，更接近哪种操作？', options: ['钻取', '上卷', '离散化', '剪枝'], answer: 'B', focus: 'OLAP操作', explanation: '从细粒度到粗粒度是上卷操作；从粗到细是钻取。' },
-      { type: 'fill', question: 'SEMMA中的S表示____', answer: 'Sample', focus: 'SEMMA模型', explanation: 'SEMMA: Sample→Explore→Modify→Model→Assess。' },
-      { type: 'judge', question: 'CRISP-DM强调商业理解、数据理解、数据准备、建模、模型评估和结果发布等环节', answer: '对', focus: 'CRISP-DM模型', explanation: 'CRISP-DM包含六个阶段：商业理解→数据理解→数据准备→建模→评估→发布。' },
-      { type: 'essay', question: '说明数据挖掘三阶段过程模型及每个阶段的作用', answer: '数据准备包括集成、选择、预处理、转换；数据挖掘阶段选用算法形成模型；解释评估阶段对模型和模式进行解释、评价', focus: '三阶段模型', explanation: '三阶段模型是数据挖掘的基本流程框架。', alternatives: [] },
-      { type: 'choice', question: '下列哪项属于描述阶段？', options: ['预测型建模', '优化', '多维分析/OLAP', '预报'], answer: 'C', focus: '能力等级', explanation: 'OLAP/多维分析属于描述阶段（第3级），其他三项属于挖掘阶段。' },
-      { type: 'choice', question: '"下个月各门店需求量会是多少"对应8等级中的哪一类？', options: ['常规报表', '预报', '警报', '即席查询'], answer: 'B', focus: '能力等级', explanation: '预报属于挖掘阶段，回答未来趋势的问题。' },
-      { type: 'choice', question: '"如何在约束条件下选择最佳方案"对应哪一等级？', options: ['优化', '多维分析', '常规报表', '数据清洗'], answer: 'A', focus: '能力等级', explanation: '优化是最高等级（第8级），在约束条件下选择最优方案。' },
-      { type: 'choice', question: 'CRISP-DM流程中首先强调的是？', options: ['商业理解', '直接建模', '模型发布', '画图'], answer: 'A', focus: 'CRISP-DM模型', explanation: 'CRISP-DM首先强调商业理解，明确业务目标和问题。' },
-      { type: 'judge', question: '数据准备阶段在数据挖掘项目中通常非常重要，并占据大量工作', answer: '对', focus: '数据准备', explanation: '数据准备通常占据项目60-80%的工作量。' },
-      { type: 'judge', question: 'SEMMA模型不允许在结果不理想时回到前面步骤', answer: '错', focus: 'SEMMA模型', explanation: 'SEMMA是反馈式流程，评估不理想时可返回前面步骤重新处理。' },
-      { type: 'fill', question: '数据挖掘三阶段过程模型包括数据准备、数据挖掘和____评估', answer: '解释', focus: '三阶段模型', explanation: '三阶段：数据准备→数据挖掘→解释评估。' },
-      { type: 'fill', question: '数据分析能力8等级中，描述阶段的最后一级是____', answer: '警报', focus: '能力等级', explanation: '描述阶段包括：常规报表→即席查询→OLAP→警报。' },
-      { type: 'essay', question: '按顺序写出SEMMA的五个步骤，并说明它为什么体现反馈式流程', answer: 'Sample、Explore、Modify、Model、Assess。模型评估不理想时，可返回抽样、探索或调整环节重新处理', focus: 'SEMMA模型', explanation: 'SEMMA的反馈机制是其重要特点。', alternatives: [] },
-      { type: 'choice', question: '"销售额低于目标时自动提醒负责人"属于哪一等级？', options: ['警报', '优化', '预测型建模', '数据变换'], answer: 'A', focus: '能力等级', explanation: '警报属于描述阶段最高级（第4级），自动提醒。' },
-      { type: 'choice', question: '5A模型更强调什么？', options: ['结果落地和工具功能', '只做抽样', '只做关联规则', '只处理缺失值'], answer: 'A', focus: '5A模型', explanation: '5A模型强调从评估到行动的完整闭环，注重结果落地。' },
-      { type: 'judge', question: '三阶段模型包括数据准备、数据挖掘、解释评估', answer: '对', focus: '三阶段模型', explanation: '这是数据挖掘的基本三阶段过程模型。' },
-      { type: 'fill', question: 'CRISP-DM最后一个环节是结果____', answer: '发布', focus: 'CRISP-DM模型', explanation: 'CRISP-DM: 商业理解→数据理解→数据准备→建模→评估→发布。' },
-      { type: 'fill', question: 'OLAP中从年到季度、月、日查看数据，属于向下____', answer: '钻取', focus: 'OLAP操作', explanation: '从粗粒度到细粒度是钻取（Drill-down）操作。' },
-      { type: 'essay', question: '说明"描述阶段"和"挖掘阶段"分别回答哪类问题', answer: '描述阶段主要回答发生了什么、在哪里、何时需要反应；挖掘阶段进一步回答为什么、未来如何、接下来会发生什么以及如何优化决策', focus: '两阶段对比', explanation: '描述阶段侧重回顾，挖掘阶段侧重预测和优化。', alternatives: [] }
+      { type: 'choice', question: 'SEMMA模型由哪个机构提出？', options: ['IBM', 'SAS Institute', 'SPSS公司', 'Microsoft'], answer: 'B', focus: 'SEMMA提出者', explanation: 'SEMMA模型由SAS Institute提出，其五大步骤为：数据抽样(Sample)→数据探索(Explore)→预处理/数据调整(Modify)→模型研发(Model)→知识解释评价(Assess)。' },
+      { type: 'choice', question: '5A模型的核心特点是？', options: ['业务驱动，循环往复', '技术驱动，步骤严谨', '需求明确，数据成熟', '以数据可视化为中心'], answer: 'B', focus: '5A模型特点', explanation: '5A模型由SPSS公司提出，核心特点是技术驱动，步骤严谨。其五大步骤为：评价需求(Assess)→存取数据(Access)→完备分析(Analyze)→模型演示(Act)→结果展现(Automate)。' },
+      { type: 'choice', question: 'CRISP-DM模型中，"将模糊的业务问题转化为标准的技术流程"体现了什么核心特点？', options: ['技术驱动', '业务驱动，循环往复', '结果驱动', '数据驱动'], answer: 'B', focus: 'CRISP-DM核心特点', explanation: 'CRISP-DM的核心特点是业务驱动、循环往复，强调将"模糊的业务问题"转化为"标准的技术流程"，是最常用的企业大型项目模型。' },
+      { type: 'choice', question: 'SEMMA模型适用于什么场景？', options: ['企业大型项目和业务驱动的场景', '需求明确、数据成熟的科研或算法开发场景', '商业快速决策场景', '实时数据处理场景'], answer: 'B', focus: 'SEMMA适用场景', explanation: 'SEMMA模型适用于需求明确、数据成熟的科研或算法开发场景。' },
+      { type: 'choice', question: '广义数据挖掘涵盖的全生命周期是？', options: ['数据准备、数据挖掘、解释评估', '问题理解、数据挖掘、辅助决策', '数据清洗、建模、结果发布', '数据抽样、探索、预处理'], answer: 'B', focus: '广义数据挖掘', explanation: '广义数据挖掘涵盖问题理解、数据挖掘、辅助决策等面向问题解决的全生命周期，更趋向于组织的管理、经营和商业优化。' },
+      { type: 'choice', question: '5A模型的最后一个步骤是？', options: ['模型演示(Act)', '结果展现(Automate)', '完备分析(Analyze)', '评价需求(Assess)'], answer: 'B', focus: '5A步骤', explanation: '5A模型的五大步骤依次为：评价需求(Assess)→存取数据(Access)→完备分析(Analyze)→模型演示(Act)→结果展现(Automate)。最后一步是结果展现(Automate)。' },
+      { type: 'multichoice', question: '以下关于CRISP-DM模型的描述，正确的有哪些？（多选）', options: ['由跨行业组织（IBM等主流推动）提出', '包含六大步骤', '强调业务驱动，循环往复', '适用于需求明确、数据成熟的科研场景', '是最常用的企业大型项目模型'], answer: ['A', 'B', 'C', 'E'], focus: 'CRISP-DM特点', explanation: 'CRISP-DM由跨行业组织推动，包含商业理解→数据理解→数据准备→建模→模型评估→结果发布六大步骤，业务驱动且循环往复，是最常用的企业大型项目模型。"适用于需求明确、数据成熟的科研场景"是SEMMA的特点。' },
+      { type: 'multichoice', question: 'SEMMA模型的五大步骤包括以下哪些？（多选）', options: ['数据抽样(Sample)', '数据探索(Explore)', '商业理解', '模型研发(Model)', '知识解释评价(Assess)'], answer: ['A', 'B', 'D', 'E'], focus: 'SEMMA步骤', explanation: 'SEMMA模型的五大步骤为：数据抽样(Sample)→数据探索(Explore)→预处理/数据调整(Modify)→模型研发(Model)→知识解释评价(Assess)。"商业理解"是CRISP-DM的步骤。' },
+      { type: 'multichoice', question: '以下关于5A模型的描述，正确的有哪些？（多选）', options: ['由SPSS公司提出', '核心特点是结果驱动，强调落地', '用于商业快速决策', '第一个步骤是存取数据(Access)'], answer: ['A', 'B', 'C'], focus: '5A模型特点', explanation: '5A模型由SPSS公司提出，核心特点是技术驱动、步骤严谨，结果驱动、强调落地，用于商业快速决策。但第一个步骤是评价需求(Assess)，而非存取数据(Access)。' },
+      { type: 'multichoice', question: '狭义数据挖掘的三个阶段包括？（多选）', options: ['数据准备', '数据挖掘', '解释评估', '商业理解', '结果发布'], answer: ['A', 'B', 'C'], focus: '狭义数据挖掘三阶段', explanation: '狭义数据挖掘包含数据准备、数据挖掘、解释评估三个阶段。"商业理解"和"结果发布"是CRISP-DM模型的步骤。' },
+      { type: 'judge', question: 'CRISP-DM模型的六大步骤是线性执行的，不需要循环往复。', answer: '错', focus: 'CRISP-DM循环特性', explanation: 'CRISP-DM的核心特点是业务驱动、循环往复，不是线性执行。在模型评估后可能需要返回前面的步骤进行迭代。' },
+      { type: 'judge', question: 'SEMMA模型中的第一个步骤是数据探索(Explore)。', answer: '错', focus: 'SEMMA步骤顺序', explanation: 'SEMMA模型的第一步是数据抽样(Sample)，第二步才是数据探索(Explore)。完整顺序为：Sample→Explore→Modify→Model→Assess。' },
+      { type: 'judge', question: '5A模型强调结果驱动和落地，用于商业快速决策。', answer: '对', focus: '5A核心特点', explanation: '5A模型确实以结果驱动、强调落地为核心特点，适用于商业快速决策场景。' },
+      { type: 'judge', question: '广义数据挖掘只包含数据准备、数据挖掘和解释评估三个阶段。', answer: '错', focus: '广义与狭义数据挖掘', explanation: '只有狭义数据挖掘才包含这三个阶段。广义数据挖掘涵盖问题理解、数据挖掘、辅助决策等面向问题解决的全生命周期。' },
+      { type: 'judge', question: '在三大过程模型中，数据准备都是建模前不可或缺的必经环节。', answer: '对', focus: '数据准备的重要性', explanation: '无论是CRISP-DM（数据准备）、SEMMA（抽样+预处理Modify）、还是5A（存取数据Access），数据准备都是建模前不可或缺的环节。' },
+      { type: 'fill', question: 'CRISP-DM模型由____组织（IBM等主流推动）提出。', answer: '跨行业', alternatives: ['跨行业数据挖掘标准流程', 'CRISP-DM'], focus: 'CRISP-DM提出者', explanation: 'CRISP-DM即Cross-Industry Standard Process for Data Mining，由跨行业组织提出，IBM等主流推动。' },
+      { type: 'fill', question: 'SEMMA模型中，Modify步骤的含义是____。', answer: '预处理/数据调整', alternatives: ['数据调整', '预处理', 'Modify', '数据修改'], focus: 'SEMMA步骤含义', explanation: 'SEMMA中Modify步骤指的是预处理/数据调整，即将探索阶段发现的数据问题进行修正和处理。' },
+      { type: 'fill', question: '数据分析是____（了解业务现状），数据挖掘是进阶（寻找深层规律）。', answer: '基础', alternatives: ['基础工作', '前提'], focus: '数据分析与挖掘关系', explanation: '数据分析是基础（了解业务现状），数据挖掘是进阶（当数据量极大时，靠算法模型寻找深层规律）。' },
+      { type: 'essay', question: '请比较三大主流数据挖掘过程模型（CRISP-DM、SEMMA、5A）的提出者、步骤数和核心特点。', answer: '1. CRISP-DM模型：由跨行业组织（IBM等主流推动）提出，包含六大步骤（商业理解→数据理解→数据准备→建模→模型评估→结果发布），核心特点是业务驱动、循环往复，强调将模糊的业务问题转化为标准的技术流程，是最常用的企业大型项目模型。\n2. SEMMA模型：由SAS Institute提出，包含五大步骤（Sample→Explore→Modify→Model→Assess），适用于需求明确、数据成熟的科研或算法开发场景。\n3. 5A模型：由SPSS公司提出，包含五大步骤（Assess→Access→Analyze→Act→Automate），核心特点是技术驱动、步骤严谨、结果驱动、强调落地，用于商业快速决策。', focus: '三大过程模型对比' },
+      { type: 'essay', question: '请阐述狭义数据挖掘与广义数据挖掘的区别。', answer: '狭义数据挖掘包含三个阶段：数据准备、数据挖掘、解释评估。其中数据准备往往占据大部分时间，包含数据清洗、特征工程、变量选择等。\n\n广义数据挖掘涵盖更广泛的全生命周期：问题理解、数据挖掘、辅助决策等面向问题解决的全过程，更趋向于组织的管理、经营和商业优化。广义数据挖掘不仅关注技术层面，还关注业务问题的理解和最终决策的支持。', focus: '狭义与广义数据挖掘' }
     ]
   },
-  // Chapter 3 Quiz
   {
-    title: '第三章 数据准备',
+    title: '第3章测试',
     questions: [
-      { type: 'choice', question: '分层抽样最适合哪类总体？', options: ['层内同质、层间异质', '层内异质、层间同质', '完全没有分层结构', '只能用于时间序列'], answer: 'A', focus: '抽样方法', explanation: '分层抽样要求层内同质、层间异质，这样每层内部一致但层间有差异，能提高抽样精度。' },
-      { type: 'choice', question: 'Min-Max归一化的结果通常映射到哪个区间？', options: ['[-1,1]', '[0,1]', '均值0标准差1', '任意类别标签'], answer: 'B', focus: '数据变换', explanation: 'Min-Max归一化将数据线性映射到[0,1]区间。' },
-      { type: 'fill', question: '正态分布下3σ原则的正常数据区间为[μ-3σ, ____]', answer: 'μ+3σ', focus: '异常值检测', explanation: '正态分布下约99.7%的数据落在[μ-3σ, μ+3σ]区间内。', alternatives: ['mu+3sigma', 'μ+3σ'] },
-      { type: 'judge', question: '哈希编码适合高基数属性，但可能出现哈希冲突', answer: '对', focus: '数据变换', explanation: '哈希编码将高基数属性映射到固定维度，但不同值可能映射到同一位置（冲突）。' },
-      { type: 'essay', question: '比较分层抽样与整群抽样的差异', answer: '分层先分层每层都抽，目标是提高精度，要求层内同质层间异质；整群先分群抽若干群并调查群内个体，目标是降低成本，要求群内异质群间同质', focus: '抽样方法对比', explanation: '两者的核心差异在于分组标准和抽样策略。', alternatives: [] },
-      { type: 'choice', question: '系统抽样的主要风险是？', options: ['无法抽样', '数据存在周期性时可能产生偏差', '只能用于文本', '一定比所有方法精度高'], answer: 'B', focus: '抽样方法', explanation: '如果数据存在与抽样间隔相同的周期性，系统抽样会产生偏差。' },
-      { type: 'choice', question: '数据联邦的核心特点是？', options: ['实际复制全部数据', '提供虚拟化集成视图', '只能离线批处理', '完全不需要元数据'], answer: 'B', focus: '数据集成', explanation: '数据联邦通过虚拟化视图集成数据，不实际复制数据。' },
-      { type: 'choice', question: '数据仓库相对数据联邦的常见特点是？', options: ['查询快但实时性较差', '完全不存储数据', '只能查实时源', '不支持历史趋势分析'], answer: 'A', focus: '数据集成', explanation: '数据仓库物理复制数据，查询快但数据更新有延迟，实时性较差。' },
-      { type: 'choice', question: 'Z-score标准化后的数据通常具有什么特征？', options: ['均值0、标准差1', '全部落在[0,1]', '全部变成类别', '删除异常值'], answer: 'A', focus: '数据变换', explanation: 'Z-score标准化将数据变为均值0、标准差1的分布。' },
-      { type: 'choice', question: '离散化主要是把什么变成有限区间或类别？', options: ['连续数值', '文件名', '算法代码', '训练标签'], answer: 'A', focus: '数据变换', explanation: '离散化将连续数值属性划分为有限个区间或类别。' },
-      { type: 'judge', question: '整群抽样通常用于群内异质、群间同质的总体', answer: '对', focus: '抽样方法', explanation: '整群抽样要求群内异质（每群都能代表总体）、群间同质（群之间差异小）。' },
-      { type: 'judge', question: '数据挖掘抽样主要是因为处理全样本的计算成本可能过高', answer: '对', focus: '抽样原因', explanation: '大数据集的全样本处理计算成本很高，抽样可以在可接受精度下大幅降低成本。' },
-      { type: 'judge', question: 'PCA降维后的主成分含义通常比原始变量更直观清楚', answer: '错', focus: 'PCA', explanation: 'PCA主成分是原始变量的线性组合，含义通常比原始变量更模糊。' },
-      { type: 'fill', question: '四分位极差IQR等于Q3减____', answer: 'Q1', focus: '异常值检测', explanation: 'IQR = Q3 - Q1，表示中间50%数据的范围。' },
-      { type: 'fill', question: '数据集成难点中，各数据源可独立变更且不通知集成系统，体现的是____性', answer: '自治', focus: '数据集成', explanation: '数据源的自治性使得集成系统难以及时感知变化。' },
-      { type: 'essay', question: '说明为什么数据挖掘前必须进行异常值检测和清洗', answer: '异常值可能来自噪声、录入错误或特殊样本，会导致模型失真、影响参数和距离计算、降低算法稳定性', focus: '异常值处理', explanation: '异常值会严重影响数据质量和模型效果。', alternatives: [] },
-      { type: 'choice', question: '下列哪项属于数据清洗？', options: ['处理缺失值', '生成FP树', '计算提升度', '选择最大间隔超平面'], answer: 'A', focus: '数据准备', explanation: '处理缺失值是数据清洗的典型任务。' },
-      { type: 'choice', question: '下列哪项属于数据规约？', options: ['PCA降维', '置信度计算', '决策树剪枝', '支持向量选择'], answer: 'A', focus: '数据准备', explanation: 'PCA降维是数据规约的典型方法，减少数据维度。' },
-      { type: 'judge', question: '数据集成时可能遇到同名异义、别名或表达形式不一致等实体识别冲突', answer: '对', focus: '数据集成', explanation: '不同数据源的命名习惯不同，需要解决实体识别问题。' },
-      { type: 'fill', question: '数据预处理主要任务包括清洗、集成、变换和数据____', answer: '规约', focus: '数据准备', explanation: '数据预处理的四大任务：清洗、集成、变换、规约。' }
+      { type: 'choice', question: '数据准备的主要环节正确顺序是？', options: ['数据收集→数据集成→数据抽样→数据清理→数据变换→数据规约', '数据收集→数据抽样→数据集成→数据清理→数据规约→数据变换', '数据抽样→数据收集→数据清理→数据集成→数据变换→数据规约', '数据收集→数据清理→数据抽样→数据集成→数据变换→数据规约'], answer: 'B', focus: '数据准备环节顺序', explanation: '数据准备的主要环节依次为：数据收集→数据抽样→数据集成→数据清理→数据规约→数据变换。' },
+      { type: 'choice', question: '分层抽样适用于什么样的总体结构？', options: ['群内异质、群间同质', '层内同质、层间异质', '完全随机分布', '周期性分布'], answer: 'B', focus: '分层抽样适用条件', explanation: '分层抽样适用于层内同质、层间异质的总体。先将总体分为同质、互不交叉的层，在各层内独立抽样。' },
+      { type: 'choice', question: '整群抽样的主要目的是？', options: ['提高精度', '降低成本', '增加样本代表性', '消除周期性'], answer: 'B', focus: '整群抽样目的', explanation: '整群抽样的主要目的是降低成本。将总体分为群，随机抽取若干群，对抽中群内的个体进行全调查。适用于群内异质、群间同质的总体。' },
+      { type: 'choice', question: '拉依达准则（3σ原则）中，数据被判定为异常值的条件是？', options: ['数据落在[μ-2σ, μ+2σ]之外', '数据落在[μ-3σ, μ+3σ]之外', '数据落在[μ-σ, μ+σ]之外', '数据等于均值'], answer: 'B', focus: '3σ原则', explanation: '拉依达准则（3σ原则）规定，若数据落在[μ-3σ, μ+3σ]区间之外，即判定为异常值。在该区间外的概率仅为0.27%。' },
+      { type: 'choice', question: 'Min-Max归一化的映射目标区间是？', options: ['[-1, 1]', '[0, 1]', '(-∞, +∞)', '[0, 100]'], answer: 'B', focus: 'Min-Max归一化', explanation: 'Min-Max归一化将数据映射到[0,1]区间，公式为 x\'=(x-min)/(max-min)。' },
+      { type: 'choice', question: '独热编码(One-Hot Encoding)的主要缺点是？', options: ['引入虚假顺序关系', '维度爆炸', '计算速度慢', '无法处理文本数据'], answer: 'B', focus: '独热编码缺点', explanation: '独热编码的主要缺点是维度爆炸。如果一个特征有1万个不同的类别，就会衍生出1万列数据。引入虚假顺序关系是标签编码的缺点。' },
+      { type: 'multichoice', question: '高质量数据的四大要求包括哪些？（多选）', options: ['完整的、一致的', '易于处理的、宜于运用数据挖掘算法的', '具有代表性的', '包含能够反映问题实质的特征数据'], answer: ['A', 'B', 'C', 'D'], focus: '高质量数据要求', explanation: '高质量数据的四大要求是：完整一致的、易于处理的、具有代表性的、包含能够反映问题实质的特征数据。' },
+      { type: 'multichoice', question: '以下哪些属于数据集成的四大难点？（多选）', options: ['系统与数据异构', '分布性与传输性', '数据量过大', '自治性与松耦合', '数据结构的不完整性与不关联性'], answer: ['A', 'B', 'D', 'E'], focus: '数据集成四大难点', explanation: '数据集成的四大难点是：系统与数据异构、分布性与传输性、自治性与松耦合、数据结构的不完整性与不关联性。"数据量过大"不是四大难点之一。' },
+      { type: 'multichoice', question: '以下关于属性变换方法的描述，正确的有哪些？（多选）', options: ['归一化将数据映射到[0,1]区间', '标准化使均值为0，标准差为1', '归一化适用于聚类、SVM等大多数算法', '非线性变换可处理偏态数据'], answer: ['A', 'B', 'D'], focus: '属性变换方法', explanation: '归一化映射到[0,1]区间（适用于图像处理、神经网络），标准化使均值为0标准差为1（适用于聚类、SVM等大多数算法），非线性变换处理偏态数据。选项C错误，聚类、SVM等大多数算法首选的是标准化，而非归一化。' },
+      { type: 'multichoice', question: '离散化的作用包括以下哪些？（多选）', options: ['数据规约和维规约', '消除奇异值影响', '减少属性值个数', '提高数据精度', '使结果知识表达更简洁'], answer: ['A', 'B', 'C', 'E'], focus: '离散化作用', explanation: '离散化的作用包括：数据规约/维规约、满足某些算法对离散属性的要求、产生概念分层结构、消除奇异值影响、减少属性值个数使结果更简洁。离散化不会提高数据精度。' },
+      { type: 'judge', question: '统计学抽样的目的是因为获取全样本的成本太高，数据挖掘抽样的目的是因为处理全样本的计算成本太高。', answer: '对', focus: '抽样目的差异', explanation: '统计学抽样因为获取全样本的资金和时间成本太高（如无法普查所有人），数据挖掘抽样因为处理全样本的计算成本太高（数据体量、维度过大，算法跑不动）。' },
+      { type: 'judge', question: '系统抽样如果数据存在周期性模式，可能导致样本偏差。', answer: '对', focus: '系统抽样缺点', explanation: '系统抽样按一定顺序排列并等距离抽样，如果数据存在周期性模式，等距采样可能与周期重合，导致样本偏差。' },
+      { type: 'judge', question: '标签编码(Label Encoding)适合用于没有自然顺序的类别特征。', answer: '错', focus: '标签编码适用范围', explanation: '标签编码会给每个类别随机映射为整数，引入虚假的顺序关系，不适合无序类别。无序类别应使用独热编码。标签编码适合有序特征，但对于有序特征更好的选择是有序编码(Ordinal Encoding)。' },
+      { type: 'judge', question: 'Z-Score标准化处理后的数据均值为1，标准差为0。', answer: '错', focus: 'Z-Score标准化', explanation: 'Z-Score标准化处理后的数据均值为0，标准差为1，而不是均值为1标准差为0。公式为z=(x-μ)/σ。' },
+      { type: 'judge', question: '数据联邦(Data Federation)不实际保存或复制数据，只提供虚拟化集成视图。', answer: '对', focus: '数据联邦特点', explanation: '数据联邦基于数据查询操作，从不同数据源完成数据汇集，不实际保存/复制/迁移数据，只保存数据来源及连接信息，提供虚拟化集成视图。' },
+      { type: 'fill', question: '已知某正态分布数据集的均值μ=50，标准差σ=5，根据拉依达准则（3σ原则），若某数据点的值为____以上，则被判定为异常值。', answer: '65', alternatives: ['65以上', '大于65'], focus: '3σ原则计算', explanation: '根据3σ原则，异常值判定区间为[μ-3σ, μ+3σ]=[50-15, 50+15]=[35, 65]。超过65或低于35的数据点被判定为异常值。' },
+      { type: 'fill', question: 'Min-Max归一化公式为x\'=(x-min)/(max-min)，若某属性最小值为10，最大值为60，则值为35的数据归一化后的结果是____。', answer: '0.5', alternatives: ['1/2', '0.50'], focus: 'Min-Max归一化计算', explanation: 'x\'=(35-10)/(60-10)=25/50=0.5。' },
+      { type: 'fill', question: '整群抽样适用于群内____、群间同质的总体。', answer: '异质', alternatives: ['差异大', '不同质', '异构'], focus: '整群抽样适用条件', explanation: '整群抽样适用于群内异质、群间同质的总体。这与分层抽样（层内同质、层间异质）恰好相反。' },
+      { type: 'essay', question: '请对比分层抽样与整群抽样的区别，包括抽样方式、结构要求和目的。', answer: '分层抽样与整群抽样的核心区别：\n1. 抽样方式：分层抽样先分层，每层都抽人；整群抽样先分群，抽若干群并对群内全调查。\n2. 结构要求：分层抽样要求层内同质、层间异质；整群抽样要求群内异质、群间同质。\n3. 目的：分层抽样的目的是提高精度；整群抽样的目的是降低成本。\n4. 适用条件：分层抽样适用于层间异质性大、层内同质性强的情况；整群抽样适用于群间差异小、群内各个体差异大的情况。', focus: '分层抽样与整群抽样对比' },
+      { type: 'essay', question: '请阐述数据预处理在数据挖掘中所处的地位和所发挥的作用。', answer: '一、地位：基础性与决定性地位\n1. 流程基石地位：在KDD全流程中，数据预处理是最前端的环节，后续的数据挖掘、模式评估都建立在预处理后的数据之上。\n2. 耗时核心地位：数据准备往往占据整个项目的大部分时间。\n3. 决定性地位：数据的质量、表现形式和代表性对算法选择、参数选取和最终结果起决定性作用——"垃圾进，垃圾出"。\n\n二、作用：\n1. 保证数据质量：通过数据清理（如3σ异常检测）、数据集成、填补缺失值等手段。\n2. 适配算法需求：通过归一化、标准化等变换满足不同算法输入要求。\n3. 提升算法效率与效果：离散化可消除奇异值影响，减少属性值个数。\n4. 发现数据深层特征：从另一个角度发现数据更为显著的特征。\n5. 为后续步骤提供关键依据：数据探索可初步了解数据的内容、性质、质量。', focus: '数据预处理的地位和作用' }
     ]
   },
-  // Chapter 4 Quiz
   {
-    title: '第四章 数据探索与描述性统计',
+    title: '第4章测试',
     questions: [
-      { type: 'choice', question: '血型属于哪类数据属性？', options: ['连续型', '离散型', '标称型', '有序型'], answer: 'C', focus: '属性类型', explanation: '血型是无序的类别标签，属于标称型数据。' },
-      { type: 'choice', question: '下列哪一项对异常值最稳健？', options: ['极差', '均值', '中位数绝对偏差MAD', '方差'], answer: 'C', focus: '稳健统计量', explanation: 'MAD使用中位数，不受极端值影响，是最稳健的差异量数。' },
-      { type: 'fill', question: '两个变量同向变化时，协方差通常为____', answer: '正', focus: '相关性量数', explanation: '同向变化时协方差为正，反向变化时为负。' },
-      { type: 'judge', question: '协方差矩阵的对角线元素是各变量的方差', answer: '对', focus: '协方差矩阵', explanation: '对角线是变量与自身的协方差，即方差。' },
-      { type: 'essay', question: '说明数据探索在数据挖掘流程中的作用', answer: '初步了解数据内容、性质与质量；评估完整性一致性；识别模式和分布；为选择预处理工具和分析技术提供依据', focus: '数据探索', explanation: '数据探索是数据理解和预处理选择的重要基础。', alternatives: [] },
-      { type: 'choice', question: '"职工人数"属于哪类数据？', options: ['连续型', '离散型', '标称型', '有序型'], answer: 'B', focus: '属性类型', explanation: '职工人数是可数的整数值，属于离散型数据。' },
-      { type: 'choice', question: '"满意度等级"属于哪类数据？', options: ['连续型', '离散型', '标称型', '有序型'], answer: 'D', focus: '属性类型', explanation: '满意度等级有顺序但不能直接加减，属于有序型数据。' },
-      { type: 'choice', question: '最容易受极端值影响的集中量数是？', options: ['均值', '中位数', '众数', '百分位数'], answer: 'A', focus: '集中量数', explanation: '均值使用全部数据求和平均，极端值会显著拉偏均值。' },
-      { type: 'choice', question: 'Pearson相关系数主要衡量什么？', options: ['线性相关程度', '项集频繁程度', '分类标签数量', '簇内SSE'], answer: 'A', focus: '相关性量数', explanation: 'Pearson相关系数衡量两变量间的线性相关程度。' },
-      { type: 'judge', question: '有序型数据有顺序差异，但不能直接按连续数值进行常规加减', answer: '对', focus: '属性类型', explanation: '有序型数据只表示等级或顺序关系，数值间隔不一定相等。' },
-      { type: 'judge', question: '极差能反映最大值和最小值跨度，但受极端值影响大', answer: '对', focus: '差异量数', explanation: '极差=最大值-最小值，极端值直接决定了极差大小。' },
-      { type: 'fill', question: 'MAD的中文含义是中位数____偏差', answer: '绝对', focus: '差异量数', explanation: 'MAD = Median Absolute Deviation，中位数绝对偏差。' },
-      { type: 'fill', question: '协方差矩阵的非对角线元素是变量之间的____', answer: '协方差', focus: '协方差矩阵', explanation: '非对角线元素表示不同变量之间的协方差。' },
-      { type: 'essay', question: '比较均值、中位数、众数在极端值影响下的差异', answer: '均值使用全部数值求和后平均受极端值影响大；中位数取排序后中间位置较稳健；众数取出现次数最多的值也不直接受极端数值大小影响但可能不唯一或不存在', focus: '集中量数对比', explanation: '三种集中量数对极端值的敏感度不同。', alternatives: [] },
-      { type: 'choice', question: '销售额属于哪类数据？', options: ['连续型', '标称型', '有序型', '文本型'], answer: 'A', focus: '属性类型', explanation: '销售额是可取任意实数值的连续数据。' },
-      { type: 'choice', question: '众数的含义是？', options: ['出现次数最多的值', '最大值减最小值', '排序后中间值', '变量变化趋势'], answer: 'A', focus: '集中量数', explanation: '众数是数据中出现频率最高的值。' },
-      { type: 'judge', question: '同一变量与自身的协方差就是该变量的方差', answer: '对', focus: '相关性量数', explanation: 'Cov(X,X) = Var(X)，变量与自身的协方差等于方差。' },
-      { type: 'fill', question: 'IQR代表中间____%数据的波动范围', answer: '50', focus: '差异量数', explanation: 'IQR = Q3 - Q1，覆盖中间50%的数据。' },
-      { type: 'essay', question: '如何根据变量变化方向判断协方差正负？', answer: '两个变量同向变化时协方差为正；反向变化时协方差为负；同一变量的协方差就是方差', focus: '协方差', explanation: '协方差的符号反映变量间的变化方向关系。', alternatives: [] },
-      { type: 'judge', question: '数据探索可帮助评估数据完整性和一致性', answer: '对', focus: '数据探索', explanation: '数据探索是了解数据质量的重要手段。' }
+      { type: 'choice', question: '数据探索(Data Exploration)的核心作用是？', options: ['直接进行数据挖掘建模', '初步了解数据的内容、性质、质量，为后续分析提供依据', '对数据进行最终清洗', '生成最终报告'], answer: 'B', focus: '数据探索作用', explanation: '数据探索的核心作用是初步了解数据的内容、性质、质量（评估完整性和一致性等），利用人的认知能力来识别数据的性质、模式和分布，为后续选择合适的数据预处理工具和数据分析技术提供关键依据。' },
+      { type: 'choice', question: '以下哪种集中量数受极端值影响最大？', options: ['中位数', '众数', '均值', '百分位数'], answer: 'C', focus: '集中量数特点', explanation: '均值（平均数）受极端值影响最大，因为它是所有数据的总和除以个数。中位数和众数不受极端值影响。可用截断均值来改善这个问题。' },
+      { type: 'choice', question: 'Pearson相关系数r=0.994表示两个变量之间是什么关系？', options: ['无相关', '弱正相关', '高度线性正相关', '负相关'], answer: 'C', focus: '相关系数', explanation: 'Pearson相关系数取值范围为[-1,1]，r=0.994接近1，表示两个变量之间存在高度线性正相关关系。' },
+      { type: 'choice', question: '四分位差(IQR)的计算公式是？', options: ['max - min', 'Q3 - Q1', '均值 - 中位数', '标准差的平方'], answer: 'B', focus: 'IQR计算', explanation: '四分位差(IQR) = Q3 - Q1 = P75 - P25，代表中间50%数据的波动范围，抗异常值能力极强。' },
+      { type: 'choice', question: '截断均值的计算方法是？', options: ['只取数据的前半部分计算均值', '去掉两头最高和最低一定比例的数据后计算均值', '用中位数替代均值', '对所有数据加权平均'], answer: 'B', focus: '截断均值', explanation: '截断均值先将所有数据从小到大排序，然后去掉两头最高和最低的一定比例（如各5%）的数据，只用中间剩下的"温和数据"来计算平均值，以减小极端值的影响。' },
+      { type: 'choice', question: '协方差为正值表示两个变量的变化趋势？', options: ['相反', '一致', '无关', '呈周期性'], answer: 'B', focus: '协方差含义', explanation: '协方差为正值表示两个变量变化趋势一致（一个大于期望，另一个也大于期望）；为负值表示变化趋势相反。' },
+      { type: 'multichoice', question: '数据探索的两大主要方法包括？（多选）', options: ['可视化(Visualization)', '数据挖掘建模', '数据统计分析', '特征工程'], answer: ['A', 'C'], focus: '数据探索方法', explanation: '数据探索的两大主要方法是可视化（将数据转化为可视的图或表格展现）和数据统计分析（利用统计指标对数据的分布特性进行定量描述）。' },
+      { type: 'multichoice', question: '以下哪些差异量数具有抗异常值能力？（多选）', options: ['极差(Range)', '标准差', '中位数绝对偏差(MAD)', '四分位差(IQR)'], answer: ['C', 'D'], focus: '差异量数抗异常值能力', explanation: 'MAD（中位数绝对偏差）对异常值极度不敏感，可替代标准差。IQR（四分位差）代表中间50%数据波动范围，抗异常值能力极强。极差和标准差都容易受极端值影响。' },
+      { type: 'multichoice', question: '人类视觉在数据分析中的优势体现在哪些方面？（多选）', options: ['模式认知', '变化趋势评估', '异常值检测', '精确数值计算'], answer: ['A', 'B', 'C'], focus: '视觉优势', explanation: '人类视觉优势体现在模式认知（形状、颜色和聚类揭示数据结构）、变化趋势评估（坡度直接反映变化速率）、异常值检测（远离群体的点一眼可见）。精确数值计算不是视觉的优势。' },
+      { type: 'multichoice', question: '以下关于协方差矩阵和相关矩阵的描述，正确的有哪些？（多选）', options: ['协方差矩阵是对称矩阵', '协方差矩阵对角线为方差', '相关矩阵对角线为1', '相关矩阵是非对称矩阵'], answer: ['A', 'B', 'C'], focus: '协方差矩阵与相关矩阵', explanation: '协方差矩阵是对称矩阵，对角线为方差，非对角线为协方差。相关矩阵对角线为1（自己与自己完全相关），也是对称矩阵。' },
+      { type: 'judge', question: '众数可能不唯一或不存在，且缺乏敏感性。', answer: '对', focus: '众数特点', explanation: '众数是出现次数最多的值，可能不唯一（多个众数）或不存在（所有值出现次数相同），且对数据变化的敏感性较低。' },
+      { type: 'judge', question: '极差(Range)是衡量数据离散程度最稳健的指标。', answer: '错', focus: '极差的局限性', explanation: '极差=max-min，虽然简单，但受极端值影响大，不能衡量每个数据的变化，不是最稳健的指标。MAD和IQR更稳健。' },
+      { type: 'judge', question: '当两个变量是同一个变量时，其协方差就是该变量的方差。', answer: '对', focus: '协方差与方差关系', explanation: '协方差衡量两个变量之间的总体误差。当两个变量是同一个变量时，协方差退化为方差，这是协方差的特例。' },
+      { type: 'judge', question: 'Pearson相关系数的取值范围是[0, 1]。', answer: '错', focus: '相关系数取值范围', explanation: 'Pearson相关系数的取值范围是[-1, 1]，其中-1表示完全负相关，0表示无线性相关，1表示完全正相关。' },
+      { type: 'judge', question: 'MAD异常值检测中，若数据点与中位数距离超过3×MAD，通常视为异常值。', answer: '对', focus: 'MAD异常值检测', explanation: 'MAD的异常值检测规则：若数据点与中位数的距离超过K×MAD（通常K=3），则视为异常值。MAD对异常值极度不敏感，是一种稳健的检测方法。' },
+      { type: 'fill', question: 'IQR（四分位差）等于Q3-Q1，代表中间____%数据的波动范围。', answer: '50', alternatives: ['五十', '50%'], focus: 'IQR含义', explanation: 'IQR=Q3-Q1=P75-P25，即第75百分位数减去第25百分位数，代表中间50%数据的波动范围。' },
+      { type: 'fill', question: '相关矩阵的对角线元素值为____。', answer: '1', alternatives: ['1.0', '一'], focus: '相关矩阵特性', explanation: '相关矩阵第ij个元素是第i个和第j个属性之间的相关性，对角线元素是自己与自己的相关性，值为1。' },
+      { type: 'fill', question: '方差是____的特例（当两个变量是同一个变量时）。', answer: '协方差', alternatives: ['Covariance'], focus: '方差与协方差关系', explanation: '当两个变量是同一个变量时，协方差就变成了该变量的方差。因此方差是协方差的特例。' },
+      { type: 'essay', question: '请列举并比较五种差异量数（极差、标准差、方差、MAD、IQR）的定义和特点。', answer: '1. 极差(Range)：max-min，简单直观，但受极端值影响大，不能衡量每个数据的变化。\n2. 标准差：方差的平方根，反映数据离散程度，受极端值影响。\n3. 方差：标准差的平方，最常用统计量，但易被离群值扭曲。\n4. 中位数绝对偏差(MAD)：各数据与中位数绝对差的中位数，稳健，对异常值极度不敏感，可替代标准差。\n5. 四分位差(IQR)：Q3-Q1=P75-P25，代表中间50%数据波动范围，抗异常值能力极强。', focus: '差异量数对比' },
+      { type: 'essay', question: '请说明可视化在数据探索中相比纯数据分析的优势。', answer: '可视化在数据探索中的优势主要体现在三个方面：\n1. 模式认知：形状、颜色和聚类立刻揭示数据结构（如相关性），而纯数据需要复杂统计计算才能发现规律。\n2. 趋势评估：坡度陡峭程度直接反映增长或下降速度，而纯数据必须对比前后数值，难以直观感受变化速率。\n3. 异常检测：远离群体的点非常"刺眼"，一眼可见，而异常值在纯数据中容易淹没在大量数据中被忽略。\n4. 人类大脑对图形化的数据模式认知能力，是任何纯数字化分析工具都无法比拟的，尤其在海量信息的模式认知和异常模式识别上。', focus: '可视化优势' }
     ]
   },
-  // Chapter 5 Quiz
   {
-    title: '第五章 关联分析',
+    title: '第5章测试',
     questions: [
-      { type: 'choice', question: '规则X=>Y的置信度表示什么？', options: ['X和Y同时出现占全部事务的比例', '包含X的事务中也包含Y的比例', 'Y出现占全部事务的比例', 'X与Y的距离'], answer: 'B', focus: '置信度', explanation: '置信度是条件概率P(Y|X)，即包含X的事务中也包含Y的比例。' },
-      { type: 'choice', question: 'FP-Growth相对Apriori的核心优化是？', options: ['完全不需要数据', '用FP树压缩数据库并避免大量候选项集', '只计算均值', '只能处理两个商品'], answer: 'B', focus: 'FP-Growth', explanation: 'FP-Growth通过FP树压缩数据，不产生候选项集，效率更高。' },
-      { type: 'fill', question: '提升度大于1表示前件和后件之间存在____相关', answer: '正', focus: '提升度', explanation: 'lift>1说明前件出现会促进后件出现，存在正相关。' },
-      { type: 'judge', question: 'Apriori剪枝依据是非频繁项集的超集一定非频繁', answer: '对', focus: 'Apriori', explanation: '这是Apriori的先验性质：频繁项集的子集必频繁，非频繁项集的超集必非频繁。' },
-      { type: 'essay', question: '10笔交易中，4笔同时买油条和豆浆，5笔买油条。计算{油条}=>{豆浆}的支持度和置信度', answer: '支持度=4/10=40%；置信度=4/5=80%', focus: '计算题', explanation: '支持度=同时出现次数/总事务数=4/10=40%；置信度=同时出现次数/前件出现次数=4/5=80%。', alternatives: [] },
-      { type: 'choice', question: '强关联规则至少需要满足什么？', options: ['最小支持度和最小置信度', '最大SSE', '最小学习率', '最大欧氏距离'], answer: 'A', focus: '强关联规则', explanation: '强关联规则必须同时满足最小支持度和最小置信度阈值。' },
-      { type: 'choice', question: '候选项集是指什么？', options: ['未经支持度检验的项集', '一定频繁的项集', '最终分类标签', '噪声点集合'], answer: 'A', focus: '核心概念', explanation: '候选项集是尚未通过支持度检验的项集，需要进一步验证。' },
-      { type: 'choice', question: 'Apriori算法的主要瓶颈不包括哪项？', options: ['产生大量候选集', '多次扫描数据库', '计算开销大', '完全不需要候选集'], answer: 'D', focus: 'Apriori', explanation: 'Apriori需要产生候选集，"完全不需要候选集"是FP-Growth的特点。' },
-      { type: 'choice', question: '若lift=1，通常表示规则前件和后件？', options: ['正相关', '负相关', '相互独立', '一定互斥'], answer: 'C', focus: '提升度', explanation: 'lift=1说明前件和后件的出现互不影响，相互独立。' },
-      { type: 'judge', question: '支持度衡量规则适用于整个数据集的程度', answer: '对', focus: '支持度', explanation: '支持度以全部事务为分母，衡量规则覆盖全局的程度。' },
-      { type: 'judge', question: '如果后件商品本身非常热门，高置信度规则可能有误导性', answer: '对', focus: '置信度局限', explanation: '后件本身支持度高时，即使与前件无关联，置信度也可能很高。' },
-      { type: 'fill', question: '关联规则挖掘通常先产生频繁项集，再生成____', answer: '规则', focus: '两阶段框架', explanation: '先找频繁项集，再从频繁项集中生成满足置信度的关联规则。' },
-      { type: 'fill', question: 'FP-Growth用____树压缩事务数据库', answer: 'FP', focus: 'FP-Growth', explanation: 'FP-Growth使用FP树（Frequent Pattern Tree）压缩存储事务数据。' },
-      { type: 'essay', question: '为什么仅看支持度和置信度可能不够？提升度解决什么问题？', answer: '置信度会忽略后件本身支持度，后件很热门时可能产生伪高置信度规则。提升度衡量前件与后件的相关性', focus: '提升度', explanation: '提升度弥补了置信度不考虑后件基础概率的缺陷。', alternatives: [] },
-      { type: 'essay', question: '比较Apriori和FP-Growth的核心差异', answer: 'Apriori基于候选项集产生和剪枝，广度搜索，可能多次扫描数据库并产生大量候选集；FP-Growth构建FP树压缩数据，不产生候选项集', focus: '算法对比', explanation: '两种算法在候选集处理和数据库扫描次数上有本质区别。', alternatives: [] },
-      { type: 'choice', question: '项集{牛奶,面包,尿布}是几项集？', options: ['1项集', '2项集', '3项集', '4项集'], answer: 'C', focus: '核心概念', explanation: '包含3个物品的项集是3项集。' },
-      { type: 'choice', question: '序列关联关系强调什么？', options: ['时间先后顺序', '均值为0', '类别标签', '簇中心'], answer: 'A', focus: '关联分析', explanation: '序列关联关系强调事件发生的时间先后顺序。' },
-      { type: 'judge', question: 'FP树构建通常需要先扫描一次数据确定项的支持度计数', answer: '对', focus: 'FP-Growth', explanation: 'FP-Growth需要先扫描确定频繁项，再构建FP树。' },
-      { type: 'fill', question: '规则X=>Y要求X交Y=____', answer: '空', focus: '关联规则', explanation: '关联规则中前件X和后件Y不能有交集，即X∩Y=空集。' },
-      { type: 'essay', question: '解释"支持度看全局、置信度看局部"的含义', answer: '支持度以全部事务数为分母衡量X和Y共同出现占全体比例；置信度以包含X的事务为分母衡量已出现X时Y也出现的条件概率', focus: '支持度与置信度', explanation: '支持度是全局视角，置信度是条件概率的局部视角。', alternatives: [] }
+      { type: 'choice', question: '关联规则X→Y的置信度公式是？', options: ['σ(X∪Y)/N', 'σ(X∪Y)/σ(X)', 'σ(X)/σ(X∪Y)', 'σ(X)/N'], answer: 'B', focus: '置信度公式', explanation: '置信度c(X→Y) = σ(X∪Y)/σ(X) = s(X∪Y)/s(X)，表示X出现时Y出现的条件概率。' },
+      { type: 'choice', question: 'Apriori算法利用了哪个原理进行剪枝？', options: ['鸽巢原理', '支持度单调性（先验原理）', '最大最小定理', '中心极限定理'], answer: 'B', focus: 'Apriori原理', explanation: 'Apriori算法利用支持度单调性（先验原理）进行剪枝：如果一个项集是频繁的，则它的所有子集也一定是频繁的；反之，如果一个项集是非频繁的，则它的所有超集也一定是非频繁的。' },
+      { type: 'choice', question: 'FP-Growth算法相比Apriori的主要优化是？', options: ['使用更多的候选项集', '只扫描数据库一次', '不产生候选项集，通过FP树直接提取频繁项集', '使用更高的支持度阈值'], answer: 'C', focus: 'FP-Growth优化', explanation: 'FP-Growth通过构建FP树（频繁模式树）将数据库压缩到内存中，通过递归挖掘直接提取频繁项集，不产生候选项集，解决了Apriori需要多次扫描数据库和产生海量候选集的问题。' },
+      { type: 'choice', question: '提升度Lift=1表示前件和后件之间是什么关系？', options: ['正相关', '负相关', '独立', '强关联'], answer: 'C', focus: '提升度含义', explanation: '提升度Lift=1表示前件和后件相互独立；<1表示互斥（负相关）；>1表示有效强关联；>3认为有价值。' },
+      { type: 'choice', question: '关联规则挖掘的两个阶段是？', options: ['数据准备和模型评估', '产生频繁项集和生成规则', '候选项集生成和剪枝', '数据清洗和模式发现'], answer: 'B', focus: '关联规则挖掘框架', explanation: '关联规则挖掘分为两个阶段：(1)产生频繁项集——发现满足支持度阈值的所有项集；(2)生成规则——从频繁项集中提取所有高置信度的规则（强规则）。' },
+      { type: 'choice', question: '以下哪种关联关系描述的是"买iPhone后买保护壳"？', options: ['简单关联关系', '序列关联关系', '因果关系', '函数关系'], answer: 'B', focus: '关联关系类型', explanation: '序列关联关系描述事物在时间上以一定先后顺序发生的关系，如买iPhone后买保护壳。简单关联关系是没有共同属性的事物组合，元素会较大概率同时出现。' },
+      { type: 'multichoice', question: '以下哪些是关联规则的客观兴趣度度量指标？（多选）', options: ['提升度(Lift)', '杠杆率(Leverage)', '确信度(Conviction)', '支持度(Support)', '兴趣因子(Interest Factor)'], answer: ['A', 'B', 'C', 'E'], focus: '客观兴趣度度量', explanation: '客观兴趣度度量指标包括提升度、杠杆率、确信度和兴趣因子。支持度和置信度是基础评价指标，不是客观兴趣度度量指标，它们存在"虚假高置信度"的问题。' },
+      { type: 'multichoice', question: 'FP-Growth算法构建FP树的过程中，以下描述正确的有哪些？（多选）', options: ['扫描数据集一次确定支持度计数', '扫描数据集二次构建FP树', '频繁项按支持度递增排序', '通过条件树递归挖掘频繁项集'], answer: ['A', 'B', 'D'], focus: 'FP树构建过程', explanation: 'FP-Growth构建FP树：第一次扫描确定支持度计数并丢弃非频繁项，频繁项按支持度递减排序（不是递增）；第二次扫描构建FP树（共享前缀路径）；最后以自底向上方式通过条件树递归挖掘。' },
+      { type: 'multichoice', question: '支持度-置信度框架存在哪些局限性？（多选）', options: ['可能产生虚假高置信度规则', '无法区分正相关和负相关', '后件本身很热门时置信度会被人为拔高', '不能处理数值型数据'], answer: ['A', 'B', 'C'], focus: '支持度-置信度框架局限', explanation: '支持度-置信度框架的局限性：可能产生虚假高置信度规则（如后件本身是超级热门商品），无法区分正相关和负相关。需要提升度和兴趣因子来剔除虚假规则。' },
+      { type: 'multichoice', question: 'Apriori算法的先验原理包含以下哪些推论？（多选）', options: ['频繁项集的所有子集也一定是频繁的', '非频繁项集的所有超集也一定是非频繁的', '频繁项集的所有超集也一定是频繁的', '非频繁项集的所有子集也一定是非频繁的'], answer: ['A', 'B'], focus: '先验原理推论', explanation: '先验原理：频繁项集→子集也频繁（正推）；非频繁项集→超集也非频繁（逆推，用于剪枝）。频繁项集的超集不一定频繁，非频繁项集的子集不一定非频繁。' },
+      { type: 'judge', question: 'FP-Growth算法需要产生候选项集才能找到频繁项集。', answer: '错', focus: 'FP-Growth特点', explanation: 'FP-Growth的核心优势就是不需要产生候选项集，通过构建FP树并递归挖掘条件树来直接提取频繁项集。' },
+      { type: 'judge', question: '提升度Lift>3的关联规则被认为是有价值的。', answer: '对', focus: '提升度判断标准', explanation: '提升度Lift=1表示独立，<1表示互斥（负相关），>1表示有效强关联，>3认为有实际应用价值。' },
+      { type: 'judge', question: '关联规则X→Y中，X和Y可以有交集。', answer: '错', focus: '关联规则定义', explanation: '关联规则X→Y是蕴含表达式，要求X∩Y=∅（空集），即X和Y不能有交集。' },
+      { type: 'judge', question: '支持度确定规则在多大程度上适用于整个数据集。', answer: '对', focus: '支持度含义', explanation: '支持度s(X→Y)=σ(X∪Y)/N，表示包含X∪Y的事务占总事务的比例，确定规则在多大程度上适用于整个数据集。' },
+      { type: 'judge', question: 'Apriori算法只需要扫描数据库一次。', answer: '错', focus: 'Apriori扫描次数', explanation: 'Apriori算法需要多次扫描数据库（每一层候选项集都需要扫描一次），这是其主要缺点之一。FP-Growth只需扫描两次。' },
+      { type: 'fill', question: '某超市共有100笔交易，其中包含面包的有60笔，包含牛奶的有70笔，同时包含面包和牛奶的有42笔。规则{面包}→{牛奶}的支持度为____。', answer: '0.42', alternatives: ['42%', '42/100'], focus: '支持度计算', explanation: '支持度s({面包}→{牛奶}) = σ({面包,牛奶})/N = 42/100 = 0.42。' },
+      { type: 'fill', question: '基于上题数据，规则{面包}→{牛奶}的置信度为____。', answer: '0.7', alternatives: ['70%', '42/60', '0.70'], focus: '置信度计算', explanation: '置信度c({面包}→{牛奶}) = σ({面包,牛奶})/σ({面包}) = 42/60 = 0.7 = 70%。' },
+      { type: 'fill', question: 'FP-Growth算法构建FP树时，需要扫描数据集____次。', answer: '2', alternatives: ['两', '二次', '两次'], focus: 'FP-Growth扫描次数', explanation: 'FP-Growth需要扫描数据集两次：第一次确定支持度计数并排序，第二次构建FP树。' },
+      { type: 'essay', question: '请比较Apriori算法和FP-Growth算法的核心思想和优缺点。', answer: 'Apriori算法：\n- 核心思想：利用支持度单调性（先验原理）进行剪枝，产生候选项集后逐一验证支持度。\n- 优点：原理简单，易于理解和实现。\n- 缺点：需要多次扫描数据库，产生海量候选项集，效率低。\n\nFP-Growth算法：\n- 核心思想：构建FP树（频繁模式树）压缩数据，通过条件树递归挖掘，不产生候选项集。\n- 优点：只需扫描数据库两次，不需要产生候选项集，效率远高于Apriori。\n- 缺点：FP树构建和维护较复杂，对内存要求较高。', focus: 'Apriori与FP-Growth对比' },
+      { type: 'essay', question: '请解释支持度-置信度框架的局限性，并说明提升度和兴趣因子如何解决这一问题。', answer: '支持度-置信度框架的局限性：\n当后件（Y）本身是非常热门的商品时（如90%的人都买大米），即使前件（X，如避雷针）与后件毫无关联，规则{X}→{Y}的置信度也可能高达90%。这就是"虚假高置信度伪规则"问题。\n\n提升度和兴趣因子的解决方案：\n- 提升度Lift和兴趣因子Interest Factor用于评估前件与后件之间的统计学相关性。\n- Lift=1表示独立，<1表示互斥（负相关），>1表示正相关，>3认为有价值。\n- 它们能够剔除"由于后件本身超级热门而导致的虚假高置信度伪规则"，筛选出真正有交叉销售价值的规则。\n- 它们回答的是：买了X之后，究竟是促进了买Y（正相关），还是抑制了买Y（负相关），还是两者无关（独立）。', focus: '支持度-置信度局限性与解决方案' }
     ]
   },
-  // Chapter 6 Quiz
   {
-    title: '第六章 分类预测',
+    title: '第6章测试',
     questions: [
-      { type: 'choice', question: '决策树的叶节点通常存放什么？', options: ['属性测试', '类标号', '支持度', '学习率'], answer: 'B', focus: '决策树', explanation: '决策树的内部节点存放属性测试，叶节点存放类标号（预测结果）。' },
-      { type: 'choice', question: '信息增益偏向选择哪类属性？', options: ['取值较少的属性', '取值较多的属性', '全是缺失值的属性', '与类别无关的属性'], answer: 'B', focus: '不纯度度量', explanation: '信息增益偏向取值多的属性，因为分支多会导致信息增益偏大。增益率可以改进这个问题。' },
-      { type: 'fill', question: '朴素贝叶斯的核心简化假设是各特征条件____', answer: '独立', focus: '朴素贝叶斯', explanation: '朴素贝叶斯假设各特征在给定类别下条件独立，简化了计算。' },
-      { type: 'judge', question: '训练误差很低而测试误差很高，通常是过拟合表现', answer: '对', focus: '过拟合', explanation: '过拟合的典型特征是训练集表现好但泛化能力差。' },
-      { type: 'essay', question: '说明决策树剪枝的目的，并比较预剪枝和后剪枝', answer: '目的：防止过拟合。预剪枝在树生长过程中提前停止速度快但可能过早；后剪枝先让树完整生长再修剪效果较好但计算量大', focus: '剪枝', explanation: '两种剪枝策略在时机和效果上有所不同。', alternatives: [] },
-      { type: 'choice', question: '分类训练样本必须包含什么？', options: ['属性值和类别标记', '只有商品编号', '只有无标签样本', '只有聚类中心'], answer: 'A', focus: '分类定义', explanation: '分类是有监督学习，训练样本必须同时包含属性值和对应的类别标记。' },
-      { type: 'choice', question: 'Gini指数用于决策树时，通常选择什么划分？', options: ['Gini split最小', '支持度最大', 'SSE最大', '学习率最大'], answer: 'A', focus: '不纯度度量', explanation: '选择Gini split最小的划分，使子节点的纯度最高。' },
-      { type: 'choice', question: 'KNN被称为惰性学习，主要因为？', options: ['训练阶段主要保存样本', '完全不使用样本', '必须先剪枝', '只计算置信度'], answer: 'A', focus: 'KNN', explanation: 'KNN在训练阶段不建立显式模型，主要保存训练样本，预测时才计算。' },
-      { type: 'choice', question: 'SVM中核函数的主要作用是？', options: ['处理非线性问题', '删除缺失值', '生成频繁项集', '计算IQR'], answer: 'A', focus: 'SVM', explanation: '核函数将数据映射到高维空间，使非线性问题变为线性可分。' },
-      { type: 'choice', question: '神经网络中损失函数的作用是？', options: ['度量预测误差', '执行数据集成', '生成类别编码', '计算支持度'], answer: 'A', focus: '神经网络', explanation: '损失函数度量模型预测值与真实值之间的误差。' },
-      { type: 'judge', question: '后剪枝通常先让树完整生长，再修剪不必要分支', answer: '对', focus: '剪枝', explanation: '后剪枝先构建完整决策树，再自底向上修剪不影响泛化的分支。' },
-      { type: 'judge', question: '朴素贝叶斯在实践中一定最优，因为它理论上有最小错误率', answer: '错', focus: '朴素贝叶斯', explanation: '条件独立假设在实际中往往不成立，因此实践中不一定最优。' },
-      { type: 'fill', question: '信息增益率通过惩罚____多的属性来改进信息增益偏向', answer: '分支', focus: '不纯度度量', explanation: '信息增益率对分支多的属性施加惩罚，克服了信息增益的偏向问题。' },
-      { type: 'fill', question: 'SVM在线性可分时寻找最大间隔____', answer: '超平面', focus: 'SVM', explanation: 'SVM寻找使两类间隔最大的超平面作为分类边界。' },
-      { type: 'essay', question: '说明分类建模的一般流程', answer: '选择训练数据集；选择测试数据集或交叉验证；由训练集建立分类模型；用测试集评估准确率并修正；最后应用模型对未知样本分类', focus: '分类过程', explanation: '分类建模是一个从训练到评估再到应用的完整流程。', alternatives: [] },
-      { type: 'essay', question: '为什么KNN使用欧氏距离前常需要标准化？', answer: 'KNN依赖距离计算，如果不同特征量纲差异大，数值范围大的特征会主导欧氏距离，标准化可减弱量纲影响', focus: 'KNN', explanation: '量纲差异会导致距离计算失真。', alternatives: [] },
-      { type: 'choice', question: '逻辑回归虽然名字带回归，但主要用于？', options: ['分类', '聚类', '关联规则', '数据联邦'], answer: 'A', focus: '逻辑回归', explanation: '逻辑回归输出概率值，通过阈值判断类别，主要用于分类任务。' },
-      { type: 'judge', question: '决策树对未知样本分类时，会沿根节点到叶节点的路径得到预测类别', answer: '对', focus: '决策树', explanation: '从根节点开始，按属性测试逐层向下，到达叶节点即为预测类别。' },
-      { type: 'fill', question: '神经网络中反向传播用于计算____', answer: '梯度', focus: '神经网络', explanation: '反向传播算法计算损失函数关于各参数的梯度，用于参数更新。' },
-      { type: 'essay', question: '简述朴素贝叶斯中先验概率、似然、后验概率的含义', answer: '先验概率是不看特征时某类出现概率；似然是某类中出现这些特征的概率；后验概率是看到特征后某类出现的概率', focus: '朴素贝叶斯', explanation: '贝叶斯公式：后验∝先验×似然。', alternatives: [] }
+      { type: 'choice', question: '决策树中，叶结点存放的是？', options: ['一个属性上的测试', '一个测试输出', '一个类标号', '一个信息增益值'], answer: 'C', focus: '决策树结构', explanation: '决策树中，内部结点（非叶结点）表示在一个属性上的测试，分枝代表一个测试输出，叶结点存放一个类标号。' },
+      { type: 'choice', question: '信息增益的主要缺陷是？', options: ['计算速度太慢', '偏向选择取值多的属性', '无法处理连续型数据', '不能用于多分类问题'], answer: 'B', focus: '信息增益缺陷', explanation: '信息增益偏向选择取值多的属性。例如"身份证号"每人一个值，信息增益极大，但分类毫无意义。信息增益率通过引入分裂信息惩罚项来修正这一缺陷。' },
+      { type: 'choice', question: 'CART决策树使用的属性选择标准是？', options: ['信息增益', '信息增益率', 'Gini系数', '分类误差'], answer: 'C', focus: 'CART算法', explanation: 'CART决策树使用Gini系数作为属性选择标准。Gini系数计算比熵快（不用算log），表示随机抽两个样本属于不同类别的概率，越小越好。' },
+      { type: 'choice', question: '朴素贝叶斯分类器的核心假设是？', options: ['所有特征都是连续型的', '所有特征互相独立', '所有特征都是离散型的', '所有类别先验概率相等'], answer: 'B', focus: '朴素贝叶斯假设', explanation: '朴素贝叶斯分类器的核心假设是所有特征互相独立（独立性假设），这使得P(X|C)可以简化为各特征条件概率的乘积，大幅简化计算。' },
+      { type: 'choice', question: '先剪枝（预剪枝）与后剪枝的核心区别是？', options: ['先剪枝效果更好', '后剪枝速度更快', '先剪枝在树生长过程中提前停止，后剪枝先让树完整生长再修剪', '两者没有本质区别'], answer: 'C', focus: '剪枝方法对比', explanation: '先剪枝（预剪枝）在树生长过程中提前停止，速度快但可能剪枝过早。后剪枝先让树完整生长，再修剪不必要的分支，效果好但计算量大。' },
+      { type: 'choice', question: '过拟合的典型表现是？', options: ['训练误差和检验误差都很高', '训练误差很低但检验误差很高', '训练误差和检验误差都很低', '训练误差很高但检验误差很低'], answer: 'B', focus: '过拟合表现', explanation: '过拟合的典型表现是训练误差很低（甚至为0），但检验误差很高。模型在训练集上表现很好，但对新数据的泛化能力差。' },
+      { type: 'multichoice', question: '以下哪些是决策树的不纯度度量标准？（多选）', options: ['信息增益(InfoGain)', '信息增益率(GainRatio)', 'Gini系数', '分类误差', '支持度'], answer: ['A', 'B', 'C', 'D'], focus: '不纯度度量', explanation: '决策树的四种不纯度度量标准：信息增益（越大越好）、信息增益率（越大越好）、Gini系数（越小越好）、分类误差（越小越好）。支持度是关联规则的评价指标。' },
+      { type: 'multichoice', question: '朴素贝叶斯分类器的优点包括哪些？（多选）', options: ['计算快，规则简单', '对噪声鲁棒', '容易处理缺失值', '不需要特征独立性假设'], answer: ['A', 'B', 'C'], focus: '朴素贝叶斯优点', explanation: '朴素贝叶斯分类器优点：计算快规则简单、对噪声鲁棒、容易处理缺失值、理论上错误率最小。缺点是要求特征独立性假设，属性相关时会降低效果。' },
+      { type: 'multichoice', question: '导致决策树过拟合的原因有哪些？（多选）', options: ['噪声导致决策边界改变', '缺乏代表性样本', '训练数据过多', '根据少量训练记录做出决策'], answer: ['A', 'B', 'D'], focus: '过拟合原因', explanation: '过拟合原因：噪声导致决策边界改变、缺乏代表性样本（根据少量训练记录做出决策）。训练数据过多不是导致过拟合的原因。' },
+      { type: 'multichoice', question: '贝叶斯分类中的核心概念包括哪些？（多选）', options: ['先验概率P(C)', '似然P(X|C)', '后验概率P(C|X)', '提升度Lift'], answer: ['A', 'B', 'C'], focus: '贝叶斯核心概念', explanation: '贝叶斯分类的核心概念：先验概率P(C)（不看特征时类别出现的概率）、似然P(X|C)（某类中出现这些特征的概率）、后验概率P(C|X)（看到特征后类别出现的概率）。提升度是关联规则的度量。' },
+      { type: 'judge', question: '信息增益率通过引入分裂信息惩罚项来修正信息增益偏向取值多属性的缺陷。', answer: '对', focus: '信息增益率', explanation: '信息增益率=信息增益÷分裂信息。分裂信息是对"属性分了多少支"的惩罚项，分支越多数值越大，从而抑制了信息增益偏向取值多属性的倾向。' },
+      { type: 'judge', question: '朴素贝叶斯分类器在实践中一定是最优的分类器。', answer: '错', focus: '朴素贝叶斯局限性', explanation: '朴素贝叶斯分类器理论上具有最小的错误率，但在实践中由于特征独立性假设往往不成立，所以不一定最优。' },
+      { type: 'judge', question: 'Gini系数的值越小，表示数据的不纯度越低。', answer: '对', focus: 'Gini系数含义', explanation: 'Gini系数表示随机抽两个样本属于不同类别的概率。值越小说明数据越纯（某一类占绝对优势），不纯度越低。' },
+      { type: 'judge', question: '后剪枝比先剪枝速度快，但效果较差。', answer: '错', focus: '剪枝方法特点', explanation: '恰恰相反：后剪枝效果好但计算量大（速度慢）；先剪枝速度快但可能剪枝过早（效果可能较差）。' },
+      { type: 'judge', question: '分类误差对不纯度的变化不够敏感。', answer: '对', focus: '分类误差特点', explanation: '分类误差=1-最大类别占比。当分布从8:2变为9:1时，Gini和熵都有明显变化，但分类误差变化很小（从0.2变为0.1），不够敏感。' },
+      { type: 'fill', question: '10个样本中5个属于A类、5个属于B类，其熵值为____。', answer: '1', alternatives: ['1.0', '一'], focus: '熵的计算', explanation: '熵=-(0.5×log₂0.5 + 0.5×log₂0.5)=-(0.5×(-1)+0.5×(-1))=1。当两类各占一半时，熵达到最大值1。' },
+      { type: 'fill', question: '10个样本中9个买电脑、1个不买，其Gini系数为____。', answer: '0.18', alternatives: ['0.18'], focus: 'Gini系数计算', explanation: 'Gini=1-(0.9)²-(0.1)²=1-0.81-0.01=0.18。Gini系数越小表示不纯度越低。' },
+      { type: 'fill', question: '贝叶斯定理公式为P(C|X)=P(X|C)×P(C)/____。', answer: 'P(X)', alternatives: ['P(X)'], focus: '贝叶斯定理', explanation: '贝叶斯定理：P(C|X) = P(X|C)×P(C)/P(X)，其中P(C)是先验概率，P(X|C)是似然，P(C|X)是后验概率，P(X)是证据因子。' },
+      { type: 'essay', question: '请比较决策树的四种不纯度度量标准（信息增益、信息增益率、Gini系数、分类误差）的思路、选择标准和特点。', answer: '1. 信息增益(InfoGain)：\n- 思路：用某属性划分后熵降低了多少\n- 选择标准：越大越好\n- 特点：偏向选择取值多的属性\n\n2. 信息增益率(GainRatio)：\n- 思路：在信息增益基础上惩罚分支太多的属性\n- 选择标准：越大越好\n- 公式：增益率=信息增益÷分裂信息\n- 特点：修正了信息增益的缺陷\n\n3. Gini系数：\n- 思路：随机抽两个样本属于不同类别的概率\n- 选择标准：越小越好\n- 公式：Gini=1-Σ(pi²)\n- 特点：计算比熵快，CART决策树在用\n\n4. 分类误差：\n- 思路：猜错的比例\n- 选择标准：越小越好\n- 公式：1-最大类别概率\n- 特点：简单直观但对不纯度变化不够敏感', focus: '不纯度度量对比' },
+      { type: 'essay', question: '请描述分类的完整过程，并说明训练集和测试集各自的作用。', answer: '分类的完整过程：\n1. 选择训练数据集：训练样本需包含属性值和类别标记，形式为(V1,V2,...,Vn;C)，用于构建分类模型。\n2. 选择测试数据集：用于评估模型准确率。可将数据划分后一部分作为测试集，也可通过交叉验证（互换/轮换）选择最优模型。\n3. 建立模型（训练）：由训练数据集生成分类模型。\n4. 测试评估：使用测试数据集评估模型，根据误差进行修正（如剪枝）。\n5. 应用模型：对未知分类的样本数据进行分类判别。\n\n训练集的作用：提供带标签的数据用于学习分类规则，建立分类模型。\n测试集的作用：独立评估模型的泛化能力和准确率，检测过拟合，指导模型调优。', focus: '分类过程' }
     ]
   },
-  // Chapter 7 Quiz
   {
-    title: '第七章 聚类分析',
+    title: '第7章测试',
     questions: [
-      { type: 'choice', question: 'K-means通常使用什么作为簇的质心？', options: ['均值', '众数', '支持度', '后验概率'], answer: 'A', focus: 'K-means', explanation: 'K-means使用簇内所有点的均值作为质心。' },
-      { type: 'choice', question: 'K-medoids相对K-means的一个优势是？', options: ['一定更快', '对噪声和极端值更鲁棒', '不需要距离度量', '只能处理文本'], answer: 'B', focus: 'K-medoids', explanation: 'K-medoids从实际样本点中选中心，不受极端值拉动，更鲁棒。' },
-      { type: 'fill', question: 'K-means中常用____衡量簇的紧凑度', answer: 'SSE', focus: 'K-means', explanation: 'SSE（误差平方和）是衡量簇内数据点到质心距离总和的指标。', alternatives: ['sse', '误差平方和'] },
-      { type: 'judge', question: '聚类属于无监督学习，不依赖预先给定的类别标签', answer: '对', focus: '聚类定义', explanation: '聚类是无监督学习，根据数据本身的相似性自动分组。' },
-      { type: 'essay', question: '写出K-means算法步骤，并说明它的主要局限', answer: '步骤：选k个初始质心；按最近质心分配样本；重新计算质心；迭代直到质心不变或SSE不再优化。局限：需预设K，对初始质心和异常值敏感，不适合非球形簇', focus: 'K-means', explanation: 'K-means是经典聚类算法，理解其步骤和局限很重要。', alternatives: [] },
-      { type: 'choice', question: '欧氏距离的核心含义是？', options: ['空间中两点直线距离', '各维绝对差之和', '规则置信度', '类别后验概率'], answer: 'A', focus: '距离度量', explanation: '欧氏距离是空间中两点之间的直线距离。' },
-      { type: 'choice', question: '曼哈顿距离通常计算为？', options: ['各维绝对差之和', '夹角余弦', '均方误差', '支持度计数'], answer: 'A', focus: '距离度量', explanation: '曼哈顿距离是各维度差的绝对值之和，类似网格路径距离。' },
-      { type: 'choice', question: '余弦相似度更关注向量的什么？', options: ['方向', '绝对长度', '样本标签', '事务总数'], answer: 'A', focus: '距离度量', explanation: '余弦相似度衡量向量方向的相似程度，不关注绝对长度。' },
-      { type: 'choice', question: 'K-means中"离散质心法"的风险之一是？', options: ['可能选中离群点', '无法指定K', '不需要计算距离', '只能用于分类'], answer: 'A', focus: 'K-means', explanation: '离散质心法可能恰好选中离群点作为初始质心，影响聚类效果。' },
-      { type: 'choice', question: 'DBSCAN的两个重要参数是？', options: ['eps和MinPts', 'minsup和minconf', 'TP和FP', 'Q1和Q3'], answer: 'A', focus: 'DBSCAN', explanation: 'DBSCAN通过eps（邻域半径）和MinPts（最小点数）两个参数控制聚类。' },
-      { type: 'judge', question: 'K-means适合所有任意形状、任意密度的簇', answer: '错', focus: 'K-means局限', explanation: 'K-means适合球形簇，对任意形状和不同密度的簇效果较差。' },
-      { type: 'judge', question: '使用欧氏距离时，均值作为质心可使SSE达到理论最小', answer: '对', focus: 'K-means', explanation: '数学上可证明均值是使SSE最小的质心选择。' },
-      { type: 'fill', question: 'K-medoids的中心点必须从____点中选取', answer: '样本', focus: 'K-medoids', explanation: 'K-medoids要求中心点必须是实际的样本点。', alternatives: ['实际样本', '样本'] },
-      { type: 'fill', question: 'K-means算法通常迭代到质心不再变化或____不再变优', answer: 'SSE', focus: 'K-means', explanation: 'K-means在SSE不再显著减小或质心稳定时停止迭代。' },
-      { type: 'essay', question: '比较欧氏距离、曼哈顿距离、余弦相似度的适用场景', answer: '欧氏距离适合连续数值数据中的直线距离；曼哈顿距离适合网格路径；余弦相似度关注方向常用于文本和高维稀疏数据', focus: '距离度量对比', explanation: '不同距离度量适用于不同的数据类型和应用场景。', alternatives: [] },
-      { type: 'essay', question: '为什么K-means对异常值敏感？K-medoids如何改善？', answer: 'K-means使用均值作质心极端值会拉动均值导致质心偏移。K-medoids从实际样本点中选中心点以绝对误差和为标准对极端值更鲁棒', focus: 'K-means vs K-medoids', explanation: '均值受极端值影响是K-means的主要弱点。', alternatives: [] },
-      { type: 'choice', question: '层次聚类常用什么形式表示聚类过程？', options: ['树状图', '混淆矩阵', 'FP树', 'ROC曲线'], answer: 'A', focus: '层次聚类', explanation: '层次聚类通过树状图（Dendrogram）直观展示聚类过程。' },
-      { type: 'judge', question: 'K-means每个数据元素属于且仅属于一个簇', answer: '对', focus: 'K-means', explanation: 'K-means是硬聚类，每个样本只属于一个簇。' },
-      { type: 'fill', question: 'K-means对初始____敏感', answer: '质心', focus: 'K-means', explanation: '不同的初始质心选择可能导致不同的聚类结果。' },
-      { type: 'essay', question: '列出K-means初始质心选择的几种方法', answer: '随机选择；多次运行选最小SSE；使用层次聚类提取质心；离散质心法（可能选中离群点且计算开销大）', focus: 'K-means初始化', explanation: '初始质心的选择对K-means结果有重要影响。', alternatives: [] }
+      { type: 'choice', question: '聚类分析的优化目标是？', options: ['簇间最小化、簇内最大化', '簇间最大化、簇内最小化', '所有簇的大小相等', '簇的数量最少'], answer: 'B', focus: '聚类优化目标', explanation: '聚类的优化目标是簇间最大化（簇与簇之间差异大）和簇内最小化（簇内对象相似度高），即"物以类聚"。' },
+      { type: 'choice', question: '聚类与分类的最核心区别是？', options: ['聚类处理数值数据，分类处理类别数据', '聚类是无监督学习，分类是有监督学习', '聚类速度更快', '聚类只能处理小数据集'], answer: 'B', focus: '聚类与分类区别', explanation: '聚类是无监督学习（数据没有标签，自己摸索规律），分类是有监督学习（训练数据带正确答案，有老师教）。' },
+      { type: 'choice', question: 'K-Means算法的三大经典挑战不包括？', options: ['K值难以预设', '初始质心随机选择导致结果不稳定', '对噪声和异常值极度敏感', '不能处理离散型数据'], answer: 'D', focus: 'K-Means三大挑战', explanation: 'K-Means的三大经典挑战是：(1)K值难以预设；(2)初始质心随机选择导致结果不稳定；(3)对噪声和异常值极度敏感。"不能处理离散型数据"不是三大挑战之一。' },
+      { type: 'choice', question: '余弦相似度主要适用于什么场景？', options: ['连续数值数据的距离计算', '网格状路径规划', '文本相似度、高维稀疏数据', '时间序列分析'], answer: 'C', focus: '余弦相似度适用场景', explanation: '余弦相似度忽略向量绝对长度，只关注向量间的夹角大小，衡量"步调与结构是否一致"。特别适合文本相似度、高维稀疏数据（如TF-IDF向量）。' },
+      { type: 'choice', question: 'K-Medoids算法相比K-Means的核心改进是？', options: ['使用更多的簇', '质心从实际样本点中选取，改善了对噪声敏感的问题', '使用欧氏距离', '减少了迭代次数'], answer: 'B', focus: 'K-Medoids改进', explanation: 'K-Medoids从样本点中选取中心点（medoid）作为质心，而非使用均值，因此不受极端值影响，改善了对噪声敏感的问题。' },
+      { type: 'choice', question: '使用欧氏距离时，使SSE达到理论最小值的质心选择是？', options: ['中位数', '均值', '众数', '随机点'], answer: 'B', focus: 'SSE最优质心', explanation: '使用欧氏距离时，唯一选择均值作为质心，才能使SSE（误差平方和）达到理论最小值。' },
+      { type: 'multichoice', question: 'K-Means算法的迭代终止条件包括哪些？（多选）', options: ['质心不再变化', 'SSE不再变优', '质心变化距离小于ε', '所有点都被分配到簇中'], answer: ['A', 'B', 'C'], focus: 'K-Means终止条件', explanation: 'K-Means的迭代终止条件：质心不再变化、SSE不再变优、质心变化距离<ε、达到最大迭代次数。"所有点都被分配到簇中"是每次迭代的必然结果，不是终止条件。' },
+      { type: 'multichoice', question: '以下哪些属于K-Means的特点与局限？（多选）', options: ['对K值敏感', '不能处理非球形簇', '不能处理不同密度的簇', '对离群点不敏感', '计算开销大'], answer: ['A', 'B', 'C', 'E'], focus: 'K-Means局限', explanation: 'K-Means的局限：对K值敏感、对离群点敏感（不是不敏感）、不能处理非球形簇、不能处理不同尺寸和不同密度的簇、计算开销大。' },
+      { type: 'multichoice', question: '以下哪些是按分类方法划分的聚类类型？（多选）', options: ['划分聚类', '层次聚类', '互斥聚类', '基于密度的聚类', '模糊聚类'], answer: ['A', 'B', 'D'], focus: '聚类算法分类', explanation: '按分类方法划分：划分聚类（K-Means等）、层次聚类（CURE、BIRCH等）、基于密度的聚类（DBSCAN）、基于网络的聚类（WaveCluster）。互斥聚类和模糊聚类是按划分方法/划分范围分类的。' },
+      { type: 'multichoice', question: '应对K-Means初始质心选择问题的方法有哪些？（多选）', options: ['K-Means++思想（离散质心优化法）', '多次运行取最优', '层次聚类法先提取质心', '增加K值'], answer: ['A', 'B', 'C'], focus: '初始质心选择方法', explanation: '初始质心选择方法：K-Means++（选择离已有质心较远的点）、最小SSE法（多次运行选最小SSE）、层次聚类法（先用层次聚类提取质心）、离散质心法。增加K值不能解决初始质心选择问题。' },
+      { type: 'judge', question: 'K-Means算法中每个数据元素可以属于多个簇。', answer: '错', focus: 'K-Means分配规则', explanation: 'K-Means要求每个数据元素属于且仅属于一个分组（互斥聚类），不是模糊聚类或非互斥聚类。' },
+      { type: 'judge', question: '曼哈顿距离是各维度绝对差之和，适用于网格状路径。', answer: '对', focus: '曼哈顿距离', explanation: '曼哈顿距离d=Σ|xi-yi|，像出租车在城市网格状街道中行驶，不能穿墙，必须沿横平竖直的轴向线段走。' },
+      { type: 'judge', question: 'K-Medoids的时间复杂度比K-Means低。', answer: '错', focus: 'K-Medoids复杂度', explanation: 'K-Medoids的时间复杂度比K-Means更高，因为需要从样本点中遍历寻找使绝对误差和最小的最优中心点。' },
+      { type: 'judge', question: 'SSE越小，质心是簇中点的更好代表。', answer: '对', focus: 'SSE含义', explanation: 'SSE（误差平方和）衡量聚类质量，SSE越小意味着簇内各点到质心的距离越小，质心对簇中点的代表性越好。' },
+      { type: 'judge', question: '余弦相似度会考虑向量的绝对长度（数值大小）。', answer: '错', focus: '余弦相似度特点', explanation: '余弦相似度完全忽略向量的绝对长度（数值大小），只关注两个向量在空间中的夹角大小，衡量"步调与结构是否一致"。' },
+      { type: 'fill', question: 'K-Medoids使用____作为紧凑度度量，而K-Means使用SSE（误差平方和）。', answer: '绝对误差和', alternatives: ['绝对误差之和'], focus: 'K-Medoids度量', explanation: 'K-Medoids使用绝对误差和作为紧凑度度量，而K-Means使用SSE（误差平方和）。' },
+      { type: 'fill', question: '欧几里得距离的计算公式中，两点(x1,y1)和(x2,y2)的距离d=√((x1-x2)²+____)。', answer: '(y1-y2)²', alternatives: ['(y1-y2)^2'], focus: '欧氏距离公式', explanation: '欧几里得距离d=√(Σ(xi-yi)²)，对于二维空间中两点(x1,y1)和(x2,y2)，d=√((x1-x2)²+(y1-y2)²)。' },
+      { type: 'fill', question: 'DBSCAN属于按分类方法划分的____聚类。', answer: '基于密度的', alternatives: ['密度', '基于密度'], focus: '聚类算法分类', explanation: 'DBSCAN是基于密度的聚类算法，与划分聚类（K-Means）和层次聚类（CURE、BIRCH）并列。' },
+      { type: 'essay', question: '请描述K-Means算法的完整步骤，并列举其三大经典挑战及相应的解决方案。', answer: 'K-Means算法步骤：\n1. 选择k个点作为初始质心\n2. 将每个点指派到最近的质心，形成k个簇\n3. 重新计算每个簇的质心（均值）\n4. 重复步骤2-3，直到质心不再变化（或SSE不再变优、达到最大迭代次数）\n\n三大挑战及解决方案：\n1. K值难以预设：结合业务实际需求决定K值，避免纯数学计算与业务脱节。\n2. 初始质心随机选择导致结果不稳定：采用K-Means++思想（选择离已有质心较远的点），或多次运行取SSE最小的结果。\n3. 对噪声和异常值极度敏感：进行严格的前置数据清洗，利用3σ原则提前识别并过滤异常值。', focus: 'K-Means算法与挑战' },
+      { type: 'essay', question: '请对比K-Means和K-Medoids算法，包括质心计算、噪声敏感性、紧凑度度量、时间复杂度等方面。', answer: 'K-Means与K-Medoids对比：\n1. 质心计算：K-Means使用均值（mean）作为质心，可以是空间中任意点；K-Medoids从样本点中选取中心点（medoid），必须是实际存在的样本点。\n2. 噪声敏感性：K-Means对噪声敏感，因为均值容易被极端值拉偏；K-Medoids不敏感，因为中心点是实际样本点，不受极端值影响。\n3. 紧凑度度量：K-Means使用SSE（误差平方和）；K-Medoids使用绝对误差和。\n4. 时间复杂度：K-Means较低；K-Medoids较高（需遍历样本点找最优中心点）。\n5. 核心思想：K-Means每次迭代重新计算均值质心；K-Medoids每次迭代从样本中选使绝对误差和最小的点作为新质心。', focus: 'K-Means与K-Medoids对比' }
     ]
   },
-  // Chapter 8 Quiz
   {
-    title: '第八章 回归分析与模型评价',
+    title: '第8章测试',
     questions: [
-      { type: 'choice', question: '训练集准确率很高而测试集准确率低，通常说明什么？', options: ['过拟合', '欠拟合', '数据集成成功', '聚类完成'], answer: 'A', focus: '过拟合', explanation: '训练好测试差是过拟合的典型特征，模型记住了训练数据的噪声。' },
-      { type: 'choice', question: '疾病筛查场景通常更重视哪个指标？', options: ['召回率', '页面访问量', '支持度', 'SSE'], answer: 'A', focus: '场景判断', explanation: '疾病筛查不能漏掉患者，因此更重视召回率。' },
-      { type: 'fill', question: 'F1值是精确率和召回率的____平均', answer: '调和', focus: 'F1值', explanation: 'F1 = 2×P×R/(P+R)，是精确率和召回率的调和平均。' },
-      { type: 'judge', question: '回归任务预测连续数值，分类任务预测离散类别标签', answer: '对', focus: '分类与回归', explanation: '这是分类和回归的根本区别。' },
-      { type: 'essay', question: '说明精确率、召回率、F1值分别适合回答什么问题', answer: '精确率回答预测为正的样本中有多少是真的；召回率回答实际为正的样本中找回了多少；F1综合二者适合需要兼顾的场景', focus: '分类评价', explanation: '不同指标回答不同角度的问题。', alternatives: [] },
-      { type: 'choice', question: '精确率的分母是什么？', options: ['预测为正的样本', '实际为正的样本', '全部样本', '实际为负的样本'], answer: 'A', focus: '精确率', explanation: '精确率 = TP/(TP+FP)，分母是预测为正的样本数。' },
-      { type: 'choice', question: '召回率的分母是什么？', options: ['预测为正的样本', '实际为正的样本', '预测为负的样本', '全部负样本'], answer: 'B', focus: '召回率', explanation: '召回率 = TP/(TP+FN)，分母是实际为正的样本数。' },
-      { type: 'choice', question: '训练集和测试集表现都很差，通常说明什么？', options: ['欠拟合', '过拟合', '强关联规则', '数据联邦'], answer: 'A', focus: '欠拟合', explanation: '训练和测试都差说明模型没有学到有效模式，属于欠拟合。' },
-      { type: 'choice', question: '下列哪项属于回归评价指标？', options: ['MSE', '置信度', '支持度', 'Gini split'], answer: 'A', focus: '回归评价', explanation: 'MSE（均方误差）是典型的回归评价指标。' },
-      { type: 'choice', question: '下列哪项不是处理过拟合的常见方法？', options: ['正则化', '剪枝', '交叉验证', '故意增加模型复杂度并记忆训练集'], answer: 'D', focus: '过拟合处理', explanation: '增加模型复杂度会加剧过拟合，而不是缓解。' },
-      { type: 'judge', question: '垃圾短信拦截通常需要兼顾精确率和召回率', answer: '对', focus: '场景判断', explanation: '精确率太低会误拦正常短信，召回率太低会漏掉垃圾短信，需兼顾。' },
-      { type: 'judge', question: 'F1值适合完全不关心召回率的场景', answer: '错', focus: 'F1值', explanation: 'F1是精确率和召回率的调和平均，同时考虑两者。' },
-      { type: 'fill', question: 'ROC/AUC属于____评价指标', answer: '分类', focus: '分类评价', explanation: 'ROC曲线和AUC值是分类模型的评价指标。' },
-      { type: 'fill', question: 'R²属于____评价指标', answer: '回归', focus: '回归评价', explanation: 'R²（决定系数）是回归模型的评价指标。' },
-      { type: 'essay', question: '给出过拟合和欠拟合的表现，并列出处理过拟合的方法', answer: '过拟合：训练集表现好测试集表现差；欠拟合：训练和测试表现都差。处理：增加数据、正则化、剪枝、交叉验证、早停、降低模型复杂度', focus: '过拟合与欠拟合', explanation: '理解过拟合和欠拟合的区别及应对方法是关键。', alternatives: [] },
-      { type: 'essay', question: '说明TP、FP、TN、FN四个概念', answer: 'TP实际为正且预测为正；FP实际为负但预测为正；TN实际为负且预测为负；FN实际为正但预测为负', focus: '混淆矩阵', explanation: '这四个概念是分类评价的基础。', alternatives: [] },
-      { type: 'choice', question: 'MAE属于哪类评价指标？', options: ['回归评价', '关联规则评价', '聚类初始化', 'OLAP操作'], answer: 'A', focus: '回归评价', explanation: 'MAE（平均绝对误差）是回归评价指标。' },
-      { type: 'judge', question: '早停可以作为缓解过拟合的方法之一', answer: '对', focus: '过拟合处理', explanation: '早停在验证集误差不再下降时停止训练，防止过拟合。' },
-      { type: 'fill', question: '实际为正却被预测为负的样本称为____', answer: 'FN', focus: '混淆矩阵', explanation: 'FN（False Negative）即假负例，实际为正但被预测为负。', alternatives: ['假负例', 'fn'] },
-      { type: 'essay', question: '为什么F1适合需要兼顾精确率和召回率的场景？', answer: 'F1是精确率和召回率的调和平均，单独精确率或召回率可能偏向一侧，F1能综合反映二者平衡情况', focus: 'F1值', explanation: '调和平均的特性使得F1对较低的值更敏感。', alternatives: [] }
+      { type: 'choice', question: '过拟合的典型表现是什么？', options: ['训练误差和检验误差都很低', '训练误差很低但检验误差很高', '训练误差很高但检验误差很低', '训练误差和检验误差都很高'], answer: 'B', focus: '过拟合表现', explanation: '过拟合的典型表现是训练误差很低（甚至为0），但检验误差很高。模型过度拟合了训练数据的噪声，导致对新数据的泛化能力差。' },
+      { type: 'choice', question: '在CRISP-DM模型中，模型评估之后的步骤是？', options: ['数据准备', '建模', '结果发布', '数据理解'], answer: 'C', focus: 'CRISP-DM流程', explanation: 'CRISP-DM的六大步骤：商业理解→数据理解→数据准备→建模→模型评估→结果发布。模型评估之后是结果发布。' },
+      { type: 'choice', question: '以下哪个不属于K-Means算法的局限？', options: ['不能处理非球形簇', '不能处理不同密度的簇', '不需要预设簇数', '对离群点敏感'], answer: 'C', focus: 'K-Means局限', explanation: 'K-Means必须预设K值（簇数），这是它的一大挑战而非局限中的"不需要"。其他选项（不能处理非球形簇、不同密度簇、对离群点敏感）都是K-Means的已知局限。' },
+      { type: 'choice', question: '决策树过拟合的原因中，"噪声"导致的问题是？', options: ['训练数据不足', '决策边界改变', '计算量过大', '属性选择不当'], answer: 'B', focus: '过拟合原因', explanation: '噪声导致决策边界改变，使决策树拟合了训练数据中的噪声模式，而非真实的分类规律，从而导致过拟合。' },
+      { type: 'choice', question: '在数据挖掘全流程中，数据准备的重要性体现在"垃圾进，垃圾出"原则中，这意味着？', options: ['算法越先进结果越好', '数据质量对最终结果起决定性作用', '数据量越大越好', '模型越复杂越好'], answer: 'B', focus: '数据准备重要性', explanation: '"垃圾进，垃圾出"(Garbage In, Garbage Out)意味着如果输入数据质量差，无论后续算法多先进，结果都会很差。数据质量对最终结果起决定性作用。' },
+      { type: 'choice', question: '关联规则{避雷针}→{大米}的置信度高达90%，但两者实际毫无关联，这种问题可以通过什么指标来识别？', options: ['支持度', '置信度', '提升度(Lift)', '候选项集数量'], answer: 'C', focus: '虚假规则识别', explanation: '提升度Lift可以识别这种"虚假高置信度规则"。由于大米是超级热门商品（90%的人都买），避雷针和大米无关联但置信度高。提升度会揭示两者实际是独立的（Lift≈1）。' },
+      { type: 'multichoice', question: '以下哪些方法可以用于缓解过拟合问题？（多选）', options: ['决策树剪枝', '增加训练数据量', '交叉验证', '使用更复杂的模型'], answer: ['A', 'B', 'C'], focus: '缓解过拟合方法', explanation: '缓解过拟合的方法包括：决策树剪枝（先剪枝或后剪枝）、增加训练数据量（更多代表性样本）、交叉验证（选择最优模型）。使用更复杂的模型反而会加剧过拟合。' },
+      { type: 'multichoice', question: '以下哪些是数据挖掘中常用的模型评价方法？（多选）', options: ['交叉验证', '混淆矩阵', 'SSE（误差平方和）', '支持度和置信度'], answer: ['A', 'B', 'C', 'D'], focus: '模型评价方法', explanation: '常用评价方法：交叉验证（评估分类模型泛化能力）、混淆矩阵（分类准确率分析）、SSE（聚类质量度量）、支持度和置信度（关联规则强度度量）。不同任务使用不同的评价指标。' },
+      { type: 'multichoice', question: '以下关于数据预处理的说法，正确的有哪些？（多选）', options: ['数据准备往往占据数据挖掘项目的大部分时间', '3σ原则可用于异常值检测', '归一化和标准化是常用的数据变换方法', '数据预处理对最终结果影响不大'], answer: ['A', 'B', 'C'], focus: '数据预处理重要性', explanation: '数据准备确实占据大部分时间，3σ原则是经典的异常值检测方法，归一化和标准化是常用的变换方法。数据预处理对最终结果有决定性影响，不是"影响不大"。' },
+      { type: 'multichoice', question: '以下哪些算法属于有监督学习方法？（多选）', options: ['决策树分类', 'K-Means聚类', '朴素贝叶斯分类', 'DBSCAN聚类'], answer: ['A', 'C'], focus: '有监督vs无监督', explanation: '决策树分类和朴素贝叶斯分类是有监督学习（需要带标签的训练数据）。K-Means聚类和DBSCAN聚类是无监督学习（不需要标签）。' },
+      { type: 'judge', question: '后剪枝的效果通常优于先剪枝，但计算量更大。', answer: '对', focus: '剪枝方法对比', explanation: '后剪枝先让树完整生长再修剪，效果较好但计算量大。先剪枝在生长过程中提前停止，速度快但可能过早剪枝。' },
+      { type: 'judge', question: '数据挖掘只需要关注算法的选择，数据准备环节可以忽略。', answer: '错', focus: '数据准备重要性', explanation: '数据准备在数据挖掘中具有决定性地位，数据的质量、表现形式和代表性对算法选择、参数选取和最终结果起着决定性的作用。"垃圾进，垃圾出"。' },
+      { type: 'judge', question: 'K-Means++的核心思想是让初始质心在特征空间中充分散开。', answer: '对', focus: 'K-Means++思想', explanation: 'K-Means++在确定第一个初始质心后，后续的初始质心选择倾向于选择离已有质心距离较远的点，从而保证初始质心在整个特征空间中充分散开。' },
+      { type: 'judge', question: '信息增益和信息增益率在选择属性时总会得到完全相同的结果。', answer: '错', focus: '信息增益vs增益率', explanation: '信息增益率通过除以分裂信息来惩罚取值多的属性，因此当属性取值数不同时，两者结果会不同。信息增益偏向取值多的属性，信息增益率会修正这种偏向。' },
+      { type: 'judge', question: '聚类分析是一种有监督学习方法。', answer: '错', focus: '聚类学习类型', explanation: '聚类分析是无监督学习方法，数据没有标签，算法自动发现数据中自然的分组。有监督学习需要带标签的训练数据，如分类。' },
+      { type: 'fill', question: '在支持度-置信度框架中，提升度Lift>____表示前件与后件之间存在正相关关系。', answer: '1', alternatives: ['1.0', '一'], focus: '提升度判断', explanation: '提升度Lift=1表示独立，<1表示负相关（互斥），>1表示正相关（有效强关联）。' },
+      { type: 'fill', question: '过拟合的表现是训练误差很低，但____误差很高。', answer: '检验', alternatives: ['测试', '泛化', '验证'], focus: '过拟合表现', explanation: '过拟合时模型在训练集上表现很好（训练误差低），但对新数据的预测能力差（检验/测试误差高），说明模型泛化能力不足。' },
+      { type: 'fill', question: '在KDD流程中，数据挖掘只是其中的核心步骤，完整流程还包括数据清洗、预处理、变换和____。', answer: '评价', alternatives: ['模式评价', '评估', '知识评价'], focus: 'KDD完整流程', explanation: 'KDD完整流程：数据清洗→预处理→变换→数据挖掘→评价。数据挖掘只是核心步骤，前后还需要数据准备和模式评价环节。' },
+      { type: 'essay', question: '请综合阐述数据挖掘的预测任务和描述任务的区别，并各举两个典型算法或方法。', answer: '预测任务（Predictive Tasks）：\n- 核心目标：根据某些属性（输入变量）的值，去预测另一个特定属性（目标变量）的值。\n- 典型方法：\n  1. 分类（Classification）：如决策树、朴素贝叶斯——预测离散类别标签\n  2. 回归（Regression）：预测连续数值\n\n描述任务（Descriptive Tasks）：\n- 核心目标：不需要预测特定目标变量，而是总结、概括或发现数据中潜在的模式、联系和规律。\n- 典型方法：\n  1. 聚类（Clustering）：如K-Means、DBSCAN——发现数据中的自然分组\n  2. 关联规则发现（Association Rule Discovery）：如Apriori、FP-Growth——发现项集之间的关联\n  3. 异常检测：发现数据中的异常模式\n\n核心区别：预测任务有明确的目标变量，描述任务没有目标变量，旨在发现数据的内在结构。', focus: '预测任务与描述任务' },
+      { type: 'essay', question: '请论述在整个数据挖掘过程中，数据准备为什么是最重要的环节？请从多个角度进行阐述。', answer: '数据准备（Data Preparation）是数据挖掘中最重要的环节，原因如下：\n\n1. 决定性地位：数据的质量、表现形式和代表性对算法选择、参数选取和最终结果起决定性作用——"垃圾进，垃圾出"。\n\n2. 耗时最长：在狭义数据挖掘三阶段中，数据准备往往占据大部分时间，包含数据清洗、特征工程、变量选择等。\n\n3. 三大过程模型都离不开数据准备：CRISP-DM（数据准备）、SEMMA（抽样+预处理）、5A（存取数据），数据准备是建模前的必经环节。\n\n4. KDD流程的第一道实质性工序：数据清洗和预处理是整个知识发现流程的起点和基础。\n\n5. 所有挖掘任务都依赖数据准备：分类/回归需要干净一致的训练集；聚类需要剔除异常值（否则质心被拉偏）；关联规则中噪声会产生虚假规则。\n\n6. 数据准备的环节贯穿全流程：从收集→抽样→集成→清理→规约→变换，每一环都在将"脏数据"转化为"干净数据"。', focus: '数据准备重要性' }
     ]
   }
 ];
